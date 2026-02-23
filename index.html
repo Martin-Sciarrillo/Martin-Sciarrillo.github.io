@@ -1,141 +1,292 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Martin Sciarrillo's Resume</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        header {
-            background: #333;
-            color: #fff;
-            padding-top: 30px;
-            min-height: 70px;
-            border-bottom: #0779e4 3px solid;
-        }
-        header a {
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 16px;
-        }
-        header ul {
-            padding: 0;
-            list-style: none;
-        }
-        header li {
-            float: left;
-            display: inline;
-            padding: 0 20px 0 20px;
-        }
-        header #branding {
-            float: left;
-        }
-        header #branding h1 {
-            margin: 0;
-        }
-        header nav {
-            float: right;
-            margin-top: 10px;
-        }
-        #showcase {
-            min-height: 400px;
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding-top: 100px;
-        }
-        #showcase h1 {
-            font-size: 55px;
-            margin-top: 0;
-        }
-        #main {
-            padding: 20px;
-            background: #f4f4f4;
-        }
-        .badge {
-            display: inline-block;
-            margin-right: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Martin Sciarrillo — Executive Technology Strategist at Microsoft Argentina. AI, Data & Cloud for C-level leaders across Latin America." />
+  <meta property="og:title" content="Martin Sciarrillo · Tech Strategist" />
+  <meta property="og:description" content="Executive Technology Strategist at Microsoft Argentina. 20+ years shaping AI, data and cloud into real business outcomes." />
+  <title>Martin Sciarrillo · Tech Strategist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div id="branding">
-                <h1>Martin Sciarrillo's Resume</h1>
+
+  <!-- NAV -->
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Primary navigation">
+      <a class="nav__logo" href="#top">MS</a>
+      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__menu" id="nav-menu" role="list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#speaking">Speaking</a></li>
+        <li><a href="#news">In the News</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="hero" aria-labelledby="hero-name">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <p class="hero__eyebrow">Executive Technology Strategist</p>
+          <h1 class="hero__name" id="hero-name">Martin Sciarrillo</h1>
+          <p class="hero__tagline">Microsoft Argentina &mdash; turning AI, data &amp; cloud into real business outcomes</p>
+          <div class="hero__badges" aria-label="Social links">
+            <a href="https://github.com/Martin-Sciarrillo" target="_blank" rel="noopener" class="badge">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              GitHub
+            </a>
+            <a href="https://twitter.com/Acatincho" target="_blank" rel="noopener" class="badge">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              Twitter / X
+            </a>
+            <a href="https://www.linkedin.com/in/sciarrillo/" target="_blank" rel="noopener" class="badge">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn
+            </a>
+          </div>
+        </div>
+        <div class="hero__decoration" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section about" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <h2 class="section__title" id="about-heading">About Me</h2>
+        <div class="about__grid">
+          <div class="about__bio">
+            <p>I&rsquo;m an <strong>Executive Technology Strategist at Microsoft Argentina</strong>, where I work with C-level leaders to turn AI, data and cloud technologies into real business outcomes &mdash; not just innovation theater.</p>
+            <p>Previously I served as <strong>Director of Data &amp; AI for Spanish South America</strong> and <strong>CTO at Microsoft Argentina</strong>. Prior to Microsoft, I was <strong>Global Leader of Multicloud Platforms at EY</strong>, building products and services across hybrid and cloud environments in the US, Europe and Asia. Before that, I led technology teams at <strong>IBM Global Services</strong>, primarily serving US clients.</p>
+            <p>I hold a systems analyst degree from <strong>ORT Argentina</strong> and completed management training at <strong>Universidad Di Tella (UTDT)</strong> and <strong>Universidad de San Andrés (UdeSA)</strong>, where I also served as a thesis tutor for the Master&rsquo;s in Digital Business.</p>
+            <p>Outside work: married to Vicky, father to Miranda. 🧡</p>
+          </div>
+          <div class="about__highlights" aria-label="Career highlights">
+            <div class="highlight-card">
+              <span class="highlight-card__number">20+</span>
+              <span class="highlight-card__label">Years Experience</span>
             </div>
+            <div class="highlight-card">
+              <span class="highlight-card__number">3</span>
+              <span class="highlight-card__label">Global Companies</span>
+            </div>
+            <div class="highlight-card">
+              <span class="highlight-card__number">LATAM</span>
+              <span class="highlight-card__label">Regional Focus</span>
+            </div>
+          </div>
         </div>
-    </header>
-    <section id="showcase">
-        <div class="container">
-            <h1>Hello World</h1>
-            <p>I'm hosted with GitHub Pages.</p>
-        </div>
+      </div>
     </section>
-    <section id="main">
-        <div class="container">
-            <h2>About Me</h2>
-            <p>👋 I am <a href="https://github.com/Martin-Sciarrillo">@Martin-Sciarrillo</a> I was the CTO of Microsoft Argentina from March 2021 to July 2023 when I assumed a new role as Director of Data and Artificial Intelligence for Spanish South America (SSA), which includes Argentina, Chile, Bolivia, Colombia, Ecuador, Paraguay, Peru, and Uruguay.</p>
-            <p>🌟 In this position, I am responsible for guiding Microsoft’s clients in accelerating their digital transformation. This involves adopting cloud technologies, leveraging AI-driven insights to shape their strategies, optimizing business processes, and achieving more with less. I work closely with clients in an agile manner, helping them maximize the impact of Microsoft technology within their organizations.</p>
-            <p>🌎 I bring over 20 years of experience in Fortune 500 companies. Prior to Microsoft, I served as the Global Leader of Multicloud Platforms at EY, where I focused on expanding the company’s products and services across hybrid and cloud environments in the United States, Europe, and Asia. Before my time at EY, I was part of IBM’s global services center, leading technology teams that provided services primarily to clients in the United States.</p>
-            <p>🚀 I hold a systems analyst degree ORT Argentina. Additionally, I have received management training at Universidad Di Tella (UTDT) and Universidad de San Andrés (UdeSA), where I also served as a thesis tutor for the Master’s in Digital Business. I have been married to Vicky for 6 years, and we have a 5-year-old daughter named Miranda!</p>
 
-            <h2>Public Speaking & Events 🎙️</h2>
-            <img src="Idea 1.jpeg" alt="Idea 1" style="width: 150px; margin: 10px;">
-            <img src="Idea 2.jpg" alt="Idea 2" style="width: 150px; margin: 10px;">
-            <img src="Barrios.jpg" alt="Barrios" style="width: 150px; margin: 10px;">
-            <img src="11.jpg" alt="11" style="width: 150px; margin: 10px;">
-            <img src="Fernandez.jpg" alt="Fernandez" style="width: 150px; margin: 10px;">
-            <img src="Forbes.jpg" alt="Forbes" style="width: 150px; margin: 10px;">
-            <img src="Migoya.jpg" alt="Migoya" style="width: 150px; margin: 10px;">
-            <img src="Nerdearla 2022.jpg" alt="Nerdearla 2022" style="width: 150px; margin: 10px;">
-            <img src="Nerdearla 2023.jpg" alt="Nerdearla 2023" style="width: 150px; margin: 10px;">
-            <img src="Nerdearla 2024.jpg" alt="Nerdearla 2024" style="width: 150px; margin: 10px;">
-            <img src="TECO Summit.jpeg" alt="TECO Summit" style="width: 150px; margin: 10px;">
-            <img src="US Embassy.jpg" alt="US Embassy" style="width: 150px; margin: 10px;">
-            <img src="Worktech 1.jpg" alt="Worktech 1" style="width: 150px; margin: 10px;">
-            <img src="worktech 2.jpg" alt="Worktech 2" style="width: 150px; margin: 10px;">
-
-            <h2>In the News 📰</h2>
-            <h3>2024</h3>
-            <p><a href="https://www.XXXXX">XXXXX @ XXXXX</a></p>
-            <h3>2023</h3>
-            <p><a href="https://www.XXXXX">XXXXX @ XXXXX</a></p>
-            <h3>2022</h3>
-            <ul>
-                <li><a href="https://news.microsoft.com/es-xl/ypf-explora-la-computacion-cuantica-para-el-desarrollo-de-la-transicion-energetica-junto-a-microsoft/">YPF explora la computación cuántica para el desarrollo de la transición energética junto a Microsoft</a> @ Microsoft News</li>
-                <li><a href="https://www.forbesargentina.com/summit/agricultura-precision-relevancia-medicion-campo-n23127">Agricultura de precisión: la relevancia de la medición en el campo</a> @ Forbes Argentina</li>
-                <li><a href="https://www.forbessummit.com.ar/ponente/1385/martin-sciarrillo">Martin Sciarrillo en Forbes Summit</a> @ Forbes Summit</li>
-                <li><a href="https://www.cronista.com/infotechnology/it-business/exclusivo-14-empresarios-top-del-pais-relevan-en-que-sector-clave-hay-que-invertir/">Exclusivo: 14 empresarios top del país relevan en qué sector clave hay que invertir</a> @ Cronista</li>
-                <li><a href="https://campus.ort.edu.ar/articulo/1821217/conferencia-metaverso-para-empresas">Conferencia: Metaverso para empresas</a> @ ORT</li>
-                <li><a href="https://youtu.be/XLT4BcYfLjg">Video: Metaverso para empresas</a> @ YouTube</li>
-                <li><a href="https://youtu.be/SWnhzcGPRMw">Video: Computación cuántica y transición energética</a> @ YouTube</li>
-                <li><a href="https://www.bnamericas.com/es/noticias/ypf-explora-la-computacion-cuantica-para-el-desarrollo-de-la-transicion-energetica-junto-a-microsoft">YPF explora la computación cuántica para el desarrollo de la transición energética junto a Microsoft</a> @ BNamericas</li>
-                <li><a href="https://www.lanacion.com.ar/economia/las-estrategias-de-las-empresas-para-sobrevivir-al-cambio-constante-nid12062022/">Las estrategias de las empresas para sobrevivir al cambio constante</a> @ La Nación</li>
-                <li><a href="http://www.clarin.com/rural/red-mujeres-rurales-dijo-presente-palermo_0_SalTLWOcni.amp.html">Red Mujeres Rurales dijo presente en Palermo</a> @ Clarín</li>
-                <li><a href="https://youtu.be/i1ie3_cNWrA">Video: Red Mujeres Rurales en Palermo</a> @ YouTube</li>
-                <li><a href="https://www.forbesargentina.com/liderazgo/el-equipo-microsoft-festeja-30-anos-empresa-pais-n14318">El equipo de Microsoft festeja 30 años en la empresa en el país</a> @ Forbes Argentina</li>
-                <li><a href="https://youtu.be/U8_srRQVdk0">Video: 30 años de Microsoft en el país</a> @ YouTube</li>
-                <li><a href="https://www.clarin.com/rural/plantium-gano-premio-excelencia-agropecuaria_0_DAYMZTx2g.html">Plantium ganó el premio a la excelencia agropecuaria</a> @ Clarín</li>
-            </ul>
+    <!-- PUBLIC SPEAKING -->
+    <section class="section speaking" id="speaking" aria-labelledby="speaking-heading">
+      <div class="container">
+        <h2 class="section__title" id="speaking-heading">Public Speaking &amp; Events</h2>
+        <p class="section__subtitle">Selected appearances at conferences, summits, and media events.</p>
+        <div class="photo-grid" role="list">
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Nerdearla 2024.jpg" alt="Speaking at Nerdearla 2024" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">Nerdearla 2024</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Nerdearla 2023.jpg" alt="Speaking at Nerdearla 2023" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">Nerdearla 2023</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Nerdearla 2022.jpg" alt="Speaking at Nerdearla 2022" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">Nerdearla 2022</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="TECO Summit.jpeg" alt="TECO Summit presentation" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">TECO Summit</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="US Embassy.jpg" alt="US Embassy event" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">US Embassy</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Forbes.jpg" alt="Forbes feature" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">Forbes</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Worktech 1.jpg" alt="WorkTech event" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">WorkTech</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="worktech 2.jpg" alt="WorkTech session" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">WorkTech (2)</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Migoya.jpg" alt="Event with Migoya" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">With Migoya</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Fernandez.jpg" alt="Event with Fernandez" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">With Fernandez</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Barrios.jpg" alt="Event with Barrios" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">With Barrios</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Idea 1.jpeg" alt="Idea event" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">Idea</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="Idea 2.jpg" alt="Idea event (2)" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">Idea (2)</figcaption>
+          </figure>
+          <figure class="photo-grid__item" role="listitem">
+            <img src="11.jpg" alt="Speaking event" loading="lazy" decoding="async" class="photo-grid__img" />
+            <figcaption class="photo-grid__caption">Event</figcaption>
+          </figure>
         </div>
+      </div>
     </section>
-    <footer>
-        <div class="container">
-            <p>Connect with me:</p>
-            <a href="https://github.com/Martin-Sciarrillo" class="badge"><img src="https://img.shields.io/badge/GitHub-%40MartinSciarrillo-239a3b.svg" alt="GitHub"></a>
-            <a href="https://twitter.com/Acatincho" class="badge"><img src="https://img.shields.io/badge/Twitter-%40Acatincho-58a1f2.svg" alt="Twitter"></a>
-            <a href="https://www.linkedin.com/in/sciarrillo/" class="badge"><img src="https://img.shields.io/badge/Linked-in-0c66c3.svg" alt="LinkedIn"></a>
+
+    <!-- IN THE NEWS -->
+    <section class="section news" id="news" aria-labelledby="news-heading">
+      <div class="container">
+        <h2 class="section__title" id="news-heading">In the News</h2>
+        <p class="section__subtitle">Press coverage and media appearances over the years.</p>
+        <div class="accordion" id="news-accordion">
+
+          <!-- 2024 -->
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="news-2024" id="trigger-2024">
+              <span class="accordion__year">2024</span>
+              <svg class="accordion__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="accordion__panel" id="news-2024" role="region" aria-labelledby="trigger-2024" hidden>
+              <ul class="news-links" role="list">
+                <li><a href="#" class="news-link">Coming soon &mdash; 2024 coverage</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2023 -->
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="news-2023" id="trigger-2023">
+              <span class="accordion__year">2023</span>
+              <svg class="accordion__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="accordion__panel" id="news-2023" role="region" aria-labelledby="trigger-2023" hidden>
+              <ul class="news-links" role="list">
+                <li><a href="#" class="news-link">Coming soon &mdash; 2023 coverage</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2022 -->
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="true" aria-controls="news-2022" id="trigger-2022">
+              <span class="accordion__year">2022</span>
+              <svg class="accordion__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="accordion__panel" id="news-2022" role="region" aria-labelledby="trigger-2022">
+              <ul class="news-links" role="list">
+                <li><a href="https://news.microsoft.com/es-xl/ypf-explora-la-computacion-cuantica-para-el-desarrollo-de-la-transicion-energetica-junto-a-microsoft/" class="news-link" target="_blank" rel="noopener">YPF explora la computación cuántica para el desarrollo de la transición energética junto a Microsoft</a> <span class="news-source">@ Microsoft News</span></li>
+                <li><a href="https://www.forbesargentina.com/summit/agricultura-precision-relevancia-medicion-campo-n23127" class="news-link" target="_blank" rel="noopener">Agricultura de precisión: la relevancia de la medición en el campo</a> <span class="news-source">@ Forbes Argentina</span></li>
+                <li><a href="https://www.forbessummit.com.ar/ponente/1385/martin-sciarrillo" class="news-link" target="_blank" rel="noopener">Martin Sciarrillo en Forbes Summit</a> <span class="news-source">@ Forbes Summit</span></li>
+                <li><a href="https://www.cronista.com/infotechnology/it-business/exclusivo-14-empresarios-top-del-pais-relevan-en-que-sector-clave-hay-que-invertir/" class="news-link" target="_blank" rel="noopener">Exclusivo: 14 empresarios top del país relevan en qué sector clave hay que invertir</a> <span class="news-source">@ Cronista</span></li>
+                <li><a href="https://campus.ort.edu.ar/articulo/1821217/conferencia-metaverso-para-empresas" class="news-link" target="_blank" rel="noopener">Conferencia: Metaverso para empresas</a> <span class="news-source">@ ORT</span></li>
+                <li><a href="https://youtu.be/XLT4BcYfLjg" class="news-link" target="_blank" rel="noopener">Video: Metaverso para empresas</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://youtu.be/SWnhzcGPRMw" class="news-link" target="_blank" rel="noopener">Video: Computación cuántica y transición energética</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://www.bnamericas.com/es/noticias/ypf-explora-la-computacion-cuantica-para-el-desarrollo-de-la-transicion-energetica-junto-a-microsoft" class="news-link" target="_blank" rel="noopener">YPF explora la computación cuántica junto a Microsoft</a> <span class="news-source">@ BNamericas</span></li>
+                <li><a href="https://www.lanacion.com.ar/economia/las-estrategias-de-las-empresas-para-sobrevivir-al-cambio-constante-nid12062022/" class="news-link" target="_blank" rel="noopener">Las estrategias de las empresas para sobrevivir al cambio constante</a> <span class="news-source">@ La Nación</span></li>
+                <li><a href="http://www.clarin.com/rural/red-mujeres-rurales-dijo-presente-palermo_0_SalTLWOcni.amp.html" class="news-link" target="_blank" rel="noopener">Red Mujeres Rurales dijo presente en Palermo</a> <span class="news-source">@ Clarín</span></li>
+                <li><a href="https://youtu.be/i1ie3_cNWrA" class="news-link" target="_blank" rel="noopener">Video: Red Mujeres Rurales en Palermo</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://www.forbesargentina.com/liderazgo/el-equipo-microsoft-festeja-30-anos-empresa-pais-n14318" class="news-link" target="_blank" rel="noopener">El equipo de Microsoft festeja 30 años en la empresa en el país</a> <span class="news-source">@ Forbes Argentina</span></li>
+                <li><a href="https://youtu.be/U8_srRQVdk0" class="news-link" target="_blank" rel="noopener">Video: 30 años de Microsoft en el país</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://www.clarin.com/rural/plantium-gano-premio-excelencia-agropecuaria_0_DAYMZTx2g.html" class="news-link" target="_blank" rel="noopener">Plantium ganó el premio a la excelencia agropecuaria</a> <span class="news-source">@ Clarín</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2021 -->
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="news-2021" id="trigger-2021">
+              <span class="accordion__year">2021</span>
+              <svg class="accordion__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="accordion__panel" id="news-2021" role="region" aria-labelledby="trigger-2021" hidden>
+              <ul class="news-links" role="list">
+                <li><a href="https://www.lanacion.com.ar/economia/campo/esta-es-la-mejor-empresa-agtech-en-2021-nid06122021/" class="news-link" target="_blank" rel="noopener">Esta es la mejor empresa AgTech en 2021</a> <span class="news-source">@ La Nación</span></li>
+                <li><a href="https://youtu.be/GNjQBSYsb00" class="news-link" target="_blank" rel="noopener">Video: Mejor empresa AgTech en 2021</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://www.infotechnology.com/innovacion/metaverso-todas-las-claves-para-entenderlo-y-que-empresa-argentina-lo-usa/" class="news-link" target="_blank" rel="noopener">Metaverso: todas las claves para entenderlo</a> <span class="news-source">@ Infotechnology</span></li>
+                <li><a href="https://www.lanacion.com.ar/economia/campo/premio-la-nacion-banco-galicia-a-la-excelencia-agropecuaria-estos-son-los-finalistas-nid22112021/" class="news-link" target="_blank" rel="noopener">Premio La Nación-Banco Galicia a la excelencia agropecuaria</a> <span class="news-source">@ La Nación</span></li>
+                <li><a href="https://www.cronista.com/rpm/mercado/van-a-jubilar-a-los-conductores-los-autos-que-se-manejan-solos-cada-vez-estan-mas-cerca/" class="news-link" target="_blank" rel="noopener">¿Van a jubilar a los conductores? Los autos que se manejan solos cada vez están más cerca</a> <span class="news-source">@ Cronista</span></li>
+                <li><a href="https://youtu.be/bFzRQYrV-dc" class="news-link" target="_blank" rel="noopener">Video: Autos que se manejan solos</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://www-lanacion-com-ar.cdn.ampproject.org/c/s/www.lanacion.com.ar/economia/negocios/analisis-de-datos-y-humanizacion-de-la-tecnologia-las-nuevas-oportunidades-de-negocios-nid12102021/?outputType=amp" class="news-link" target="_blank" rel="noopener">Análisis de datos y humanización de la tecnología</a> <span class="news-source">@ La Nación</span></li>
+                <li><a href="https://youtu.be/NK8Qp6ZAUgM" class="news-link" target="_blank" rel="noopener">Video: Oportunidades de negocios con tecnología</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://www.infobae.com/deportes/2021/05/11/vuelven-los-hinchas-a-la-liga-nacional-de-basquet-la-iniciativa-que-emula-a-la-nba/" class="news-link" target="_blank" rel="noopener">Vuelven los hinchas a la Liga Nacional de Básquet</a> <span class="news-source">@ Infobae</span></li>
+                <li><a href="https://news.microsoft.com/es-xl/innovar-a-traves-de-entornos-hibridos-y-de-nube-multiple-con-nuevas-capacidades-de-azure-arc/" class="news-link" target="_blank" rel="noopener">Innovar a través de entornos híbridos con Azure Arc</a> <span class="news-source">@ Microsoft News</span></li>
+                <li><a href="https://youtu.be/hyVTToYOIBM?t=1198" class="news-link" target="_blank" rel="noopener">Video: Innovar con Azure Arc</a> <span class="news-source">@ YouTube</span></li>
+                <li><a href="https://www.iprofesional.com/management/347574-dia-del-programador-carrera-con-buenos-sueldos-y-salida-laboral" class="news-link" target="_blank" rel="noopener">Día del programador: carrera con buenos sueldos y salida laboral</a> <span class="news-source">@ iProfesional</span></li>
+                <li><a href="https://www.lanacion.com.ar/economia/negocios/realidad-virtual-la-nueva-herramienta-para-vender-casas-y-viajes-nid14052021/" class="news-link" target="_blank" rel="noopener">Realidad virtual: la nueva herramienta para vender casas y viajes</a> <span class="news-source">@ La Nación</span></li>
+                <li><a href="https://www.itsitio.com/us/como-sacar-provecho-de-los-servicios-de-nube-publica-de-inteligencia-artificial/" class="news-link" target="_blank" rel="noopener">Cómo sacar provecho de los servicios de nube pública de IA</a> <span class="news-source">@ ITSitio</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2016 -->
+          <div class="accordion__item">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="news-2016" id="trigger-2016">
+              <span class="accordion__year">2016</span>
+              <svg class="accordion__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="accordion__panel" id="news-2016" role="region" aria-labelledby="trigger-2016" hidden>
+              <ul class="news-links" role="list">
+                <li><a href="https://es.slideshare.net/MartinSciarrillo1/spotlight-feature-interview-martin-sciarrillo-global-lead-for-linux-services" class="news-link" target="_blank" rel="noopener">Spotlight Feature Interview: Martin Sciarrillo, Global Lead for Linux Services</a> <span class="news-source">@ SlideShare</span></li>
+              </ul>
+            </div>
+          </div>
+
         </div>
-    </footer>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="container footer__inner">
+      <p class="footer__name">Martin Sciarrillo</p>
+      <p class="footer__role">Executive Technology Strategist &middot; Microsoft Argentina</p>
+      <div class="footer__links" aria-label="Social links">
+        <a href="https://github.com/Martin-Sciarrillo" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://twitter.com/Acatincho" target="_blank" rel="noopener">Twitter / X</a>
+        <a href="https://www.linkedin.com/in/sciarrillo/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <p class="footer__copy">&copy; <span id="year"></span> Martin Sciarrillo</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
