@@ -201,7 +201,7 @@ ul { list-style: none; }
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.75rem;
   text-shadow: var(--glow-green);
 }
 .hero__eyebrow::before { content: '> '; }
@@ -211,7 +211,7 @@ ul { list-style: none; }
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.05;
-  margin-bottom: 1rem;
+  margin-bottom: 1.75rem;
   color: #fff;
   text-shadow: 0 0 30px rgba(0,229,255,0.3);
   animation: glitch 8s infinite;
@@ -223,7 +223,7 @@ ul { list-style: none; }
   font-size: 0.875rem;
   line-height: 1.7;
   max-width: 48ch;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   border-left: 2px solid var(--color-magenta);
   padding-left: 1rem;
 }
@@ -262,8 +262,8 @@ ul { list-style: none; }
 }
 
 .hero__photo {
-  width: 300px;
-  height: 300px;
+  width: 420px;
+  height: 420px;
   object-fit: cover;
   object-position: center top;
   display: block;
@@ -643,7 +643,7 @@ ul { list-style: none; }
 
   .hero__inner { grid-template-columns: 1fr; padding-block: 3.5rem; gap: 2.5rem; }
   .hero__photo-wrap { margin: 0 auto; }
-  .hero__photo { width: 240px; height: 240px; }
+  .hero__photo { width: 300px; height: 300px; }
 
   .about__grid { grid-template-columns: 1fr; gap: 2rem; }
   .about__highlights { flex-direction: row; flex-wrap: wrap; }
