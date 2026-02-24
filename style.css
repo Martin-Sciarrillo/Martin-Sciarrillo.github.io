@@ -903,7 +903,7 @@ ul { list-style: none; }
 
 .social-card__handle {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   font-weight: 600;
   color: var(--color-text);
   white-space: nowrap;
