@@ -214,7 +214,7 @@ ul { list-style: none; }
   margin-bottom: 1.75rem;
   color: #fff;
   text-shadow: 0 0 30px rgba(0,229,255,0.3);
-  animation: glitch 8s infinite;
+  animation: glitch 4s infinite;
 }
 
 .hero__tagline {
@@ -594,27 +594,44 @@ ul { list-style: none; }
 }
 
 @keyframes glitch {
-  0%, 92%, 100% {
+  0%, 85%, 100% {
     text-shadow: 0 0 30px rgba(0,229,255,0.3);
     transform: none;
+    opacity: 1;
+  }
+  86% {
+    text-shadow: -5px 0 var(--color-magenta), 5px 0 var(--color-cyan);
+    transform: skewX(-4deg) translateX(3px);
+    opacity: 0.9;
+  }
+  87% {
+    text-shadow: 5px 0 var(--color-magenta), -5px 0 var(--color-cyan);
+    transform: skewX(3deg) translateX(-2px) scaleX(1.02);
+    opacity: 1;
+  }
+  88% {
+    text-shadow: 0 0 30px rgba(0,229,255,0.3);
+    transform: none;
+  }
+  89% {
+    text-shadow: -6px 0 var(--color-magenta), 6px 0 var(--color-green);
+    transform: skewX(-5deg) translateX(4px);
+    opacity: 0.85;
+  }
+  90% {
+    text-shadow: 6px 0 var(--color-cyan), -4px 0 var(--color-magenta);
+    transform: skewX(4deg) translateX(-3px) scaleX(1.03);
+    opacity: 1;
+  }
+  91% {
+    text-shadow: 0 0 30px rgba(0,229,255,0.3);
+    transform: none;
+  }
+  92% {
+    text-shadow: -3px 0 var(--color-magenta), 3px 0 var(--color-cyan);
+    transform: skewX(-2deg);
   }
   93% {
-    text-shadow: -2px 0 var(--color-magenta), 2px 0 var(--color-cyan);
-    transform: skewX(-1deg);
-  }
-  94% {
-    text-shadow: 2px 0 var(--color-magenta), -2px 0 var(--color-cyan);
-    transform: skewX(1deg);
-  }
-  95% {
-    text-shadow: 0 0 30px rgba(0,229,255,0.3);
-    transform: none;
-  }
-  96% {
-    text-shadow: -3px 0 var(--color-magenta), 3px 0 var(--color-cyan);
-    transform: skewX(-2deg) scaleX(1.01);
-  }
-  97% {
     text-shadow: 0 0 30px rgba(0,229,255,0.3);
     transform: none;
   }
