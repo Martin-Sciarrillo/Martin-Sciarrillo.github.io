@@ -344,11 +344,11 @@ ul { list-style: none; }
   background: linear-gradient(90deg, var(--color-cyan), transparent);
 }
 
-/* per-section glitch animations */
-.about          .section__title { animation: glitch-about    3s infinite; }
-.speaking       .section__title { animation: glitch-speaking 3s 0.4s infinite; }
-.news           .section__title { animation: glitch-news     3s 0.8s infinite; }
-.contact-section .section__title { animation: glitch-contact 3s 1.2s infinite; }
+/* per-section glitch — only the text span, not ::before prompt or ::after underline */
+.about           .section__title > span { animation: glitch-about    3s infinite; }
+.speaking        .section__title > span { animation: glitch-speaking 3s 0.4s infinite; }
+.news            .section__title > span { animation: glitch-news     3s 0.8s infinite; }
+.contact-section .section__title > span { animation: glitch-contact  3s 1.2s infinite; }
 
 .section__subtitle {
   font-family: var(--font-mono);
@@ -847,7 +847,7 @@ ul { list-style: none; }
 .coffee-card-frame {
   position: relative;
   padding: 3px;
-  max-width: 620px;
+  max-width: 1100px;
   width: 100%;
   clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
   background: linear-gradient(0deg, var(--color-cyan), var(--color-magenta));
