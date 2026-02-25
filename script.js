@@ -41,6 +41,19 @@ menu?.querySelectorAll('a').forEach(a => {
 const yearEl = document.getElementById('year')
 if (yearEl) yearEl.textContent = new Date().getFullYear()
 
+// Footer Φ → open terminal
+const footerTrigger = document.getElementById('footer-terminal-trigger')
+if (footerTrigger) {
+  footerTrigger.addEventListener('click', e => {
+    e.preventDefault()
+    const term = document.getElementById('terminal')
+    if (term && !term.classList.contains('is-open')) {
+      term.classList.add('is-open')
+      document.getElementById('term-input')?.focus()
+    }
+  })
+}
+
 // Active nav link on scroll
 const sections = document.querySelectorAll('section[id], footer[id]')
 const navLinks = document.querySelectorAll('.nav__menu a')

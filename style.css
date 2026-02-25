@@ -585,6 +585,18 @@ ul { list-style: none; }
 }
 .footer__links a:hover { color: var(--color-cyan); text-shadow: var(--glow-cyan); }
 .footer__copy { font-family: var(--font-mono); color: rgba(255,255,255,0.15); font-size: 0.75rem; }
+.footer__terminal-link {
+  color: rgba(255,255,255,0.2);
+  text-decoration: none;
+  margin-left: 0.4em;
+  font-size: 1rem;
+  transition: color var(--transition), text-shadow var(--transition);
+  vertical-align: middle;
+}
+.footer__terminal-link:hover {
+  color: var(--color-cyan);
+  text-shadow: var(--glow-cyan);
+}
 
 /* ============================================================
    ANIMATIONS
