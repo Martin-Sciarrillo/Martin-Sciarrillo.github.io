@@ -62,6 +62,111 @@ if (heroWrap && glitchVideo) {
   heroWrap.addEventListener('mouseleave', () => { glitchVideo.pause(); glitchVideo.currentTime = 0 })
 }
 
+// ============================================================
+// BACKGROUND GRID
+// ============================================================
+;(function initGrid() {
+  const grid = document.createElement('div')
+  grid.id = 'bg-grid'
+  document.body.prepend(grid)
+})()
+
+// ============================================================
+// CRT NOISE OVERLAY
+// ============================================================
+;(function initCRTNoise() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'crt-noise'
+  document.body.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+  const W = 256, H = 256
+  canvas.width = W; canvas.height = H
+  let tick = 0
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    if (++tick % 3 !== 0) return
+    const img = ctx.createImageData(W, H)
+    const d = img.data
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = d[i + 1] = d[i + 2] = 255
+      d[i + 3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
+    }
+    ctx.putImageData(img, 0, 0)
+  })()
+})()
+
+// ============================================================
+// CURSOR TRAIL
+// ============================================================
+;(function initCursorTrail() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  if ('ontouchstart' in window) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'cursor-trail'
+  document.body.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+  const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight }
+  resize()
+  window.addEventListener('resize', resize, { passive: true })
+
+  const COLORS = ['#00e5ff', '#ff00c8', '#00ff9d']
+  const particles = []
+
+  window.addEventListener('mousemove', e => {
+    for (let i = 0; i < 4; i++) {
+      particles.push({
+        x: e.clientX, y: e.clientY,
+        vx: (Math.random() - 0.5) * 2.5,
+        vy: (Math.random() - 0.5) * 2.5 - 0.5,
+        life: 1,
+        decay: 0.035 + Math.random() * 0.04,
+        size: 1.5 + Math.random() * 2.5,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)]
+      })
+    }
+  }, { passive: true })
+
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i]
+      p.x += p.vx; p.y += p.vy
+      p.life -= p.decay
+      if (p.life <= 0) { particles.splice(i, 1); continue }
+      ctx.globalAlpha = p.life * 0.75
+      ctx.fillStyle = p.color
+      ctx.shadowColor = p.color
+      ctx.shadowBlur = 8
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2)
+      ctx.fill()
+    }
+    ctx.shadowBlur = 0
+    ctx.globalAlpha = 1
+  })()
+})()
+
+// ============================================================
+// GLITCH-IN ON SCROLL
+// ============================================================
+;(function initGlitchReveal() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  const targets = document.querySelectorAll('main > section:not(.hero), main > .contact-section')
+  targets.forEach(el => el.classList.add('section--glitch-hidden'))
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return
+      const el = entry.target
+      el.classList.remove('section--glitch-hidden')
+      el.classList.add('section--glitch-in')
+      obs.unobserve(el)
+    })
+  }, { threshold: 0.07 })
+  targets.forEach(el => obs.observe(el))
+})()
+
 // Active nav link on scroll
 const sections = document.querySelectorAll('section[id], footer[id]')
 const navLinks = document.querySelectorAll('.nav__menu a')

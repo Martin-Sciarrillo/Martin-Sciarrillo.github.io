@@ -1229,3 +1229,71 @@ html.is-booting footer { opacity: 0; }
   .hero__tagline.typing::after { display: none; }
   .photo-grid__item:hover .photo-grid__img { animation: none; }
 }
+
+/* ============================================================
+   BACKGROUND GRID
+   ============================================================ */
+#bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: gridScroll 30s linear infinite;
+}
+@keyframes gridScroll {
+  from { background-position: 0 0; }
+  to   { background-position: 64px 64px; }
+}
+@media (prefers-reduced-motion: reduce) { #bg-grid { animation: none; } }
+
+/* ============================================================
+   CRT NOISE OVERLAY
+   ============================================================ */
+#crt-noise {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1990;
+  image-rendering: pixelated;
+  opacity: 1;
+}
+
+/* ============================================================
+   CURSOR TRAIL
+   ============================================================ */
+#cursor-trail {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1980;
+}
+
+/* ============================================================
+   GLITCH-IN ON SCROLL
+   ============================================================ */
+.section--glitch-hidden {
+  opacity: 0;
+}
+.section--glitch-in {
+  animation: glitch-reveal 0.55s ease forwards;
+}
+@keyframes glitch-reveal {
+  0%   { opacity: 0; clip-path: inset(10% 0 10% 0); transform: translateX(-8px) skewX(-2deg); filter: hue-rotate(90deg) brightness(1.4); }
+  15%  { opacity: 1; clip-path: inset(0);            transform: translateX(6px)  skewX(1deg);  filter: hue-rotate(0deg)  brightness(1); }
+  30%  { clip-path: inset(4% 0 4% 0);                transform: translateX(-4px); }
+  50%  { clip-path: inset(0);                         transform: translateX(2px); }
+  75%  { clip-path: inset(1% 0 1% 0);                transform: translateX(-1px); }
+  100% { opacity: 1; clip-path: inset(0);             transform: translateX(0) skewX(0); filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section--glitch-hidden { opacity: 1; }
+  .section--glitch-in { animation: none; opacity: 1; }
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Not Found · Martín Sciarrillo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:      #060606;
+      --color-cyan:    #00e5ff;
+      --color-magenta: #ff00c8;
+      --color-green:   #00ff9d;
+      --glow-cyan:     0 0 8px rgba(0,229,255,0.8), 0 0 24px rgba(0,229,255,0.4);
+      --glow-magenta:  0 0 8px rgba(255,0,200,0.8), 0 0 24px rgba(255,0,200,0.4);
+      --font-mono:     'Share Tech Mono', monospace;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--color-bg);
+      color: #e0e0e0;
+      font-family: var(--font-mono);
+      overflow: hidden;
+    }
+
+    /* Background grid */
+    #bg-grid {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      animation: gridScroll 30s linear infinite;
+    }
+    @keyframes gridScroll {
+      from { background-position: 0 0; }
+      to   { background-position: 64px 64px; }
+    }
+
+    /* CRT noise */
+    #crt-noise {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1990;
+      image-rendering: pixelated;
+    }
+
+    /* Scanlines */
+    #scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 1991;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
+      );
+    }
+
+    /* Main layout */
+    main {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2rem; text-align: center;
+      gap: 0;
+    }
+
+    .err-label {
+      font-size: 0.7rem; letter-spacing: 0.3em;
+      color: var(--color-magenta);
+      text-shadow: var(--glow-magenta);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .err-code {
+      font-size: clamp(6rem, 22vw, 13rem);
+      color: var(--color-cyan);
+      text-shadow: var(--glow-cyan);
+      line-height: 1;
+      animation: glitch404 2.5s infinite;
+      margin-bottom: 1rem;
+    }
+    @keyframes glitch404 {
+      0%, 88%, 100% { transform: none; filter: none; }
+      90% { transform: translateX(-4px) skewX(-1deg); filter: hue-rotate(90deg); color: var(--color-magenta); text-shadow: var(--glow-magenta); }
+      92% { transform: translateX(4px) skewX(1deg); }
+      94% { transform: translateX(-2px); filter: none; color: var(--color-cyan); text-shadow: var(--glow-cyan); }
+      96% { transform: none; }
+    }
+
+    .err-title {
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 0.4rem;
+    }
+
+    .err-sub {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 2.5rem;
+    }
+
+    .err-back {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--color-cyan);
+      text-decoration: none;
+      border: 1px solid var(--color-cyan);
+      padding: 0.65rem 1.8rem;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background 0.2s, box-shadow 0.2s;
+      margin-bottom: 2rem;
+    }
+    .err-back:hover {
+      background: rgba(0,229,255,0.1);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .err-countdown {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.2);
+    }
+    .err-countdown span {
+      color: var(--color-magenta);
+      text-shadow: var(--glow-magenta);
+    }
+
+    /* Cursor trail */
+    #cursor-trail {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1980;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #bg-grid { animation: none; }
+      .err-code { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="bg-grid"></div>
+  <canvas id="crt-noise"></canvas>
+  <div id="scanlines"></div>
+  <canvas id="cursor-trail"></canvas>
+
+  <main>
+    <p class="err-label">> system error</p>
+    <div class="err-code">404</div>
+    <p class="err-title">> PAGE_NOT_FOUND</p>
+    <p class="err-sub">The resource you requested does not exist in this dimension.</p>
+    <a href="/" class="err-back">> RETURN TO BASE</a>
+    <p class="err-countdown">Auto-redirect in <span id="count">10</span>s</p>
+  </main>
+
+  <script>
+    // CRT Noise
+    ;(function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const canvas = document.getElementById('crt-noise')
+      const ctx = canvas.getContext('2d')
+      const W = 256, H = 256
+      canvas.width = W; canvas.height = H
+      let tick = 0
+      ;(function draw() {
+        requestAnimationFrame(draw)
+        if (++tick % 3 !== 0) return
+        const img = ctx.createImageData(W, H)
+        const d = img.data
+        for (let i = 0; i < d.length; i += 4) {
+          d[i] = d[i+1] = d[i+2] = 255
+          d[i+3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
+        }
+        ctx.putImageData(img, 0, 0)
+      })()
+    })()
+
+    // Cursor trail
+    ;(function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      if ('ontouchstart' in window) return
+      const canvas = document.getElementById('cursor-trail')
+      const ctx = canvas.getContext('2d')
+      const resize = () => { canvas.width = innerWidth; canvas.height = innerHeight }
+      resize(); window.addEventListener('resize', resize)
+      const COLORS = ['#00e5ff','#ff00c8','#00ff9d']
+      const particles = []
+      window.addEventListener('mousemove', e => {
+        for (let i = 0; i < 4; i++) {
+          particles.push({
+            x: e.clientX, y: e.clientY,
+            vx: (Math.random()-0.5)*2.5, vy: (Math.random()-0.5)*2.5-0.5,
+            life: 1, decay: 0.035+Math.random()*0.04,
+            size: 1.5+Math.random()*2.5,
+            color: COLORS[Math.floor(Math.random()*COLORS.length)]
+          })
+        }
+      })
+      ;(function draw() {
+        requestAnimationFrame(draw)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        for (let i = particles.length-1; i >= 0; i--) {
+          const p = particles[i]
+          p.x += p.vx; p.y += p.vy; p.life -= p.decay
+          if (p.life <= 0) { particles.splice(i,1); continue }
+          ctx.globalAlpha = p.life * 0.75
+          ctx.fillStyle = ctx.shadowColor = p.color
+          ctx.shadowBlur = 8
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size*p.life, 0, Math.PI*2); ctx.fill()
+        }
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1
+      })()
+    })()
+
+    // Countdown redirect
+    let n = 10
+    const countEl = document.getElementById('count')
+    const timer = setInterval(() => {
+      countEl.textContent = --n
+      if (n <= 0) { clearInterval(timer); window.location.href = '/' }
+    }, 1000)
+  </script>
+</body>
+</html>
