@@ -232,16 +232,6 @@ if (progressBar) {
 // ============================================================
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-const bootLines = [
-  '> SYSTEM INIT v2.6.0',
-  '> LOADING PROFILE: Martín Sciarrillo',
-  '> MODULES: AI · DATA · CLOUD · STRATEGY',
-  '> EXPERIENCE: 20+ YEARS  ·  LATAM + GLOBAL',
-  '> STATUS: [████████████████] ONLINE',
-  '> TIP: Press Ctrl+` to open terminal',
-  '> LAUNCHING INTERFACE...',
-]
-
 function initTagline() {
   const tagline = document.querySelector('.hero__tagline')
   if (!tagline || reducedMotion) return
@@ -257,8 +247,31 @@ function initTagline() {
   setTimeout(tick, 300)
 }
 
+function playBootSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)()
+    const notes = [
+      { freq: 523.25, start: 0,    dur: 0.12 },
+      { freq: 659.25, start: 0.13, dur: 0.12 },
+      { freq: 783.99, start: 0.26, dur: 0.12 },
+      { freq: 1046.5, start: 0.39, dur: 0.45 },
+    ]
+    notes.forEach(({ freq, start, dur }) => {
+      const osc  = ctx.createOscillator()
+      const gain = ctx.createGain()
+      osc.connect(gain); gain.connect(ctx.destination)
+      osc.type = 'sine'; osc.frequency.value = freq
+      gain.gain.setValueAtTime(0, ctx.currentTime + start)
+      gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + start + 0.02)
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur)
+      osc.start(ctx.currentTime + start)
+      osc.stop(ctx.currentTime + start + dur + 0.05)
+    })
+  } catch (e) {}
+}
+
 function runBoot() {
-  const screen = document.getElementById('boot-screen')
+  const screen  = document.getElementById('boot-screen')
   const linesEl = document.getElementById('boot-lines')
 
   if (!screen || reducedMotion || sessionStorage.getItem('booted')) {
@@ -268,34 +281,120 @@ function runBoot() {
     return
   }
 
-  let li = 0
-  function nextLine() {
-    if (li >= bootLines.length) {
-      setTimeout(() => {
-        screen.classList.add('boot--out')
-        setTimeout(() => {
-          screen.remove()
-          document.documentElement.classList.remove('is-booting')
-          sessionStorage.setItem('booted', '1')
-          initTagline()
-        }, 500)
-      }, 350)
-      return
-    }
+  const ASCII = [
+    '▄▀█ █▀▀ ▄▀█ ▀█▀ █ █▄░█ █▀▀ █░█ █▀█',
+    '█▀█ █▄▄ █▀█ ░█░ █ █░▀█ █▄▄ █▀█ █▄█',
+  ]
+
+  const HEADER = [
+    '> SYSTEM INIT v2.6.0',
+    '> LOADING PROFILE: Martín Sciarrillo',
+    '> EXPERIENCE: 20+ YEARS · LATAM + GLOBAL',
+  ]
+
+  const MODULES = [
+    'AI/ML',
+    'CLOUD',
+    'STRATEGY',
+    'PEOPLE MANAGEMENT',
+    'NEGRONI TASTING',
+  ]
+
+  const FOOTER = [
+    '> STATUS: ALL MODULES ONLINE',
+    '> TIP: Press Ctrl+` to open terminal',
+    '> LAUNCHING INTERFACE...',
+  ]
+
+  function addLine(text, cls) {
     const div = document.createElement('div')
-    div.className = 'boot-line'
-    if (li === 0) div.classList.add('boot-line--sys')
-    if (li === bootLines.length - 1) div.classList.add('boot-line--launch')
+    div.className = 'boot-line' + (cls ? ' ' + cls : '')
+    div.textContent = text
+    linesEl.appendChild(div)
+    return div
+  }
+
+  function typeLine(text, cls, cb) {
+    const div = document.createElement('div')
+    div.className = 'boot-line' + (cls ? ' ' + cls : '')
     linesEl.appendChild(div)
     let ci = 0
-    const typeChar = () => {
-      div.textContent = bootLines[li].slice(0, ci++)
-      if (ci <= bootLines[li].length) setTimeout(typeChar, 16)
-      else { li++; setTimeout(nextLine, li < bootLines.length ? 60 : 350) }
+    const tick = () => {
+      div.textContent = text.slice(0, ci++)
+      if (ci <= text.length) setTimeout(tick, 14)
+      else cb?.()
     }
-    typeChar()
+    tick()
   }
-  nextLine()
+
+  function animateBar(label, onDone) {
+    const div = document.createElement('div')
+    div.className = 'boot-line boot-line--bar'
+    linesEl.appendChild(div)
+    const BLOCKS = 16, PAD = 20
+    let filled = 0
+    const tick = () => {
+      const bar = '█'.repeat(filled) + '░'.repeat(BLOCKS - filled)
+      const pct = String(Math.round((filled / BLOCKS) * 100)).padStart(3)
+      div.textContent = `> ${label.padEnd(PAD)} [${bar}]${pct}%`
+      if (filled < BLOCKS) { filled++; setTimeout(tick, 28 + Math.random() * 38) }
+      else onDone?.()
+    }
+    tick()
+  }
+
+  function showASCII(done) {
+    let i = 0
+    const next = () => {
+      if (i >= ASCII.length) { setTimeout(done, 180); return }
+      addLine(ASCII[i++], 'boot-line--ascii')
+      setTimeout(next, 90)
+    }
+    next()
+  }
+
+  function showHeader(done) {
+    let i = 0
+    const next = () => {
+      if (i >= HEADER.length) { setTimeout(done, 80); return }
+      typeLine(HEADER[i++], 'boot-line--sys', () => setTimeout(next, 55))
+    }
+    next()
+  }
+
+  function showBars(done) {
+    let completed = 0
+    MODULES.forEach((mod, idx) => {
+      setTimeout(() => animateBar(mod, () => {
+        if (++completed === MODULES.length) setTimeout(done, 180)
+      }), idx * 90)
+    })
+  }
+
+  function showFooter(done) {
+    let i = 0
+    const next = () => {
+      if (i >= FOOTER.length) { done(); return }
+      typeLine(FOOTER[i], i === FOOTER.length - 1 ? 'boot-line--launch' : '', () => setTimeout(next, 55))
+      i++
+    }
+    setTimeout(next, 100)
+  }
+
+  function finish() {
+    playBootSound()
+    setTimeout(() => {
+      screen.classList.add('boot--out')
+      setTimeout(() => {
+        screen.remove()
+        document.documentElement.classList.remove('is-booting')
+        sessionStorage.setItem('booted', '1')
+        initTagline()
+      }, 500)
+    }, 400)
+  }
+
+  showASCII(() => showHeader(() => showBars(() => showFooter(finish))))
 }
 
 runBoot()
