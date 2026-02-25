@@ -66,10 +66,17 @@ if (heroWrap && glitchVideo) {
 // GLITCH-IN ON SCROLL — disabled
 
 // ============================================================
-// CRT NOISE OVERLAY
+// HIDDEN VISUAL EFFECTS (toggle via terminal)
 // ============================================================
-;(function initCRTNoise() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+let _noiseActive = false
+function toggleNoise() {
+  if (_noiseActive) {
+    _noiseActive = false
+    document.getElementById('crt-noise')?.remove()
+    return ['[CRT NOISE] disabled']
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return ['[CRT NOISE] blocked by prefers-reduced-motion']
+  _noiseActive = true
   const canvas = document.createElement('canvas')
   canvas.id = 'crt-noise'
   document.body.appendChild(canvas)
@@ -78,6 +85,7 @@ if (heroWrap && glitchVideo) {
   canvas.width = W; canvas.height = H
   let tick = 0
   ;(function draw() {
+    if (!_noiseActive) return
     requestAnimationFrame(draw)
     if (++tick % 3 !== 0) return
     const img = ctx.createImageData(W, H)
@@ -88,14 +96,21 @@ if (heroWrap && glitchVideo) {
     }
     ctx.putImageData(img, 0, 0)
   })()
-})()
+  return ['[CRT NOISE] enabled']
+}
 
-// ============================================================
-// CURSOR TRAIL
-// ============================================================
-;(function initCursorTrail() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-  if ('ontouchstart' in window) return
+let _trailActive = false
+let _trailMoveHandler = null
+function toggleTrail() {
+  if (_trailActive) {
+    _trailActive = false
+    document.getElementById('cursor-trail')?.remove()
+    if (_trailMoveHandler) { window.removeEventListener('mousemove', _trailMoveHandler); _trailMoveHandler = null }
+    return ['[CURSOR TRAIL] disabled']
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return ['[CURSOR TRAIL] blocked by prefers-reduced-motion']
+  if ('ontouchstart' in window) return ['[CURSOR TRAIL] not available on touch devices']
+  _trailActive = true
   const canvas = document.createElement('canvas')
   canvas.id = 'cursor-trail'
   document.body.appendChild(canvas)
@@ -103,11 +118,9 @@ if (heroWrap && glitchVideo) {
   const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight }
   resize()
   window.addEventListener('resize', resize, { passive: true })
-
   const COLORS = ['#00e5ff', '#ff00c8', '#00ff9d']
   const particles = []
-
-  window.addEventListener('mousemove', e => {
+  _trailMoveHandler = e => {
     for (let i = 0; i < 4; i++) {
       particles.push({
         x: e.clientX, y: e.clientY,
@@ -119,9 +132,10 @@ if (heroWrap && glitchVideo) {
         color: COLORS[Math.floor(Math.random() * COLORS.length)]
       })
     }
-  }, { passive: true })
-
+  }
+  window.addEventListener('mousemove', _trailMoveHandler, { passive: true })
   ;(function draw() {
+    if (!_trailActive) return
     requestAnimationFrame(draw)
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     for (let i = particles.length - 1; i >= 0; i--) {
@@ -140,7 +154,8 @@ if (heroWrap && glitchVideo) {
     ctx.shadowBlur = 0
     ctx.globalAlpha = 1
   })()
-})()
+  return ['[CURSOR TRAIL] enabled']
+}
 
 // Active nav link on scroll
 const sections = document.querySelectorAll('section[id], footer[id]')
@@ -314,6 +329,9 @@ const termCmds = {
   contact: () => { setTimeout(() => window.open('https://aka.ms/MeetingWithMartin', '_blank'), 400); return ['opening → https://aka.ms/MeetingWithMartin'] },
   clear:   () => { termOut.innerHTML = ''; return [] },
   exit:    () => { setTimeout(() => term.classList.remove('is-open'), 150); return ['closing terminal...'] },
+  // hidden
+  noise:   () => toggleNoise(),
+  trail:   () => toggleTrail(),
 }
 
 function termWrite(lines, cls = 'term-res') {
