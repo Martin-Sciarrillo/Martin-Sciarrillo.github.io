@@ -322,7 +322,7 @@ const termOut   = document.getElementById('term-output')
 const termInput = document.getElementById('term-input')
 
 const termCmds = {
-  help:    () => ['available commands:', '  whoami   · who is this?', '  ls       · list sections', '  skills   · tech stack', '  contact  · book a coffee', '  clear    · clear screen', '  exit     · close terminal'],
+  help:    () => ['available commands:', '  whoami   · who is this?', '  ls       · list sections', '  skills   · tech stack', '  contact  · book a coffee', '  noise    · toggle CRT noise overlay', '  trail    · toggle neon cursor trail', '  clear    · clear screen', '  exit     · close terminal'],
   whoami:  () => ['Martín Sciarrillo', 'Executive Technology Strategist · Microsoft Argentina', 'CTO · AI & Data · Cloud · LATAM + Global', '20+ years making technology serve strategy.'],
   ls:      () => ['drwxr-xr-x  about/', 'drwxr-xr-x  speaking/', 'drwxr-xr-x  news/', 'drwxr-xr-x  contact/'],
   skills:  () => ['AI/ML · Azure · AWS · GCP', 'Data Strategy · Cloud Architecture', 'Executive Advisory · Product Leadership', 'Linux · Unix · Hybrid Cloud'],
