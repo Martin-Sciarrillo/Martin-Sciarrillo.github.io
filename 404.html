@@ -42,22 +42,6 @@
       to   { background-position: 64px 64px; }
     }
 
-    /* CRT noise */
-    #crt-noise {
-      position: fixed; inset: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 1990;
-      image-rendering: pixelated;
-    }
-
-    /* Scanlines */
-    #scanlines {
-      position: fixed; inset: 0; pointer-events: none; z-index: 1991;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 3px,
-        rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
-      );
-    }
-
     /* Main layout */
     main {
       position: relative; z-index: 10;
@@ -130,12 +114,6 @@
       text-shadow: var(--glow-magenta);
     }
 
-    /* Cursor trail */
-    #cursor-trail {
-      position: fixed; inset: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 1980;
-    }
-
     @media (prefers-reduced-motion: reduce) {
       #bg-grid { animation: none; }
       .err-code { animation: none; }
@@ -144,9 +122,6 @@
 </head>
 <body>
   <div id="bg-grid"></div>
-  <canvas id="crt-noise"></canvas>
-  <div id="scanlines"></div>
-  <canvas id="cursor-trail"></canvas>
 
   <main>
     <p class="err-label">> system error</p>
@@ -158,65 +133,6 @@
   </main>
 
   <script>
-    // CRT Noise
-    ;(function() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-      const canvas = document.getElementById('crt-noise')
-      const ctx = canvas.getContext('2d')
-      const W = 256, H = 256
-      canvas.width = W; canvas.height = H
-      let tick = 0
-      ;(function draw() {
-        requestAnimationFrame(draw)
-        if (++tick % 3 !== 0) return
-        const img = ctx.createImageData(W, H)
-        const d = img.data
-        for (let i = 0; i < d.length; i += 4) {
-          d[i] = d[i+1] = d[i+2] = 255
-          d[i+3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
-        }
-        ctx.putImageData(img, 0, 0)
-      })()
-    })()
-
-    // Cursor trail
-    ;(function() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-      if ('ontouchstart' in window) return
-      const canvas = document.getElementById('cursor-trail')
-      const ctx = canvas.getContext('2d')
-      const resize = () => { canvas.width = innerWidth; canvas.height = innerHeight }
-      resize(); window.addEventListener('resize', resize)
-      const COLORS = ['#00e5ff','#ff00c8','#00ff9d']
-      const particles = []
-      window.addEventListener('mousemove', e => {
-        for (let i = 0; i < 4; i++) {
-          particles.push({
-            x: e.clientX, y: e.clientY,
-            vx: (Math.random()-0.5)*2.5, vy: (Math.random()-0.5)*2.5-0.5,
-            life: 1, decay: 0.035+Math.random()*0.04,
-            size: 1.5+Math.random()*2.5,
-            color: COLORS[Math.floor(Math.random()*COLORS.length)]
-          })
-        }
-      })
-      ;(function draw() {
-        requestAnimationFrame(draw)
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        for (let i = particles.length-1; i >= 0; i--) {
-          const p = particles[i]
-          p.x += p.vx; p.y += p.vy; p.life -= p.decay
-          if (p.life <= 0) { particles.splice(i,1); continue }
-          ctx.globalAlpha = p.life * 0.75
-          ctx.fillStyle = ctx.shadowColor = p.color
-          ctx.shadowBlur = 8
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.size*p.life, 0, Math.PI*2); ctx.fill()
-        }
-        ctx.shadowBlur = 0; ctx.globalAlpha = 1
-      })()
-    })()
-
-    // Countdown redirect
     let n = 10
     const countEl = document.getElementById('count')
     const timer = setInterval(() => {

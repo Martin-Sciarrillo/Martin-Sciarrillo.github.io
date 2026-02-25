@@ -1250,31 +1250,8 @@ html.is-booting footer { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) { #bg-grid { animation: none; } }
 
-/* ============================================================
-   CRT NOISE OVERLAY
-   ============================================================ */
-#crt-noise {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1990;
-  image-rendering: pixelated;
-  opacity: 1;
-}
-
-/* ============================================================
-   CURSOR TRAIL
-   ============================================================ */
-#cursor-trail {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1980;
-}
+/* CRT NOISE — disabled */
+/* CURSOR TRAIL — disabled */
 
 /* ============================================================
    GLITCH-IN ON SCROLL
