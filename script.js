@@ -307,7 +307,7 @@ const term = document.createElement('div')
 term.id = 'terminal'
 term.innerHTML = `
   <div class="term-header">
-    <span class="term-title">// MARTÍN SCIARRILLO OS v2.6.0</span>
+    <span class="term-title">// Acatincho OS v2.6.0~</span>
     <button class="term-close" aria-label="Close terminal">✕</button>
   </div>
   <div class="term-output" id="term-output"></div>
@@ -364,7 +364,7 @@ document.addEventListener('keydown', e => {
     term.classList.toggle('is-open')
     if (term.classList.contains('is-open')) {
       termInput.focus()
-      if (!termOut.children.length) termWrite(['Martín Sciarrillo OS v2.6.0', 'type "help" for available commands', '─'.repeat(40)])
+      if (!termOut.children.length) termWrite(['Acatincho OS v2.6.0~', 'type "help" for available commands', '─'.repeat(40)])
     }
   }
 })
