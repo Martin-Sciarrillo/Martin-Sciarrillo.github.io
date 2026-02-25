@@ -294,6 +294,27 @@ ul { list-style: none; }
   pointer-events: none;
 }
 
+/* ---- PROFILE GLITCH VIDEO OVERLAY ---- */
+.hero__glitch-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+.hero__photo-wrap:hover .hero__glitch-video {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__glitch-video { display: none; }
+}
+
 .hero__photo-scan {
   position: absolute;
   inset: 0;

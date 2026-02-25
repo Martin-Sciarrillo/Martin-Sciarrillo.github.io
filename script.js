@@ -54,6 +54,14 @@ if (footerTrigger) {
   })
 }
 
+// Profile photo glitch video on hover
+const heroWrap = document.getElementById('hero-photo-wrap')
+const glitchVideo = document.getElementById('hero-glitch-video')
+if (heroWrap && glitchVideo) {
+  heroWrap.addEventListener('mouseenter', () => { glitchVideo.currentTime = 0; glitchVideo.play() })
+  heroWrap.addEventListener('mouseleave', () => { glitchVideo.pause(); glitchVideo.currentTime = 0 })
+}
+
 // Active nav link on scroll
 const sections = document.querySelectorAll('section[id], footer[id]')
 const navLinks = document.querySelectorAll('.nav__menu a')
