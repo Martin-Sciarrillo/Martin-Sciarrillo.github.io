@@ -168,9 +168,11 @@ function toggleTrail() {
   const backdrop = modal?.querySelector('.video-modal__backdrop')
   if (!modal) return
 
-  function openModal(videoId, title) {
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
+  function openModal(videoId, title, start, isShort) {
+    const startParam = start ? `&start=${start}` : ''
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0${startParam}`
     if (titleEl) titleEl.textContent = title || ''
+    modal.classList.toggle('is-short', !!isShort)
     modal.classList.add('is-open')
     modal.setAttribute('aria-hidden', 'false')
     closeBtn?.focus()
@@ -183,7 +185,7 @@ function toggleTrail() {
   }
 
   document.querySelectorAll('.media-card').forEach(card => {
-    const open = () => openModal(card.dataset.vid, card.dataset.title)
+    const open = () => openModal(card.dataset.vid, card.dataset.title, card.dataset.start, card.dataset.short === 'true')
     card.addEventListener('click', open)
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open() }
