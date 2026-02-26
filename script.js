@@ -157,6 +157,46 @@ function toggleTrail() {
   return ['[CURSOR TRAIL] enabled']
 }
 
+// ============================================================
+// MEDIA SECTION — video modal
+// ============================================================
+;(function initMediaModal() {
+  const modal    = document.getElementById('video-modal')
+  const iframe   = document.getElementById('video-iframe')
+  const titleEl  = document.getElementById('video-modal-title')
+  const closeBtn = modal?.querySelector('.video-modal__close')
+  const backdrop = modal?.querySelector('.video-modal__backdrop')
+  if (!modal) return
+
+  function openModal(videoId, title) {
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
+    if (titleEl) titleEl.textContent = title || ''
+    modal.classList.add('is-open')
+    modal.setAttribute('aria-hidden', 'false')
+    closeBtn?.focus()
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open')
+    modal.setAttribute('aria-hidden', 'true')
+    iframe.src = ''
+  }
+
+  document.querySelectorAll('.media-card').forEach(card => {
+    const open = () => openModal(card.dataset.vid, card.dataset.title)
+    card.addEventListener('click', open)
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open() }
+    })
+  })
+
+  closeBtn?.addEventListener('click', closeModal)
+  backdrop?.addEventListener('click', closeModal)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal()
+  })
+})()
+
 // Active nav link on scroll
 const sections = document.querySelectorAll('section[id], footer[id]')
 const navLinks = document.querySelectorAll('.nav__menu a')

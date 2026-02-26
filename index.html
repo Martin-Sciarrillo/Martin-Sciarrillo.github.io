@@ -28,6 +28,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#speaking">Speaking</a></li>
         <li><a href="#news">In the News</a></li>
+        <li><a href="#media">On Camera</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -280,6 +281,42 @@
         </div>
       </div>
     </section>
+
+    <!-- MEDIA -->
+    <section class="section media-section" id="media" aria-labelledby="media-heading">
+      <div class="container">
+        <h2 class="section__title" id="media-heading"><span>On Camera</span></h2>
+        <p class="section__sub">Interviews · Podcasts · Talks</p>
+        <div class="media-grid">
+
+          <!-- VIDEO CARDS — paste YouTube URL/ID and title below -->
+
+          <article class="media-card" data-vid="dQw4w9WgXcQ" data-title="Placeholder — replace with real video" tabindex="0" role="button" aria-label="Play video">
+            <div class="media-card__thumb">
+              <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Placeholder video" loading="lazy" />
+              <div class="media-card__play" aria-hidden="true">▶</div>
+            </div>
+            <p class="media-card__title">Placeholder — replace with real video</p>
+            <span class="media-card__badge">Interview</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO MODAL -->
+    <div id="video-modal" class="video-modal" aria-hidden="true" role="dialog" aria-label="Video player">
+      <div class="video-modal__backdrop"></div>
+      <div class="video-modal__inner">
+        <button class="video-modal__close" aria-label="Close video">✕</button>
+        <p class="video-modal__title" id="video-modal-title"></p>
+        <div class="video-modal__frame">
+          <iframe id="video-iframe" src="" frameborder="0"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen title="Video player"></iframe>
+        </div>
+      </div>
+    </div>
 
     <!-- CONTACT -->
     <section class="section contact-section" id="contact" aria-labelledby="contact-heading">

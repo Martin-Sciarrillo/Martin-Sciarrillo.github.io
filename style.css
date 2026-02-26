@@ -1242,6 +1242,178 @@ html.is-booting footer { opacity: 0; }
 /* GLITCH-IN ON SCROLL — disabled */
 
 /* ============================================================
+   MEDIA SECTION — On Camera
+   ============================================================ */
+.media-section .section__sub {
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) { .media-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .media-grid { grid-template-columns: 1fr; } }
+
+.media-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  outline: none;
+}
+
+.media-card__thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  border: 1px solid rgba(0,229,255,0.2);
+  transition: border-color var(--transition);
+}
+.media-card:hover .media-card__thumb,
+.media-card:focus .media-card__thumb {
+  border-color: var(--color-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.media-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease, filter 0.35s ease;
+  filter: saturate(0.8) brightness(0.85);
+}
+.media-card:hover .media-card__thumb img,
+.media-card:focus .media-card__thumb img {
+  transform: scale(1.04);
+  filter: saturate(1.1) brightness(1);
+}
+
+.media-card__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: var(--color-cyan);
+  text-shadow: var(--glow-cyan);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background: rgba(6,6,6,0.45);
+}
+.media-card:hover .media-card__play,
+.media-card:focus .media-card__play { opacity: 1; }
+
+.media-card__title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.media-card__badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-magenta);
+  text-shadow: var(--glow-magenta);
+  align-self: flex-start;
+}
+
+/* ============================================================
+   VIDEO MODAL
+   ============================================================ */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.video-modal.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.video-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,6,6,0.92);
+  backdrop-filter: blur(6px);
+}
+
+.video-modal__inner {
+  position: relative;
+  z-index: 1;
+  width: min(900px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.video-modal__close {
+  align-self: flex-end;
+  background: none;
+  border: 1px solid rgba(0,229,255,0.3);
+  color: var(--color-cyan);
+  font-size: 1rem;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.video-modal__close:hover {
+  border-color: var(--color-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.video-modal__title {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-cyan);
+  text-shadow: var(--glow-cyan);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.video-modal__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  border: 1px solid rgba(0,229,255,0.3);
+}
+.video-modal__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Glitch on media section title */
+.media-section .section__title > span { animation: glitch-about 3s 1.6s infinite; }
+
+/* ============================================================
    CRT NOISE OVERLAY
    ============================================================ */
 #crt-noise {
