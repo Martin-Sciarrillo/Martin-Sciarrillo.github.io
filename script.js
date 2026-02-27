@@ -342,8 +342,8 @@ function runBoot() {
     [bLine(LOGO[0]),                         'boot-line--ascii'],
     [bLine(LOGO[1]),                         'boot-line--ascii'],
     [BOX_EMPTY,                              'boot-line--frame'],
-    [bLine('Martín Sciarrillo'),             'boot-line--name' ],
-    [bLine('Tech Strategist  ·  Microsoft'), 'boot-line--sys'  ],
+    [bLine('Martín Sciarrillo'),                              'boot-line--name' ],
+    [bLine('Lorem ipsum dolor sit amet, consectetur elit'), 'boot-line--sys'  ],
     [BOX_EMPTY,                              'boot-line--frame'],
     [BOX_BOT,                                'boot-line--frame'],
   ]
