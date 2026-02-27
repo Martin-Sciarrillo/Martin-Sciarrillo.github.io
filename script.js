@@ -344,7 +344,6 @@ function runBoot() {
     [BOX_EMPTY,                              'boot-line--frame'],
     [bLine('Martín Sciarrillo'),             'boot-line--name' ],
     [bLine('Tech Strategist  ·  Microsoft'), 'boot-line--sys'  ],
-    [bLine('LATAM + Global  ·  20+ years'),  'boot-line--sys'  ],
     [BOX_EMPTY,                              'boot-line--frame'],
     [BOX_BOT,                                'boot-line--frame'],
   ]
@@ -484,7 +483,7 @@ const termInput = document.getElementById('term-input')
 
 const termCmds = {
   help:    () => ['available commands:', '  whoami   · who is this?', '  ls       · list sections', '  skills   · tech stack', '  contact  · book a coffee', '  noise    · toggle CRT noise overlay', '  trail    · toggle neon cursor trail', '  clear    · clear screen', '  exit     · close terminal'],
-  whoami:  () => ['Martín Sciarrillo', 'Executive Technology Strategist · Microsoft Argentina', 'CTO · AI & Data · Cloud · LATAM + Global', '20+ years making technology serve strategy.'],
+  whoami:  () => ['Martín Sciarrillo', 'Executive Technology Strategist · Microsoft Argentina', 'AI · Data · Cloud'],
   ls:      () => ['drwxr-xr-x  about/', 'drwxr-xr-x  speaking/', 'drwxr-xr-x  news/', 'drwxr-xr-x  contact/'],
   skills:  () => ['AI/ML · Azure · AWS · GCP', 'Data Strategy · Cloud Architecture', 'Executive Advisory · Product Leadership', 'Linux · Unix · Hybrid Cloud'],
   contact: () => { setTimeout(() => window.open('https://aka.ms/MeetingWithMartin', '_blank'), 400); return ['opening → https://aka.ms/MeetingWithMartin'] },
