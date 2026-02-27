@@ -1114,7 +1114,27 @@ html.is-booting footer { opacity: 0; }
   letter-spacing: 0.04em;
   font-size: 1.05em;
 }
-.boot-line--bar { color: var(--color-magenta); text-shadow: var(--glow-magenta); }
+.boot-line--bar   { color: var(--color-magenta); text-shadow: var(--glow-magenta); }
+.boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }
+.boot-line--name  { color: var(--color-text); text-shadow: none; letter-spacing: 0.03em; }
+.boot-line--ok    { color: var(--color-green); text-shadow: var(--glow-green); }
+
+#boot-avatar {
+  position: absolute;
+  right: clamp(1.5rem, 8vw, 8rem);
+  top: 50%;
+  transform: translateY(-62%);
+  color: var(--color-magenta);
+  text-shadow: var(--glow-magenta);
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.8vw, 0.95rem);
+  line-height: 1.9;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.2s;
+  pointer-events: none;
+}
+#boot-avatar.is-visible { opacity: 1; }
 
 /* ============================================================
    TYPEWRITER TAGLINE

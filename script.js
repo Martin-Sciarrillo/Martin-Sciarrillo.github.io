@@ -313,8 +313,9 @@ function playBootSound() {
 }
 
 function runBoot() {
-  const screen  = document.getElementById('boot-screen')
-  const linesEl = document.getElementById('boot-lines')
+  const screen   = document.getElementById('boot-screen')
+  const linesEl  = document.getElementById('boot-lines')
+  const avatarEl = document.getElementById('boot-avatar')
 
   if (!screen || reducedMotion || sessionStorage.getItem('booted')) {
     screen?.remove()
@@ -323,31 +324,51 @@ function runBoot() {
     return
   }
 
-  const ASCII = [
+  // ── Content ──────────────────────────────────────────────
+  const LOGO = [
     '▄▀█ █▀▀ ▄▀█ ▀█▀ █ █▄░█ █▀▀ █░█ █▀█',
     '█▀█ █▄▄ █▀█ ░█░ █ █░▀█ █▄▄ █▀█ █▄█',
   ]
 
-  const HEADER = [
-    '> SYSTEM INIT v2.6.0',
-    '> LOADING PROFILE: Martín Sciarrillo',
-    '> EXPERIENCE: 20+ YEARS · LATAM + GLOBAL',
+  const FW = 46
+  const BOX_TOP   = '╭' + '─'.repeat(FW) + '╮'
+  const BOX_BOT   = '╰' + '─'.repeat(FW) + '╯'
+  const BOX_EMPTY = '│' + ' '.repeat(FW) + '│'
+  const bLine = s => '│  ' + s.padEnd(FW - 2) + '│'
+
+  const HEADER_ROWS = [
+    [BOX_TOP,                                'boot-line--frame'],
+    [BOX_EMPTY,                              'boot-line--frame'],
+    [bLine(LOGO[0]),                         'boot-line--ascii'],
+    [bLine(LOGO[1]),                         'boot-line--ascii'],
+    [BOX_EMPTY,                              'boot-line--frame'],
+    [bLine('Martín Sciarrillo'),             'boot-line--name' ],
+    [bLine('Tech Strategist  ·  Microsoft'), 'boot-line--sys'  ],
+    [bLine('LATAM + Global  ·  20+ years'),  'boot-line--sys'  ],
+    [BOX_EMPTY,                              'boot-line--frame'],
+    [BOX_BOT,                                'boot-line--frame'],
   ]
 
-  const MODULES = [
-    'AI/ML',
-    'CLOUD',
-    'STRATEGY',
-    'PEOPLE MANAGEMENT',
-    'NEGRONI TASTING',
-  ]
+  const MODULES = ['AI/ML', 'CLOUD', 'STRATEGY', 'PEOPLE MANAGEMENT', 'NEGRONI TASTING']
 
   const FOOTER = [
-    '> STATUS: ALL MODULES ONLINE',
-    '> TIP: Press Ctrl+` to open terminal',
-    '> LAUNCHING INTERFACE...',
+    '  ✓  ALL SYSTEMS NOMINAL',
+    '  ✓  Press Ctrl+` to access terminal',
+    '  ▶  LAUNCHING INTERFACE...',
   ]
 
+  if (avatarEl) avatarEl.textContent = [
+    '  ╭──────╮',
+    '  │ ◉  ◉ │',
+    '  │  ──  │',
+    '  │  /\\  │',
+    '  ╰───┬──╯',
+    '    ╔═╧═╗ ',
+    '    ║   ║ ',
+    '    ╚═══╝ ',
+  ].join('\n')
+
+  // ── Helpers ──────────────────────────────────────────────
   function addLine(text, cls) {
     const div = document.createElement('div')
     div.className = 'boot-line' + (cls ? ' ' + cls : '')
@@ -378,33 +399,31 @@ function runBoot() {
     const tick = () => {
       const bar = '█'.repeat(filled) + '░'.repeat(BLOCKS - filled)
       const pct = String(Math.round((filled / BLOCKS) * 100)).padStart(3)
-      div.textContent = `> ${label.padEnd(PAD)} [${bar}]${pct}%`
+      div.textContent = `  ▸ ${label.padEnd(PAD)} [${bar}]${pct}%`
       if (filled < BLOCKS) { filled++; setTimeout(tick, 28 + Math.random() * 38) }
       else onDone?.()
     }
     tick()
   }
 
-  function showASCII(done) {
+  // ── Phases ───────────────────────────────────────────────
+  function showBox(done) {
     let i = 0
     const next = () => {
-      if (i >= ASCII.length) { setTimeout(done, 180); return }
-      addLine(ASCII[i++], 'boot-line--ascii')
-      setTimeout(next, 90)
-    }
-    next()
-  }
-
-  function showHeader(done) {
-    let i = 0
-    const next = () => {
-      if (i >= HEADER.length) { setTimeout(done, 80); return }
-      typeLine(HEADER[i++], 'boot-line--sys', () => setTimeout(next, 55))
+      if (i >= HEADER_ROWS.length) {
+        avatarEl?.classList.add('is-visible')
+        setTimeout(done, 80)
+        return
+      }
+      const [text, cls] = HEADER_ROWS[i++]
+      addLine(text, cls)
+      setTimeout(next, 38)
     }
     next()
   }
 
   function showBars(done) {
+    addLine('')
     let completed = 0
     MODULES.forEach((mod, idx) => {
       setTimeout(() => animateBar(mod, () => {
@@ -414,10 +433,11 @@ function runBoot() {
   }
 
   function showFooter(done) {
+    addLine('')
     let i = 0
     const next = () => {
       if (i >= FOOTER.length) { done(); return }
-      typeLine(FOOTER[i], i === FOOTER.length - 1 ? 'boot-line--launch' : '', () => setTimeout(next, 55))
+      typeLine(FOOTER[i], i === FOOTER.length - 1 ? 'boot-line--launch' : 'boot-line--ok', () => setTimeout(next, 55))
       i++
     }
     setTimeout(next, 100)
@@ -436,7 +456,7 @@ function runBoot() {
     }, 400)
   }
 
-  showASCII(() => showHeader(() => showBars(() => showFooter(finish))))
+  showBox(() => showBars(() => showFooter(finish)))
 }
 
 runBoot()
