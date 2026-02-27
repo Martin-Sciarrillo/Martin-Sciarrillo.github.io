@@ -356,16 +356,6 @@ function runBoot() {
     '  ▶  LAUNCHING INTERFACE...',
   ]
 
-  if (avatarEl) avatarEl.textContent = [
-    '  ╭──────╮',
-    '  │ ◉  ◉ │',
-    '  │  ──  │',
-    '  │  /\\  │',
-    '  ╰───┬──╯',
-    '    ╔═╧═╗ ',
-    '    ║   ║ ',
-    '    ╚═══╝ ',
-  ].join('\n')
 
   // ── Helpers ──────────────────────────────────────────────
   function addLine(text, cls) {
@@ -410,7 +400,6 @@ function runBoot() {
     let i = 0
     const next = () => {
       if (i >= HEADER_ROWS.length) {
-        avatarEl?.classList.add('is-visible')
         setTimeout(done, 80)
         return
       }
