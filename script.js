@@ -416,7 +416,9 @@ function runBoot() {
   }
 
   function showFooter(done) {
-    addLine('')
+    const spacer = document.createElement('div')
+    spacer.style.height = '2.5rem'
+    linesEl.appendChild(spacer)
     let i = 0
     const next = () => {
       if (i >= FOOTER.length) { done(); return }
