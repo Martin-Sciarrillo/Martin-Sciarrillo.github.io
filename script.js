@@ -346,6 +346,8 @@ function runBoot() {
     ['', ''],
     ['', ''],
     ['', ''],
+    ['', ''],
+    ['', ''],
   ]
 
   const MODULES = ['AI/ML', 'CLOUD', 'STRATEGY', 'PEOPLE MANAGEMENT', 'NEGRONI TASTING']
