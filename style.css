@@ -766,10 +766,13 @@ ul { list-style: none; }
 }
 
 .podcast-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  max-width: 760px;
+}
+
+@media (max-width: 700px) {
+  .podcast-list { grid-template-columns: 1fr; }
 }
 
 .podcast-item {
