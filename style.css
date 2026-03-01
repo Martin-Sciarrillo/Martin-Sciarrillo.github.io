@@ -396,6 +396,7 @@ ul { list-style: none; }
 .about__bio p { color: var(--color-text-muted); font-size: 1rem; line-height: 1.8; }
 .about__bio p + p { margin-top: 1rem; }
 .about__bio strong { color: var(--color-cyan); font-weight: 600; }
+.about__bio .hl-m  { color: var(--color-magenta); font-weight: 600; }
 
 .about__highlights { display: flex; flex-direction: column; gap: 1rem; }
 
