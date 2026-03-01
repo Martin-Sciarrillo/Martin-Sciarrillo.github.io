@@ -337,15 +337,15 @@ function runBoot() {
   const bLine = s => '│  ' + s.padEnd(FW - 2) + '│'
 
   const HEADER_ROWS = [
-    [BOX_TOP,                                'boot-line--frame'],
-    [BOX_EMPTY,                              'boot-line--frame'],
-    [bLine(LOGO[0]),                         'boot-line--ascii'],
-    [bLine(LOGO[1]),                         'boot-line--ascii'],
-    [BOX_EMPTY,                              'boot-line--frame'],
-    [bLine('Martín Sciarrillo'),                              'boot-line--name' ],
-    [bLine('Lorem ipsum dolor sit amet, consectetur elit'), 'boot-line--sys'  ],
-    [BOX_EMPTY,                              'boot-line--frame'],
-    [BOX_BOT,                                'boot-line--frame'],
+    [LOGO[0],                                                'boot-line--ascii'],
+    [LOGO[1],                                                'boot-line--ascii'],
+    ['',                                                     ''               ],
+    [BOX_TOP,                                                'boot-line--frame'],
+    [BOX_EMPTY,                                              'boot-line--frame'],
+    [bLine('Martín Sciarrillo'),                             'boot-line--name' ],
+    [bLine('Lorem ipsum dolor sit amet, consectetur elit'),  'boot-line--sys'  ],
+    [BOX_EMPTY,                                              'boot-line--frame'],
+    [BOX_BOT,                                                'boot-line--frame'],
   ]
 
   const MODULES = ['AI/ML', 'CLOUD', 'STRATEGY', 'PEOPLE MANAGEMENT', 'NEGRONI TASTING']
