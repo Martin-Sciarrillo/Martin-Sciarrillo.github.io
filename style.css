@@ -1166,6 +1166,9 @@ html.is-booting footer { opacity: 0; }
   letter-spacing: 0.02em;
   font-size: clamp(1.4rem, 3vw, 2.2rem);
 }
+.boot-line--ascii:last-of-type {
+  margin-bottom: 3rem;
+}
 .boot-line--bar   { color: var(--color-magenta); text-shadow: var(--glow-magenta); }
 .boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }
 .boot-line--name  { color: var(--color-text); text-shadow: none; letter-spacing: 0.03em; }

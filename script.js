@@ -341,13 +341,6 @@ function runBoot() {
   const HEADER_ROWS = [
     [LOGO[0], 'boot-line--ascii'],
     [LOGO[1], 'boot-line--ascii'],
-    ['', ''],
-    ['', ''],
-    ['', ''],
-    ['', ''],
-    ['', ''],
-    ['', ''],
-    ['', ''],
   ]
 
   const MODULES = ['AI/ML', 'CLOUD', 'STRATEGY', 'PEOPLE MANAGEMENT', 'NEGRONI TASTING']
