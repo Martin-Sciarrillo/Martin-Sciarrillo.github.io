@@ -184,9 +184,17 @@ function toggleTrail() {
     iframe.src = ''
   }
 
+  let prewarmed = false
+  function prewarm(videoId) {
+    if (prewarmed) return
+    prewarmed = true
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`
+  }
+
   document.querySelectorAll('.media-card').forEach(card => {
     const open = () => openModal(card.dataset.vid, card.dataset.title, card.dataset.start, card.dataset.short === 'true')
     card.addEventListener('click', open)
+    card.addEventListener('mouseenter', () => prewarm(card.dataset.vid), { once: true })
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open() }
     })
