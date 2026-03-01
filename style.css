@@ -1162,9 +1162,9 @@ html.is-booting footer { opacity: 0; }
 .boot-line--ascii  {
   color: var(--color-cyan);
   text-shadow: var(--glow-cyan);
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-  font-size: 1.05em;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
 }
 .boot-line--bar   { color: var(--color-magenta); text-shadow: var(--glow-magenta); }
 .boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }
