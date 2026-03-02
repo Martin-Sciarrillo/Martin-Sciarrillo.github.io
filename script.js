@@ -508,6 +508,89 @@ termInput.addEventListener('keydown', e => {
 
 term.querySelector('.term-close').addEventListener('click', () => term.classList.remove('is-open'))
 
+// ============================================================
+// HERO PARTICLE CANVAS
+// ============================================================
+;(function initHeroParticles() {
+  const canvas = document.getElementById('hero-particles')
+  if (!canvas || reducedMotion) return
+  const ctx = canvas.getContext('2d')
+  const N = 70, CONNECT = 130, REPEL = 110
+  let mouse = { x: -9999, y: -9999 }
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth
+    canvas.height = canvas.offsetHeight
+  }
+  window.addEventListener('resize', resize, { passive: true })
+  resize()
+
+  const hero = canvas.closest('section')
+  hero.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect()
+    mouse.x = e.clientX - r.left
+    mouse.y = e.clientY - r.top
+  }, { passive: true })
+  hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999 }, { passive: true })
+
+  // Spawn in left 30% and right 30% zones
+  const particles = Array.from({ length: N }, (_, i) => ({
+    x:  i < N / 2
+          ? Math.random() * canvas.width  * 0.30
+          : canvas.width  * 0.70 + Math.random() * canvas.width * 0.30,
+    y:  Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.5,
+    vy: (Math.random() - 0.5) * 0.5,
+  }))
+
+  function frame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        const dx = particles[i].x - particles[j].x
+        const dy = particles[i].y - particles[j].y
+        const d  = Math.hypot(dx, dy)
+        if (d < CONNECT) {
+          ctx.beginPath()
+          ctx.moveTo(particles[i].x, particles[i].y)
+          ctx.lineTo(particles[j].x, particles[j].y)
+          ctx.strokeStyle = `rgba(0,229,255,${(1 - d / CONNECT) * 0.22})`
+          ctx.lineWidth = 0.7
+          ctx.stroke()
+        }
+      }
+    }
+
+    for (const p of particles) {
+      const mdx = p.x - mouse.x
+      const mdy = p.y - mouse.y
+      const md  = Math.hypot(mdx, mdy)
+      if (md < REPEL && md > 0) {
+        const f = (REPEL - md) / REPEL * 0.9
+        p.vx += (mdx / md) * f
+        p.vy += (mdy / md) * f
+      }
+      p.vx *= 0.98; p.vy *= 0.98
+      const spd = Math.hypot(p.vx, p.vy)
+      if (spd < 0.08) { p.vx += (Math.random() - 0.5) * 0.06; p.vy += (Math.random() - 0.5) * 0.06 }
+      p.x += p.vx; p.y += p.vy
+      if (p.x < 0)             { p.x = 0;             p.vx = Math.abs(p.vx) }
+      if (p.x > canvas.width)  { p.x = canvas.width;  p.vx = -Math.abs(p.vx) }
+      if (p.y < 0)             { p.y = 0;             p.vy = Math.abs(p.vy) }
+      if (p.y > canvas.height) { p.y = canvas.height; p.vy = -Math.abs(p.vy) }
+
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(0,229,255,0.55)'
+      ctx.fill()
+    }
+
+    requestAnimationFrame(frame)
+  }
+  frame()
+})()
+
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && term.classList.contains('is-open')) { term.classList.remove('is-open'); return }
   if ((e.ctrlKey || e.metaKey) && e.key === '`') {
