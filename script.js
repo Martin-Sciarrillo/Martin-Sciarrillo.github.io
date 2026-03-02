@@ -509,35 +509,30 @@ termInput.addEventListener('keydown', e => {
 term.querySelector('.term-close').addEventListener('click', () => term.classList.remove('is-open'))
 
 // ============================================================
-// HERO PARTICLE CANVAS
+// PARTICLE CANVAS (full page, fixed)
 // ============================================================
 ;(function initHeroParticles() {
   const canvas = document.getElementById('hero-particles')
   if (!canvas || reducedMotion) return
   const ctx = canvas.getContext('2d')
-  const N = 70, CONNECT = 130, REPEL = 110
+  const N = 80, CONNECT = 130, REPEL = 110
   let mouse = { x: -9999, y: -9999 }
 
   function resize() {
-    canvas.width  = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
+    canvas.width  = window.innerWidth
+    canvas.height = window.innerHeight
   }
   window.addEventListener('resize', resize, { passive: true })
   resize()
 
-  const hero = canvas.closest('section')
-  hero.addEventListener('mousemove', e => {
-    const r = canvas.getBoundingClientRect()
-    mouse.x = e.clientX - r.left
-    mouse.y = e.clientY - r.top
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX
+    mouse.y = e.clientY
   }, { passive: true })
-  hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999 }, { passive: true })
 
-  // Spawn in left 30% and right 30% zones
-  const particles = Array.from({ length: N }, (_, i) => ({
-    x:  i < N / 2
-          ? Math.random() * canvas.width  * 0.30
-          : canvas.width  * 0.70 + Math.random() * canvas.width * 0.30,
+  // Spawn randomly across full viewport
+  const particles = Array.from({ length: N }, () => ({
+    x:  Math.random() * canvas.width,
     y:  Math.random() * canvas.height,
     vx: (Math.random() - 0.5) * 0.5,
     vy: (Math.random() - 0.5) * 0.5,
