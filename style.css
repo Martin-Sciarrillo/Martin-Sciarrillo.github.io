@@ -406,7 +406,13 @@ ul { list-style: none; }
 
 .about__bio p { color: var(--color-text-muted); font-size: 1rem; line-height: 1.8; }
 .about__bio p + p { margin-top: 1rem; }
-.about__bio strong { color: var(--color-cyan); font-weight: 600; }
+.about__bio strong {
+  background: linear-gradient(105deg, #ffffff, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
 .about__bio .hl-m  { color: var(--color-magenta); font-weight: 600; }
 .about__bio .hl-grad {
   background: linear-gradient(105deg, #00e5ff, #ff00de);
