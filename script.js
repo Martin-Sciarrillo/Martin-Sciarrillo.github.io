@@ -381,9 +381,10 @@ function runBoot() {
     const BLOCKS = 16, PAD = 20
     let filled = 0
     const tick = () => {
-      const bar = '█'.repeat(filled) + '░'.repeat(BLOCKS - filled)
+      const filledStr = filled > 0 ? `<span class="bar-filled">${'█'.repeat(filled)}</span>` : ''
+      const emptyStr  = (BLOCKS - filled) > 0 ? `<span class="bar-empty">${'░'.repeat(BLOCKS - filled)}</span>` : ''
       const pct = String(Math.round((filled / BLOCKS) * 100)).padStart(3)
-      div.textContent = `  ▸ ${label.padEnd(PAD)} [${bar}]${pct}%`
+      div.innerHTML = `  ▸ ${label.padEnd(PAD)} [${filledStr}${emptyStr}]${pct}%`
       if (filled < BLOCKS) { filled++; setTimeout(tick, 28 + Math.random() * 38) }
       else onDone?.()
     }

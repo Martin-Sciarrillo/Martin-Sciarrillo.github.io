@@ -1215,10 +1215,15 @@ html.is-booting footer { opacity: 0; }
   margin-bottom: 6rem;
 }
 .boot-line--bar {
-  background: linear-gradient(105deg, #00e5ff, #ff00de);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: rgba(0,229,255,0.6);
+  text-shadow: none;
+}
+.bar-filled {
+  color: #00e5ff;
+  text-shadow: 0 0 6px rgba(0,229,255,0.8);
+}
+.bar-empty {
+  color: rgba(0,229,255,0.15);
   text-shadow: none;
 }
 .boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }
