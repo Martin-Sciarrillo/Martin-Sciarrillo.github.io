@@ -586,6 +586,19 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
   frame()
 })()
 
+// ============================================================
+// CRT NOISE TOGGLE (about section only)
+// ============================================================
+;(function initCrtToggle() {
+  const btn     = document.getElementById('crt-toggle')
+  const section = document.querySelector('.about')
+  if (!btn || !section) return
+  btn.addEventListener('click', () => {
+    const on = section.classList.toggle('crt-on')
+    btn.setAttribute('aria-pressed', on)
+  })
+})()
+
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && term.classList.contains('is-open')) { term.classList.remove('is-open'); return }
   if ((e.ctrlKey || e.metaKey) && e.key === '`') {

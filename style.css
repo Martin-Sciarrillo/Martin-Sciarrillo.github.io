@@ -395,9 +395,92 @@ ul { list-style: none; }
    ABOUT
    ============================================================ */
 .about {
+  position: relative;
+  z-index: 1;
   background: var(--color-surface);
   border-top: 1px solid rgba(0,229,255,0.1);
   border-bottom: 1px solid rgba(0,229,255,0.1);
+}
+
+/* particles blocked: ::before = noise, ::after = scanlines */
+.about::before,
+.about::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.about::before {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='256' height='256' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px;
+  mix-blend-mode: screen;
+  z-index: 6;
+}
+.about::after {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.12) 3px,
+    rgba(0,0,0,0.12) 4px
+  );
+  z-index: 5;
+}
+.about.crt-on::before {
+  opacity: 0.08;
+  animation: crt-noise-shift 0.07s steps(1) infinite;
+}
+.about.crt-on::after { opacity: 1; }
+.about.crt-on { animation: crt-flicker 5s infinite; }
+
+@keyframes crt-noise-shift {
+  0%   { background-position: 0 0; }
+  25%  { background-position: 45px -35px; }
+  50%  { background-position: -40px 25px; }
+  75%  { background-position: 20px 55px; }
+  100% { background-position: -25px -45px; }
+}
+@keyframes crt-flicker {
+  0%, 88%, 92%, 100% { filter: brightness(1); }
+  89%  { filter: brightness(0.93); }
+  90%  { filter: brightness(1.04); }
+  91%  { filter: brightness(0.97); }
+}
+
+/* CRT toggle row */
+.about__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.about__top .section__title { flex: 1; }
+
+.crt-toggle {
+  flex-shrink: 0;
+  align-self: center;
+  background: none;
+  border: 1px solid rgba(0,229,255,0.2);
+  color: rgba(0,229,255,0.3);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, text-shadow 0.2s;
+}
+.crt-toggle:hover {
+  color: var(--color-cyan);
+  border-color: var(--color-cyan);
+  text-shadow: 0 0 8px var(--color-cyan);
+}
+.about.crt-on .crt-toggle {
+  color: var(--color-magenta);
+  border-color: var(--color-magenta);
+  text-shadow: 0 0 10px var(--color-magenta);
 }
 
 .about__grid {
