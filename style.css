@@ -1241,15 +1241,7 @@ html.is-booting footer { opacity: 0; }
   margin-bottom: 6rem;
 }
 .boot-line--bar {
-  color: rgba(0,229,255,0.6);
-  text-shadow: none;
-}
-.bar-filled {
-  color: #00e5ff;
-  text-shadow: 0 0 6px rgba(0,229,255,0.8);
-}
-.bar-empty {
-  color: rgba(0,229,255,0.15);
+  color: rgba(255,255,255,0.35);
   text-shadow: none;
 }
 .boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }

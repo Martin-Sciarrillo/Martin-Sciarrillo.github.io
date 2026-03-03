@@ -343,7 +343,13 @@ function runBoot() {
     [LOGO[1], 'boot-line--ascii boot-line--ascii-end'],
   ]
 
-  const MODULES = ['AI/ML', 'CLOUD', 'STRATEGY', 'PEOPLE MANAGEMENT', 'NEGRONI TASTING']
+  const MODULES = [
+    ['AI/ML',             '#4ecdc4'],
+    ['CLOUD',             '#38bdf8'],
+    ['STRATEGY',          '#a78bfa'],
+    ['PEOPLE MANAGEMENT', '#ffd166'],
+    ['NEGRONI TASTING',   '#f472b6'],
+  ]
 
   const FOOTER = [
     '  ✓  ALL SYSTEMS NOMINAL',
@@ -374,17 +380,21 @@ function runBoot() {
     tick()
   }
 
-  function animateBar(label, onDone) {
+  function animateBar(label, color, onDone) {
     const div = document.createElement('div')
     div.className = 'boot-line boot-line--bar'
     linesEl.appendChild(div)
     const BLOCKS = 16, PAD = 20
     let filled = 0
     const tick = () => {
-      const filledStr = filled > 0 ? `<span class="bar-filled">${'█'.repeat(filled)}</span>` : ''
-      const emptyStr  = (BLOCKS - filled) > 0 ? `<span class="bar-empty">${'░'.repeat(BLOCKS - filled)}</span>` : ''
+      const filledStr = filled > 0
+        ? `<span style="color:${color};text-shadow:0 0 7px ${color}99">${'█'.repeat(filled)}</span>`
+        : ''
+      const emptyStr = (BLOCKS - filled) > 0
+        ? `<span style="color:${color}26">${'░'.repeat(BLOCKS - filled)}</span>`
+        : ''
       const pct = String(Math.round((filled / BLOCKS) * 100)).padStart(3)
-      div.innerHTML = `  ▸ ${label.padEnd(PAD)} [${filledStr}${emptyStr}]${pct}%`
+      div.innerHTML = `  <span style="color:${color}99">▸</span> ${label.padEnd(PAD)} [${filledStr}${emptyStr}]${pct}%`
       if (filled < BLOCKS) { filled++; setTimeout(tick, 28 + Math.random() * 38) }
       else onDone?.()
     }
@@ -408,9 +418,11 @@ function runBoot() {
 
   function showBars(done) {
     addLine('')
+    addLine('  ── COMPETENCY STACK ─────────────────', 'boot-line--sys')
+    addLine('')
     let completed = 0
-    MODULES.forEach((mod, idx) => {
-      setTimeout(() => animateBar(mod, () => {
+    MODULES.forEach(([mod, color], idx) => {
+      setTimeout(() => animateBar(mod, color, () => {
         if (++completed === MODULES.length) setTimeout(done, 180)
       }), idx * 90)
     })
