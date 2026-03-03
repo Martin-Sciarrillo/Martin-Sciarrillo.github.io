@@ -587,16 +587,29 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
 })()
 
 // ============================================================
-// CRT NOISE TOGGLE (about section only)
+// ABOUT SECTION — permanent CRT pixel noise (same as terminal `noise`)
 // ============================================================
-;(function initCrtToggle() {
-  const btn     = document.getElementById('crt-toggle')
+;(function initAboutNoise() {
   const section = document.querySelector('.about')
-  if (!btn || !section) return
-  btn.addEventListener('click', () => {
-    const on = section.classList.toggle('crt-on')
-    btn.setAttribute('aria-pressed', on)
-  })
+  if (!section || reducedMotion) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'about-noise'
+  section.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+  const W = 256, H = 256
+  canvas.width = W; canvas.height = H
+  let tick = 0
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    if (++tick % 3 !== 0) return
+    const img = ctx.createImageData(W, H)
+    const d = img.data
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = d[i + 1] = d[i + 2] = 255
+      d[i + 3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
+    }
+    ctx.putImageData(img, 0, 0)
+  })()
 })()
 
 document.addEventListener('keydown', e => {
