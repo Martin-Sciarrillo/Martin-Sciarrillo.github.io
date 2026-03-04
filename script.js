@@ -619,7 +619,7 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
     const d = img.data
     for (let i = 0; i < d.length; i += 4) {
       d[i] = d[i + 1] = d[i + 2] = 255
-      d[i + 3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
+      d[i + 3] = Math.random() < 0.45 ? Math.floor(Math.random() * 55) : 0
     }
     ctx.putImageData(img, 0, 0)
   })()

@@ -85,7 +85,8 @@ ul { list-style: none; }
   pointer-events: none;
   z-index: 0;
   image-rendering: pixelated;
-  opacity: 0.55;
+  opacity: 0.85;
+  mix-blend-mode: screen;
 }
 
 
