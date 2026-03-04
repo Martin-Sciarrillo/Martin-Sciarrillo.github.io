@@ -600,6 +600,32 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
 })()
 
 // ============================================================
+// NAV — permanent CRT pixel noise
+// ============================================================
+;(function initNavNoise() {
+  const nav = document.querySelector('.site-header')
+  if (!nav || reducedMotion) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'nav-noise'
+  nav.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+  const W = 256, H = 256
+  canvas.width = W; canvas.height = H
+  let tick = 0
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    if (++tick % 3 !== 0) return
+    const img = ctx.createImageData(W, H)
+    const d = img.data
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = d[i + 1] = d[i + 2] = 255
+      d[i + 3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
+    }
+    ctx.putImageData(img, 0, 0)
+  })()
+})()
+
+// ============================================================
 // ABOUT SECTION — permanent CRT pixel noise (same as terminal `noise`)
 // ============================================================
 ;(function initAboutNoise() {

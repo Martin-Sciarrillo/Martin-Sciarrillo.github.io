@@ -77,6 +77,17 @@ ul { list-style: none; }
   backdrop-filter: blur(10px);
 }
 
+#nav-noise {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  image-rendering: pixelated;
+  opacity: 0.55;
+}
+
 
 /* shimmer border — bright spot travels left → right on the bottom line */
 .site-header::after {
@@ -179,7 +190,7 @@ ul { list-style: none; }
    HERO
    ============================================================ */
 .hero {
-  min-height: 92vh;
+  min-height: calc(100vh - 56px);
   display: flex;
   align-items: center;
   position: relative;
