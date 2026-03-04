@@ -320,6 +320,33 @@ function playBootSound() {
   } catch (e) {}
 }
 
+// ============================================================
+// ASCII GLITCH — randomises chars through ░▒▓█ then restores
+// ============================================================
+function glitchAsciiText(el) {
+  if (reducedMotion) return
+  const CHARS = '░▒▓█▄▀'
+  const orig   = el.textContent
+
+  function glitch() {
+    if (!el.isConnected) return          // stop if element removed from DOM
+    const arr = orig.split('')
+    const n   = Math.floor(Math.random() * 5) + 1
+    for (let i = 0; i < n; i++) {
+      const pos = Math.floor(Math.random() * arr.length)
+      if (arr[pos] !== ' ') arr[pos] = CHARS[Math.floor(Math.random() * CHARS.length)]
+    }
+    el.textContent = arr.join('')
+    setTimeout(() => {
+      if (!el.isConnected) return
+      el.textContent = orig
+      setTimeout(glitch, 80 + Math.random() * 350)
+    }, 55 + Math.random() * 110)
+  }
+
+  setTimeout(glitch, 80 + Math.random() * 200)  // short initial delay
+}
+
 function runBoot() {
   const screen   = document.getElementById('boot-screen')
   const linesEl  = document.getElementById('boot-lines')
@@ -410,7 +437,7 @@ function runBoot() {
         return
       }
       const [text, cls] = HEADER_ROWS[i++]
-      addLine(text, cls)
+      glitchAsciiText(addLine(text, cls))
       setTimeout(next, 38)
     }
     next()
@@ -481,6 +508,7 @@ term.innerHTML = `
   </div>
 `
 document.body.appendChild(term)
+glitchAsciiText(term.querySelector('.term-title'))
 
 const termOut   = document.getElementById('term-output')
 const termInput = document.getElementById('term-input')
@@ -648,6 +676,68 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
       d[i + 3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
     }
     ctx.putImageData(img, 0, 0)
+  })()
+})()
+
+// SPEAKING SECTION — starfield warp background
+// ============================================================
+;(function initSpeakingStars() {
+  const section = document.querySelector('.speaking')
+  if (!section || reducedMotion) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'speaking-stars'
+  section.insertBefore(canvas, section.firstChild)
+
+  function resize() {
+    canvas.width  = section.offsetWidth
+    canvas.height = section.offsetHeight
+  }
+  resize()
+  window.addEventListener('resize', resize)
+
+  const ctx = canvas.getContext('2d')
+  const NUM = 200
+
+  function makeStars(W, H) {
+    return Array.from({ length: NUM }, () => ({
+      x: (Math.random() - 0.5) * W,
+      y: (Math.random() - 0.5) * H,
+      z: Math.random() * W,
+      pz: W
+    }))
+  }
+
+  let stars = makeStars(canvas.width, canvas.height)
+  window.addEventListener('resize', () => { stars = makeStars(canvas.width, canvas.height) })
+
+  let tick = 0
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    if (++tick % 2 !== 0) return
+    const W = canvas.width, H = canvas.height
+    const CX = W / 2, CY = H / 2
+    ctx.fillStyle = 'rgba(13,13,13,0.22)'
+    ctx.fillRect(0, 0, W, H)
+    stars.forEach(s => {
+      s.pz = s.z
+      s.z -= 2.8
+      if (s.z <= 0) {
+        s.x = (Math.random() - 0.5) * W
+        s.y = (Math.random() - 0.5) * H
+        s.z = W; s.pz = W
+      }
+      const sx = s.x / s.z * W + CX
+      const sy = s.y / s.z * H + CY
+      const px = s.x / s.pz * W + CX
+      const py = s.y / s.pz * H + CY
+      const brightness = 1 - s.z / W
+      ctx.beginPath()
+      ctx.strokeStyle = `rgba(0,229,255,${0.35 + brightness * 0.65})`
+      ctx.lineWidth = Math.max(0.3, brightness * 2)
+      ctx.moveTo(px, py)
+      ctx.lineTo(sx, sy)
+      ctx.stroke()
+    })
   })()
 })()
 

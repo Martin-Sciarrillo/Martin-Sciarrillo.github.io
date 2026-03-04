@@ -163,6 +163,16 @@ ul { list-style: none; }
 .nav__menu a.is-active {
   color: var(--color-cyan);
   text-shadow: var(--glow-cyan);
+  animation: nav-glitch 2s steps(1) infinite;
+}
+
+@keyframes nav-glitch {
+  0%, 89%, 100% { transform: none; text-shadow: var(--glow-cyan); }
+  90% { transform: skewX(-4deg) translateX(2px);  text-shadow: -2px 0 var(--color-magenta), 2px 0 var(--color-cyan); }
+  91% { transform: skewX(3deg)  translateX(-1.5px); text-shadow: 2px 0 var(--color-magenta), -2px 0 var(--color-cyan); }
+  92% { transform: none;        text-shadow: var(--glow-cyan); }
+  94% { transform: translateX(1.5px) scaleX(1.01); text-shadow: -1px 0 var(--color-magenta), 1px 0 var(--color-green); }
+  95% { transform: none;        text-shadow: var(--glow-cyan); }
 }
 
 .nav__menu a:hover::before,
@@ -511,6 +521,22 @@ ul { list-style: none; }
 .speaking {
   border-top: 1px solid rgba(255,0,200,0.15);
   border-bottom: 1px solid rgba(255,0,200,0.15);
+  position: relative;
+}
+
+#speaking-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.speaking .container {
+  position: relative;
+  z-index: 1;
 }
 
 .photo-grid {
