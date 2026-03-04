@@ -682,28 +682,52 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
 })()
 
 // ============================================================
-// NAV — permanent CRT pixel noise
+// NAV — interference lines effect
 // ============================================================
-;(function initNavNoise() {
+;(function initNavInterference() {
   const nav = document.querySelector('.site-header')
   if (!nav || reducedMotion) return
   const canvas = document.createElement('canvas')
-  canvas.id = 'nav-noise'
+  canvas.id = 'nav-interference'
   nav.appendChild(canvas)
   const ctx = canvas.getContext('2d')
-  const W = 256, H = 256
-  canvas.width = W; canvas.height = H
-  let tick = 0
+
+  function resize() {
+    canvas.width  = nav.offsetWidth  || 1280
+    canvas.height = nav.offsetHeight || 56
+  }
+  resize()
+  window.addEventListener('resize', resize)
+
+  let frame = 0
   ;(function draw() {
     requestAnimationFrame(draw)
-    if (++tick % 3 !== 0) return
-    const img = ctx.createImageData(W, H)
-    const d = img.data
-    for (let i = 0; i < d.length; i += 4) {
-      d[i] = d[i + 1] = d[i + 2] = 255
-      d[i + 3] = Math.random() < 0.45 ? Math.floor(Math.random() * 55) : 0
+    if (++frame % 2 !== 0) return
+    const W = canvas.width, H = canvas.height
+    ctx.fillStyle = 'rgba(13,13,13,0.45)'
+    ctx.fillRect(0, 0, W, H)
+
+    if (Math.random() > 0.62) {
+      const n = Math.floor(Math.random() * 2) + 1
+      for (let i = 0; i < n; i++) {
+        const y = Math.floor(Math.random() * H)
+        const h = 1 + Math.floor(Math.random() * 2)
+        const a = 0.18 + Math.random() * 0.38
+        ctx.fillStyle = Math.random() > 0.5
+          ? `rgba(0,229,255,${a})`
+          : `rgba(255,0,222,${a})`
+        ctx.fillRect(0, y, W, h)
+        if (Math.random() > 0.5) {
+          const sx = Math.floor(Math.random() * W * 0.2)
+          const sw = Math.floor(Math.random() * W * 0.4) + 40
+          const dx = (Math.random() - 0.5) * 18
+          try {
+            const d = ctx.getImageData(sx, y, sw, h)
+            ctx.putImageData(d, sx + dx, y)
+          } catch (e) {}
+        }
+      }
     }
-    ctx.putImageData(img, 0, 0)
   })()
 })()
 
@@ -728,6 +752,31 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
     for (let i = 0; i < d.length; i += 4) {
       d[i] = d[i + 1] = d[i + 2] = 255
       d[i + 3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
+    }
+    ctx.putImageData(img, 0, 0)
+  })()
+})()
+
+// FOOTER — subtle CRT grain
+// ============================================================
+;(function initFooterNoise() {
+  const footer = document.querySelector('.footer')
+  if (!footer || reducedMotion) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'footer-noise'
+  footer.insertBefore(canvas, footer.firstChild)
+  const ctx = canvas.getContext('2d')
+  const W = 256, H = 256
+  canvas.width = W; canvas.height = H
+  let tick = 0
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    if (++tick % 4 !== 0) return          // slower = more subtle
+    const img = ctx.createImageData(W, H)
+    const d = img.data
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = d[i + 1] = d[i + 2] = 255
+      d[i + 3] = Math.random() < 0.18 ? Math.floor(Math.random() * 28) : 0
     }
     ctx.putImageData(img, 0, 0)
   })()
