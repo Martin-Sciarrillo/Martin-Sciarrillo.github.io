@@ -1398,7 +1398,22 @@ html.is-booting footer { opacity: 0; }
   padding: 0.75rem 1rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(0,229,255,0.3) transparent;
+  position: relative;
+  z-index: 1;
 }
+
+.term-header, .term-input-row { position: relative; z-index: 2; }
+
+#term-interference {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+  image-rendering: pixelated;
+}
+
+.term-res, .term-cmd { position: relative; z-index: 1; }
 .term-res { color: var(--color-text-muted); line-height: 1.75; }
 .term-cmd { color: var(--color-green); text-shadow: var(--glow-green); line-height: 1.75; }
 

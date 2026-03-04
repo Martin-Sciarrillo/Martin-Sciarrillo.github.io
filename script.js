@@ -513,6 +513,60 @@ glitchAsciiText(term.querySelector('.term-title'))
 const termOut   = document.getElementById('term-output')
 const termInput = document.getElementById('term-input')
 
+// ── Terminal interference canvas (effect 11) ─────────────────
+;(function initTermInterference() {
+  if (reducedMotion) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'term-interference'
+  termOut.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+
+  function resize() {
+    canvas.width  = termOut.clientWidth  || 480
+    canvas.height = termOut.clientHeight || 268
+  }
+  resize()
+  window.addEventListener('resize', resize)
+
+  let frame = 0
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    if (!term.classList.contains('is-open')) return   // only animate when open
+    if (++frame % 2 !== 0) return                     // ~30fps
+
+    const W = canvas.width, H = canvas.height
+
+    ctx.fillStyle = 'rgba(6,6,6,0.42)'
+    ctx.fillRect(0, 0, W, H)
+
+    // random horizontal interference lines
+    if (Math.random() > 0.55) {
+      const n = Math.floor(Math.random() * 3) + 1
+      for (let i = 0; i < n; i++) {
+        const y  = Math.floor(Math.random() * H)
+        const h  = 1 + Math.floor(Math.random() * 3)
+        const a  = 0.2 + Math.random() * 0.45
+        ctx.fillStyle = Math.random() > 0.5
+          ? `rgba(0,229,255,${a})`
+          : `rgba(255,0,222,${a})`
+        ctx.fillRect(0, y, W, h)
+
+        // horizontal slice-shift glitch
+        if (Math.random() > 0.45) {
+          const sx = Math.floor(Math.random() * W * 0.25)
+          const sw = Math.floor(Math.random() * W * 0.55) + 30
+          const dx = (Math.random() - 0.5) * 22
+          try {
+            const d = ctx.getImageData(sx, y, sw, h)
+            ctx.putImageData(d, sx + dx, y)
+          } catch (e) {}
+        }
+      }
+    }
+  })()
+})()
+
+
 const termCmds = {
   help:    () => ['available commands:', '  whoami   · who is this?', '  ls       · list sections', '  skills   · tech stack', '  contact  · book a coffee', '  noise    · toggle CRT noise overlay', '  trail    · toggle neon cursor trail', '  clear    · clear screen', '  exit     · close terminal'],
   whoami:  () => ['Martín Sciarrillo', 'Executive Technology Strategist · Microsoft Argentina', 'AI · Data · Cloud'],
