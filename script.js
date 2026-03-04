@@ -689,6 +689,7 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
   if (!nav || reducedMotion) return
   const canvas = document.createElement('canvas')
   canvas.id = 'nav-interference'
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.6;image-rendering:pixelated;'
   nav.appendChild(canvas)
   const ctx = canvas.getContext('2d')
 
@@ -764,6 +765,7 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
   if (!footer || reducedMotion) return
   const canvas = document.createElement('canvas')
   canvas.id = 'footer-noise'
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.35;mix-blend-mode:screen;image-rendering:pixelated;'
   footer.insertBefore(canvas, footer.firstChild)
   const ctx = canvas.getContext('2d')
   const W = 256, H = 256
