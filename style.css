@@ -1287,9 +1287,9 @@ html.is-booting footer { opacity: 0; }
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: none;
-  line-height: 1.35;
-  letter-spacing: 0.12em;
-  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  line-height: 1.15;
+  letter-spacing: 0;
+  font-size: clamp(0.62rem, 1.25vw, 0.88rem);
 }
 .boot-line--ascii-end {
   margin-bottom: 6rem;

@@ -361,13 +361,19 @@ function runBoot() {
 
   // ── Content ──────────────────────────────────────────────
   const LOGO = [
-    '▄▀█ █▀▀ ▄▀█ ▀█▀ █ █▄░█ █▀▀ █░█ █▀█',
-    '█▀█ █▄▄ █▀█ ░█░ █ █░▀█ █▄▄ █▀█ █▄█',
+    "    _             _   _            _             ___ ___  ",
+    "   / \\   ___ __ _| |_(_)_ __   ___| |__   ___   |_ _/ _ \\",
+    "  / _ \\ / __/ _` | __| | '_ \\ / __| '_ \\ / _ \\   | | | | |",
+    " / ___ \\ (_| (_| | |_| | | | | (__| | | | (_) |  | | |_| |",
+    "/_/   \\_\\___\\__,_|\\__|_|_| |_|\\___|_| |_|\\___/  |___\\___/ ",
   ]
 
   const HEADER_ROWS = [
     [LOGO[0], 'boot-line--ascii'],
-    [LOGO[1], 'boot-line--ascii boot-line--ascii-end'],
+    [LOGO[1], 'boot-line--ascii'],
+    [LOGO[2], 'boot-line--ascii'],
+    [LOGO[3], 'boot-line--ascii'],
+    [LOGO[4], 'boot-line--ascii boot-line--ascii-end'],
   ]
 
   const MODULES = [
