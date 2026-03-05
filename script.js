@@ -411,7 +411,7 @@ function runBoot() {
     const div = document.createElement('div')
     div.className = 'boot-line boot-line--bar'
     linesEl.appendChild(div)
-    const BLOCKS = 16, PAD = 12
+    const BLOCKS = 16, PAD = 11
     let filled = 0
     const tick = () => {
       const filledStr = filled > 0
