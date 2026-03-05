@@ -359,6 +359,48 @@ function runBoot() {
     return
   }
 
+  // ── Background digital rain ───────────────────────────────
+  ;(function startBootRain() {
+    const canvas = document.createElement('canvas')
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.18;'
+    screen.insertBefore(canvas, screen.firstChild)
+    linesEl.style.position = 'relative'
+    linesEl.style.zIndex   = '1'
+
+    canvas.width  = screen.offsetWidth  || window.innerWidth
+    canvas.height = screen.offsetHeight || window.innerHeight
+    const W = canvas.width, H = canvas.height
+    const ctx = canvas.getContext('2d')
+    const FS = 14
+    const COLS = Math.floor(W / FS)
+    const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF>_#@!'
+    const drops = Array.from({ length: COLS }, () => Math.random() * -(H / FS))
+    let raf
+    function draw() {
+      if (!screen.isConnected) { cancelAnimationFrame(raf); return }
+      ctx.fillStyle = 'rgba(4,4,10,0.15)'
+      ctx.fillRect(0, 0, W, H)
+      ctx.font = `bold ${FS}px monospace`
+      for (let i = 0; i < COLS; i++) {
+        const y = drops[i] * FS
+        if (y > 0 && y < H) {
+          ctx.shadowColor = '#00e5ff'; ctx.shadowBlur = 10
+          ctx.fillStyle = '#ffffff'
+          ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y)
+          ctx.shadowBlur = 0
+        }
+        if (y - FS > 0 && y - FS < H) {
+          ctx.fillStyle = `rgba(0,229,255,${0.4 + Math.random() * 0.5})`
+          ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y - FS)
+        }
+        drops[i]++
+        if (drops[i] * FS > H && Math.random() > 0.975) drops[i] = Math.random() * -20
+      }
+      raf = requestAnimationFrame(draw)
+    }
+    raf = requestAnimationFrame(draw)
+  })()
+
   // ── Content ──────────────────────────────────────────────
   const LOGO = [
     '▄▀█ █▀▀ ▄▀█ ▀█▀ █ █▄░█ █▀▀ █░█ █▀█',
@@ -489,69 +531,6 @@ function runBoot() {
     setTimeout(next, 100)
   }
 
-  function showRain(done) {
-    const canvas = document.createElement('canvas')
-    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:10;background:#04040a;'
-    screen.appendChild(canvas)
-
-    canvas.width  = screen.offsetWidth  || window.innerWidth
-    canvas.height = screen.offsetHeight || window.innerHeight
-    const W = canvas.width, H = canvas.height
-    const ctx = canvas.getContext('2d')
-
-    const FS = 14
-    const COLS = Math.floor(W / FS)
-    const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF>_#@!'
-    const drops = Array.from({ length: COLS }, () => Math.random() * -(H / FS))
-
-    const START    = performance.now()
-    const DURATION = 2600
-    let raf
-
-    function draw() {
-      const elapsed = performance.now() - START
-
-      ctx.fillStyle = 'rgba(4,4,10,0.13)'
-      ctx.fillRect(0, 0, W, H)
-      ctx.font = `bold ${FS}px monospace`
-
-      for (let i = 0; i < COLS; i++) {
-        const y = drops[i] * FS
-
-        if (y > 0 && y < H) {
-          ctx.shadowColor = '#00e5ff'
-          ctx.shadowBlur  = 12
-          ctx.fillStyle   = '#ffffff'
-          ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y)
-          ctx.shadowBlur  = 0
-        }
-        if (y - FS > 0 && y - FS < H) {
-          ctx.fillStyle = `rgba(0,229,255,${0.35 + Math.random() * 0.55})`
-          ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y - FS)
-        }
-
-        drops[i]++
-        if (drops[i] * FS > H && Math.random() > 0.975) drops[i] = Math.random() * -20
-      }
-
-      if (elapsed < DURATION) {
-        raf = requestAnimationFrame(draw)
-      } else {
-        cancelAnimationFrame(raf)
-        let op = 1
-        const fade = () => {
-          op -= 0.055
-          canvas.style.opacity = Math.max(0, op)
-          if (op > 0) requestAnimationFrame(fade)
-          else { canvas.remove(); done() }
-        }
-        fade()
-      }
-    }
-
-    raf = requestAnimationFrame(draw)
-  }
-
   function finish() {
     playBootSound()
     setTimeout(() => {
@@ -565,7 +544,7 @@ function runBoot() {
     }, 400)
   }
 
-  showBox(() => showBars(() => showFooter(() => showRain(finish))))
+  showBox(() => showBars(() => showFooter(finish)))
 }
 
 runBoot()
