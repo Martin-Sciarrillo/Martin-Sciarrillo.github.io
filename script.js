@@ -705,20 +705,26 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
   resize()
   window.addEventListener('resize', resize)
 
-  let frame = 0
+  let frame = 0, hovered = false
+  nav.addEventListener('mouseenter', () => hovered = true)
+  nav.addEventListener('mouseleave', () => hovered = false)
+
   ;(function draw() {
     requestAnimationFrame(draw)
-    if (++frame % 2 !== 0) return
+    const skip = hovered ? 1 : 2
+    if (++frame % skip !== 0) return
     const W = canvas.width, H = canvas.height
     ctx.fillStyle = 'rgba(13,13,13,0.45)'
     ctx.fillRect(0, 0, W, H)
 
-    if (Math.random() > 0.62) {
-      const n = Math.floor(Math.random() * 2) + 1
+    const threshold = hovered ? 0.25 : 0.62
+    const maxLines  = hovered ? 4 : 2
+    if (Math.random() > threshold) {
+      const n = Math.floor(Math.random() * maxLines) + 1
       for (let i = 0; i < n; i++) {
         const y = Math.floor(Math.random() * H)
-        const h = 1 + Math.floor(Math.random() * 2)
-        const a = 0.18 + Math.random() * 0.38
+        const h = 1 + Math.floor(Math.random() * (hovered ? 3 : 2))
+        const a = (hovered ? 0.35 : 0.18) + Math.random() * 0.38
         ctx.fillStyle = Math.random() > 0.5
           ? `rgba(0,229,255,${a})`
           : `rgba(255,0,222,${a})`
@@ -726,7 +732,7 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
         if (Math.random() > 0.5) {
           const sx = Math.floor(Math.random() * W * 0.2)
           const sw = Math.floor(Math.random() * W * 0.4) + 40
-          const dx = (Math.random() - 0.5) * 18
+          const dx = (Math.random() - 0.5) * (hovered ? 32 : 18)
           try {
             const d = ctx.getImageData(sx, y, sw, h)
             ctx.putImageData(d, sx + dx, y)
