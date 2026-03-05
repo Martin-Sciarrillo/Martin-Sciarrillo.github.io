@@ -447,6 +447,8 @@ function runBoot() {
     addLine('')
     addLine('  ── COMPETENCY STACK ─────────────────', 'boot-line--sys')
     addLine('')
+    addLine('')
+    addLine('')
     let completed = 0
     MODULES.forEach(([mod, color], idx) => {
       setTimeout(() => animateBar(mod, color, () => {
