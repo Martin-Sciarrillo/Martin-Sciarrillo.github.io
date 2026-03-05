@@ -372,10 +372,10 @@ function runBoot() {
 
   const MODULES = [
     ['AI/ML',             '#4ecdc4'],
-    ['CLOUD',             '#38bdf8'],
-    ['STRATEGY',          '#a78bfa'],
-    ['PEOPLE MANAGEMENT', '#ffd166'],
-    ['NEGRONI TASTING',   '#f472b6'],
+    ['CLOUD',             '#4ecdc4'],
+    ['STRATEGY',          '#4ecdc4'],
+    ['PEOPLE MANAGEMENT', '#4ecdc4'],
+    ['FOODIE',            '#4ecdc4'],
   ]
 
   const FOOTER = [
