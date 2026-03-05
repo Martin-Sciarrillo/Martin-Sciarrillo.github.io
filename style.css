@@ -1543,35 +1543,6 @@ html.is-booting footer { opacity: 0; }
 
 .term-header, .term-input-row { position: relative; z-index: 2; }
 
-/* ── Terminal boot overlay ───────────────────────────────── */
-.term-boot-overlay {
-  position: absolute;
-  inset: 0;
-  background: #04040a;
-  z-index: 3;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-.term-boot-rain {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.2;
-  pointer-events: none;
-  z-index: 0;
-}
-.term-boot-lines {
-  position: relative;
-  z-index: 1;
-  padding: 1rem 1.25rem;
-  font-size: 0.68rem;
-  line-height: 1.45;
-  overflow: hidden;
-  flex: 1;
-}
-
 #term-interference {
   position: absolute;
   inset: 0;

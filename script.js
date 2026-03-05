@@ -46,7 +46,11 @@ const footerTrigger = document.getElementById('footer-terminal-trigger')
 if (footerTrigger) {
   footerTrigger.addEventListener('click', e => {
     e.preventDefault()
-    openTerm()
+    const term = document.getElementById('terminal')
+    if (term && !term.classList.contains('is-open')) {
+      term.classList.add('is-open')
+      document.getElementById('term-input')?.focus()
+    }
   })
 }
 
@@ -924,140 +928,14 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
   })()
 })()
 
-// ============================================================
-// TERMINAL BOOT SEQUENCE
-// ============================================================
-function runTermBoot(onDone) {
-  // Clear previous output (keep interference canvas)
-  const iCanvas = document.getElementById('term-interference')
-  termOut.innerHTML = ''
-  if (iCanvas) termOut.appendChild(iCanvas)
-  termInput.disabled = true
-
-  // Build overlay inside #terminal
-  const overlay = document.createElement('div')
-  overlay.className = 'term-boot-overlay'
-  term.appendChild(overlay)
-
-  const rc = document.createElement('canvas')
-  rc.className = 'term-boot-rain'
-  overlay.appendChild(rc)
-
-  const linesDiv = document.createElement('div')
-  linesDiv.className = 'term-boot-lines'
-  overlay.appendChild(linesDiv)
-
-  rc.width  = term.offsetWidth  || 520
-  rc.height = term.offsetHeight || 340
-  const ctx = rc.getContext('2d')
-  const FS = 11, W = rc.width, H = rc.height
-  const COLS = Math.floor(W / FS)
-  const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF>_#@!'
-  const drops = Array.from({ length: COLS }, () => Math.random() * -(H / FS))
-  let rainActive = true, rainRaf
-  ;(function drawRain() {
-    if (!rainActive) return
-    ctx.fillStyle = 'rgba(4,4,10,0.15)'
-    ctx.fillRect(0, 0, W, H)
-    ctx.font = `bold ${FS}px monospace`
-    for (let i = 0; i < COLS; i++) {
-      const y = drops[i] * FS
-      if (y > 0 && y < H) {
-        ctx.shadowColor = '#00e5ff'; ctx.shadowBlur = 8
-        ctx.fillStyle = '#fff'
-        ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y)
-        ctx.shadowBlur = 0
-      }
-      if (y - FS > 0 && y - FS < H) {
-        ctx.fillStyle = `rgba(0,229,255,${0.4 + Math.random() * 0.5})`
-        ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y - FS)
-      }
-      drops[i]++
-      if (drops[i] * FS > H && Math.random() > 0.975) drops[i] = Math.random() * -20
-    }
-    rainRaf = requestAnimationFrame(drawRain)
-  })()
-
-  const LOGO = [
-    '▄▀█ █▀▀ ▄▀█ ▀█▀ █ █▄░█ █▀▀ █░█ █▀█',
-    '█▀█ █▄▄ █▀█ ░█░ █ █░▀█ █▄▄ █▀█ █▄█',
-  ]
-  const MODULES = [['CLOUD','#4ecdc4'],['AI','#4ecdc4'],['STRATEGY','#4ecdc4'],['MANAGEMENT','#4ecdc4'],['FOODIE','#4ecdc4']]
-  const FOOTER  = ['  ✓  ALL SYSTEMS NOMINAL', '  ✓  Press Ctrl+M to access terminal', '  ▶  LAUNCHING INTERFACE...']
-
-  function addL(text, cls) {
-    const d = document.createElement('div')
-    d.className = 'boot-line' + (cls ? ' ' + cls : '')
-    d.textContent = text; linesDiv.appendChild(d); return d
-  }
-  function typeL(text, cls, cb) {
-    const d = document.createElement('div')
-    d.className = 'boot-line' + (cls ? ' ' + cls : '')
-    linesDiv.appendChild(d)
-    let ci = 0
-    const tick = () => { d.textContent = text.slice(0, ci++); ci <= text.length ? setTimeout(tick, 14) : cb?.() }
-    tick()
-  }
-  function barL(label, color, onBarDone) {
-    const d = document.createElement('div')
-    d.className = 'boot-line boot-line--bar'; linesDiv.appendChild(d)
-    const BLOCKS = 16; let filled = 0
-    const tick = () => {
-      const fs = filled > 0 ? `<span style="color:${color};text-shadow:0 0 7px ${color}99">${'█'.repeat(filled)}</span>` : ''
-      const es = (BLOCKS-filled) > 0 ? `<span style="color:${color}26">${'░'.repeat(BLOCKS-filled)}</span>` : ''
-      d.innerHTML = `  <span style="color:${color}99">▸</span> <span style="display:inline-block;width:11ch">${label}</span>[${fs}${es}]${String(Math.round(filled/BLOCKS*100)).padStart(3)}%`
-      if (filled < BLOCKS) { filled++; setTimeout(tick, 28 + Math.random() * 38) } else onBarDone?.()
-    }
-    tick()
-  }
-
-  function phaseBox(done) {
-    let i = 0
-    const rows = [[LOGO[0],'boot-line--ascii'],[LOGO[1],'boot-line--ascii boot-line--ascii-end']]
-    const next = () => { if (i >= rows.length) { setTimeout(done, 80); return }; const [t,c] = rows[i++]; glitchAsciiText(addL(t,c)); setTimeout(next, 38) }
-    next()
-  }
-  function phaseBars(done) {
-    addL(''); addL('  ── COMPETENCY STACK ─────────────────', 'boot-line--sys'); addL(''); addL(''); addL('')
-    let n = 0
-    MODULES.forEach(([m,c], idx) => setTimeout(() => barL(m, c, () => { if (++n === MODULES.length) setTimeout(done, 180) }), idx * 90))
-  }
-  function phaseFooter(done) {
-    const sp = document.createElement('div'); sp.style.height = '0.75rem'; linesDiv.appendChild(sp)
-    let i = 0
-    const next = () => { if (i >= FOOTER.length) { done(); return }; typeL(FOOTER[i], i === FOOTER.length-1 ? 'boot-line--launch' : 'boot-line--ok', () => setTimeout(next, 55)); i++ }
-    setTimeout(next, 100)
-  }
-  function phaseDone() {
-    playBootSound()
-    rainActive = false; cancelAnimationFrame(rainRaf)
-    setTimeout(() => {
-      let op = 1
-      const fade = () => { op -= 0.08; overlay.style.opacity = Math.max(0, op); op > 0 ? requestAnimationFrame(fade) : (overlay.remove(), termInput.disabled = false, onDone()) }
-      fade()
-    }, 300)
-  }
-
-  phaseBox(() => phaseBars(() => phaseFooter(phaseDone)))
-}
-
-function openTerm() {
-  if (term.classList.contains('is-open')) return
-  term.classList.add('is-open')
-  runTermBoot(() => {
-    termWrite(['Acatincho OS v2.6.0~', 'type "help" for available commands', '─'.repeat(40)])
-    termInput.focus()
-  })
-}
-
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && term.classList.contains('is-open')) { term.classList.remove('is-open'); return }
   if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
     e.preventDefault()
+    term.classList.toggle('is-open')
     if (term.classList.contains('is-open')) {
-      term.classList.remove('is-open')
-    } else {
-      openTerm()
+      termInput.focus()
+      if (!termOut.children.length) termWrite(['Acatincho OS v2.6.0~', 'type "help" for available commands', '─'.repeat(40)])
     }
   }
 })
