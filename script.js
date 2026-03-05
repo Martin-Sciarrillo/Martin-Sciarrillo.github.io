@@ -817,15 +817,14 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
 // SPEAKING SECTION — starfield warp background
 // ============================================================
 ;(function initSpeakingStars() {
-  const section = document.querySelector('.speaking')
-  if (!section || reducedMotion) return
+  if (reducedMotion) return
   const canvas = document.createElement('canvas')
   canvas.id = 'speaking-stars'
-  section.insertBefore(canvas, section.firstChild)
+  document.body.appendChild(canvas)
 
   function resize() {
-    canvas.width  = section.offsetWidth
-    canvas.height = section.offsetHeight
+    canvas.width  = window.innerWidth
+    canvas.height = window.innerHeight
   }
   resize()
   window.addEventListener('resize', resize)
