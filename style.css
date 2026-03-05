@@ -723,6 +723,7 @@ ul { list-style: none; }
 }
 .footer__links a:hover { color: var(--color-cyan); text-shadow: var(--glow-cyan); }
 .footer__copy { font-family: var(--font-mono); color: rgba(255,255,255,0.75); font-size: 0.75rem; }
+#footer-name { animation: glitch 4s infinite; }
 .footer__terminal-link {
   color: rgba(255,255,255,0.2);
   text-decoration: none;

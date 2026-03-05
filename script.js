@@ -509,7 +509,6 @@ term.innerHTML = `
 `
 document.body.appendChild(term)
 glitchAsciiText(term.querySelector('.term-title'))
-glitchAsciiText(document.getElementById('footer-name'))
 
 const termOut   = document.getElementById('term-output')
 const termInput = document.getElementById('term-input')
