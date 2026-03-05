@@ -380,7 +380,7 @@ function runBoot() {
 
   const FOOTER = [
     '  ✓  ALL SYSTEMS NOMINAL',
-    '  ✓  Press Ctrl+` to access terminal',
+    '  ✓  Press Ctrl+M to access terminal',
     '  ▶  LAUNCHING INTERFACE...',
   ]
 
@@ -878,7 +878,7 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && term.classList.contains('is-open')) { term.classList.remove('is-open'); return }
-  if ((e.ctrlKey || e.metaKey) && e.key === '`') {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
     e.preventDefault()
     term.classList.toggle('is-open')
     if (term.classList.contains('is-open')) {
