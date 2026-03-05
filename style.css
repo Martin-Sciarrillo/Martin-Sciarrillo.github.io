@@ -140,7 +140,7 @@ ul { list-style: none; }
 .nav__logo {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.45rem;
   color: var(--color-cyan);
   letter-spacing: 0.1em;
   text-shadow: var(--glow-cyan);
