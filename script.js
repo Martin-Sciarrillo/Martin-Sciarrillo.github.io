@@ -734,6 +734,31 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
   })()
 })()
 
+// ── Nav grain (same as footer, layered on top of interference) ───────────
+;(function initNavNoise() {
+  const nav = document.querySelector('.site-header')
+  if (!nav || reducedMotion) return
+  const canvas = document.createElement('canvas')
+  canvas.id = 'nav-noise'
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.35;mix-blend-mode:screen;image-rendering:pixelated;'
+  nav.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+  const W = 256, H = 64
+  canvas.width = W; canvas.height = H
+  let tick = 0
+  ;(function draw() {
+    requestAnimationFrame(draw)
+    if (++tick % 4 !== 0) return
+    const img = ctx.createImageData(W, H)
+    const d = img.data
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = d[i + 1] = d[i + 2] = 255
+      d[i + 3] = Math.random() < 0.18 ? Math.floor(Math.random() * 28) : 0
+    }
+    ctx.putImageData(img, 0, 0)
+  })()
+})()
+
 // ============================================================
 // ABOUT SECTION — permanent CRT pixel noise (same as terminal `noise`)
 // ============================================================
