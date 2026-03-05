@@ -452,6 +452,17 @@ function runBoot() {
     addLine('')
     addLine('')
     addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
     let completed = 0
     MODULES.forEach(([mod, color], idx) => {
       setTimeout(() => animateBar(mod, color, () => {
