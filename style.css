@@ -1297,7 +1297,7 @@ html.is-booting footer { opacity: 0; }
 .boot-line--bar {
   color: rgba(255,255,255,0.35);
   text-shadow: none;
-  margin-bottom: 1rem;
+  margin-bottom: 0.4rem;
   white-space: pre;
 }
 .boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }
