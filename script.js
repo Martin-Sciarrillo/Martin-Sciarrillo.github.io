@@ -766,7 +766,7 @@ term.querySelector('.term-close').addEventListener('click', () => term.classList
 // ABOUT SECTION — permanent CRT pixel noise (same as terminal `noise`)
 // ============================================================
 ;(function initAboutNoise() {
-  const section = document.querySelector('.about')
+  const section = document.getElementById('about-screen-wrap')
   if (!section || reducedMotion) return
   const canvas = document.createElement('canvas')
   canvas.id = 'about-noise'
