@@ -371,11 +371,11 @@ function runBoot() {
   ]
 
   const MODULES = [
-    ['AI/ML',             '#4ecdc4'],
-    ['CLOUD',             '#4ecdc4'],
-    ['STRATEGY',          '#4ecdc4'],
-    ['PEOPLE MANAGEMENT', '#4ecdc4'],
-    ['FOODIE',            '#4ecdc4'],
+    ['CLOUD',      '#4ecdc4'],
+    ['AI',         '#4ecdc4'],
+    ['STRATEGY',   '#4ecdc4'],
+    ['MANAGEMENT', '#4ecdc4'],
+    ['FOODIE',     '#4ecdc4'],
   ]
 
   const FOOTER = [
@@ -411,7 +411,7 @@ function runBoot() {
     const div = document.createElement('div')
     div.className = 'boot-line boot-line--bar'
     linesEl.appendChild(div)
-    const BLOCKS = 16, PAD = 20
+    const BLOCKS = 16, PAD = 12
     let filled = 0
     const tick = () => {
       const filledStr = filled > 0

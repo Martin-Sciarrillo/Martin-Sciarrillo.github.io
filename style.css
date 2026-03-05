@@ -1287,9 +1287,9 @@ html.is-booting footer { opacity: 0; }
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: none;
-  line-height: 1.4;
-  letter-spacing: 0.02em;
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
 }
 .boot-line--ascii-end {
   margin-bottom: 6rem;
@@ -1297,7 +1297,7 @@ html.is-booting footer { opacity: 0; }
 .boot-line--bar {
   color: rgba(255,255,255,0.35);
   text-shadow: none;
-  margin-bottom: 0.55rem;
+  margin-bottom: 1rem;
 }
 .boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }
 .boot-line--name  {
