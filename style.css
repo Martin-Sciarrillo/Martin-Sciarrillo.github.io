@@ -1415,6 +1415,12 @@ html.is-booting footer { opacity: 0; }
 .boot-line--ascii-end {
   margin-bottom: 6rem;
 }
+.boot-line--ascii-block {
+  font-size: clamp(0.8rem, 1.8vw, 1.8rem) !important;
+  letter-spacing: 0 !important;
+  line-height: 1.25 !important;
+  white-space: nowrap;
+}
 .boot-line--bar {
   color: rgba(255,255,255,0.35);
   text-shadow: none;
@@ -1683,6 +1689,7 @@ html.is-booting footer { opacity: 0; }
 
 .media-card--short .media-card__thumb { aspect-ratio: 9 / 16; }
 .media-card--short .media-card__badge { color: var(--color-green); text-shadow: var(--glow-green); }
+.media-card--podcast .media-card__badge { color: #1ed760; text-shadow: 0 0 8px #1ed76066; }
 
 /* ============================================================
    VIDEO MODAL

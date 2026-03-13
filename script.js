@@ -192,6 +192,12 @@ function toggleTrail() {
   }
 
   document.querySelectorAll('.media-card').forEach(card => {
+    if (card.dataset.href) {
+      const open = () => window.open(card.dataset.href, '_blank', 'noopener')
+      card.addEventListener('click', open)
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open() } })
+      return
+    }
     const open = () => openModal(card.dataset.vid, card.dataset.title, card.dataset.start, card.dataset.short === 'true')
     card.addEventListener('click', open)
     card.addEventListener('mouseenter', () => prewarm(card.dataset.vid), { once: true })
@@ -403,14 +409,19 @@ function runBoot() {
 
   // ── Content ──────────────────────────────────────────────
   const LOGO = [
-    '▄▀█ █▀▀ ▄▀█ ▀█▀ █ █▄░█ █▀▀ █░█ █▀█',
-    '█▀█ █▄▄ █▀█ ░█░ █ █░▀█ █▄▄ █▀█ █▄█',
+    ' █████╗  ██████╗ █████╗ ████████╗██╗███╗   ██╗ ██████╗██╗  ██╗ ██████╗ ',
+    '██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██║████╗  ██║██╔════╝██║  ██║██╔═══██╗',
+    '███████║██║     ███████║   ██║   ██║██╔██╗ ██║██║     ███████║██║   ██║',
+    '██╔══██║██║     ██╔══██║   ██║   ██║██║╚██╗██║██║     ██╔══██║██║   ██║',
+    '██║  ██║╚██████╗██║  ██║   ██║   ██║██║ ╚████║╚██████╗██║  ██║╚██████╔╝',
+    '╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝',
   ]
 
-  const HEADER_ROWS = [
-    [LOGO[0], 'boot-line--ascii'],
-    [LOGO[1], 'boot-line--ascii boot-line--ascii-end'],
-  ]
+  const HEADER_ROWS = LOGO.map((line, i) => {
+    const isLast = i === LOGO.length - 1
+    const cls = 'boot-line--ascii boot-line--ascii-block' + (isLast ? ' boot-line--ascii-end' : '')
+    return [line, cls]
+  })
 
   const MODULES = [
     ['CLOUD',      '#4ecdc4'],
@@ -463,7 +474,7 @@ function runBoot() {
         ? `<span style="color:${color}26">${'░'.repeat(BLOCKS - filled)}</span>`
         : ''
       const pct = String(Math.round((filled / BLOCKS) * 100)).padStart(3)
-      div.innerHTML = `  <span style="color:${color}99">▸</span> <span style="display:inline-block;width:11ch">${label}</span>[${filledStr}${emptyStr}]${pct}%`
+      div.innerHTML = `  <span style="color:${color}99">▸</span> <span style="color:#fff;display:inline-block;width:11ch">${label}</span><span style="color:#fff">[</span>${filledStr}${emptyStr}<span style="color:#fff">]</span>${pct}%`
       if (filled < BLOCKS) { filled++; setTimeout(tick, 28 + Math.random() * 38) }
       else onDone?.()
     }
@@ -488,21 +499,6 @@ function runBoot() {
   function showBars(done) {
     addLine('')
     addLine('  ── COMPETENCY STACK ─────────────────', 'boot-line--sys')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
     addLine('')
     addLine('')
     let completed = 0
