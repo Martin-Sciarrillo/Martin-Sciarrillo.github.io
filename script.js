@@ -501,6 +501,7 @@ function runBoot() {
     addLine('  ── COMPETENCY STACK ─────────────────', 'boot-line--sys')
     addLine('')
     addLine('')
+    addLine('')
     let completed = 0
     MODULES.forEach(([mod, color], idx) => {
       setTimeout(() => animateBar(mod, color, () => {
@@ -511,14 +512,19 @@ function runBoot() {
 
   function showFooter(done) {
     const spacer = document.createElement('div')
-    spacer.style.height = '7rem'
+    spacer.style.height = '5rem'
     linesEl.appendChild(spacer)
     let i = 0
     const next = () => {
       if (i >= FOOTER.length) { done(); return }
+      if (i === 1) {
+        const spacerMid = document.createElement('div')
+        spacerMid.style.height = '1.2rem'
+        linesEl.appendChild(spacerMid)
+      }
       if (i === FOOTER.length - 1) {
         const spacer2 = document.createElement('div')
-        spacer2.style.height = '5rem'
+        spacer2.style.height = '3.5rem'
         linesEl.appendChild(spacer2)
       }
       typeLine(FOOTER[i], i === FOOTER.length - 1 ? 'boot-line--launch' : 'boot-line--ok', () => setTimeout(next, 55))
