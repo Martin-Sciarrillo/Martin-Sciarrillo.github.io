@@ -40,13 +40,18 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav__menu" id="nav-menu" role="list">
-        <li><a href="#about">About</a></li>
-        <li><a href="#speaking">Speaking</a></li>
-        <li><a href="#news">In the News</a></li>
-        <li><a href="#media">On Camera</a></li>
+        <li><a href="#about" data-i18n="nav_about">About</a></li>
+        <li><a href="#speaking" data-i18n="nav_speaking">Speaking</a></li>
+        <li><a href="#news" data-i18n="nav_news">In the News</a></li>
+        <li><a href="#media" data-i18n="nav_media">On Camera</a></li>
         <li><a href="#podcast">Podcast</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle" role="group" aria-label="Language / Idioma">
+        <button class="lang-toggle__btn active" data-lang="en">EN</button>
+        <span class="lang-toggle__sep" aria-hidden="true">·</span>
+        <button class="lang-toggle__btn" data-lang="es">ES</button>
+      </div>
     </nav>
   </header>
 
@@ -105,11 +110,11 @@
     <!-- ABOUT -->
     <section class="section about" id="about" aria-labelledby="about-heading">
       <div class="container">
-        <h2 class="section__title" id="about-heading"><span>About Me</span></h2>
+        <h2 class="section__title" id="about-heading"><span data-i18n="about_heading">About Me</span></h2>
         <div class="about__grid">
           <div class="monitor-cyber">
             <div class="screen-wrap" id="about-screen-wrap">
-              <div class="screen-scroll about__bio">
+              <div class="screen-scroll about__bio" data-i18n-html="about_bio">
                 <p>I&rsquo;ve been building things with technology for as long as I can remember.</p>
                 <p>My first encounter with a computer was at my public school in the early 90s, sitting in front of a <strong>Commodore 64</strong>. That&rsquo;s where I discovered <strong>LOGO</strong> &mdash; and where my first digital &ldquo;love&rdquo; was a tiny turtle moving across the screen, drawing shapes one command at a time.</p>
                 <p>A year later I got my first home PC &mdash; I was 10. The place that sold it to my father also taught me <strong>MS BASIC</strong>. I didn&rsquo;t realize it then, but that was <strong>programming</strong> &mdash; back when computers had almost no abstraction and you had to write code to make them do anything.</p>
@@ -147,8 +152,8 @@
     <!-- PUBLIC SPEAKING -->
     <section class="section speaking" id="speaking" aria-labelledby="speaking-heading">
       <div class="container">
-        <h2 class="section__title" id="speaking-heading"><span>Public Speaking &amp; Events</span></h2>
-        <p class="section__subtitle">Selected appearances at conferences, summits, and media events.</p>
+        <h2 class="section__title" id="speaking-heading"><span data-i18n="speaking_heading">Public Speaking &amp; Events</span></h2>
+        <p class="section__subtitle" data-i18n="speaking_subtitle">Selected appearances at conferences, summits, and media events.</p>
         <div class="photo-grid" role="list">
           <!-- 2024 -->
           <figure class="photo-grid__item" role="listitem">
@@ -337,8 +342,8 @@
     <!-- IN THE NEWS -->
     <section class="section news" id="news" aria-labelledby="news-heading">
       <div class="container">
-        <h2 class="section__title" id="news-heading"><span>In the News</span></h2>
-        <p class="section__subtitle">Press coverage and media appearances over the years.</p>
+        <h2 class="section__title" id="news-heading"><span data-i18n="news_heading">In the News</span></h2>
+        <p class="section__subtitle" data-i18n="news_subtitle">Press coverage and media appearances over the years.</p>
         <div class="accordion" id="news-accordion">
 
           <!-- 2026 -->
@@ -476,8 +481,8 @@
     <!-- MEDIA -->
     <section class="section media-section" id="media" aria-labelledby="media-heading">
       <div class="container">
-        <h2 class="section__title" id="media-heading"><span>On Camera</span></h2>
-        <p class="section__sub">Interviews · Podcasts · Talks</p>
+        <h2 class="section__title" id="media-heading"><span data-i18n="media_heading">On Camera</span></h2>
+        <p class="section__sub" data-i18n="media_sub">Interviews · Podcasts · Talks</p>
         <div class="media-grid">
 
           <!-- VIDEO CARDS -->
@@ -882,8 +887,8 @@
     <!-- PODCAST -->
     <section class="section podcast-section" id="podcast" aria-labelledby="podcast-heading">
       <div class="container">
-        <h2 class="section__title" id="podcast-heading"><span>Podcast</span></h2>
-        <p class="section__sub">Episodes where I've been a guest or speaker.</p>
+        <h2 class="section__title" id="podcast-heading"><span data-i18n="podcast_heading">Podcast</span></h2>
+        <p class="section__sub" data-i18n="podcast_sub">Episodes where I've been a guest or speaker.</p>
         <div class="podcast-list">
 
           <div class="podcast-item">
@@ -971,8 +976,8 @@
     <!-- CONTACT -->
     <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
       <div class="container">
-        <h2 class="section__title" id="contact-heading"><span>Let's Connect</span></h2>
-        <p class="section__subtitle">Find me across the web or book some time directly.</p>
+        <h2 class="section__title" id="contact-heading"><span data-i18n="contact_heading">Let's Connect</span></h2>
+        <p class="section__subtitle" data-i18n="contact_subtitle">Find me across the web or book some time directly.</p>
       </div>
 
       <div class="coffee-cta">
@@ -980,8 +985,8 @@
         <a href="https://aka.ms/MeetingWithMartin" target="_blank" rel="noopener" class="coffee-card">
           <span class="coffee-icon">☕</span>
           <div class="coffee-text">
-            <p class="coffee-text__title">Virtual Coffee with Martin</p>
-            <p class="coffee-text__sub">Book a 1:1 &mdash; let&rsquo;s talk AI, data, cloud or anything in between.</p>
+            <p class="coffee-text__title" data-i18n="coffee_title">Virtual Coffee with Martin</p>
+            <p class="coffee-text__sub" data-i18n="coffee_sub">Book a 1:1 &mdash; let&rsquo;s talk AI, data, cloud or anything in between.</p>
           </div>
           <span class="coffee-arrow">&rarr;</span>
         </a>
@@ -989,7 +994,7 @@
       </div>
 
       <div class="social-section">
-        <p class="social-section__title">Find me on</p>
+        <p class="social-section__title" data-i18n="social_title">Find me on</p>
         <div class="social-grid">
 
           <a href="https://www.linkedin.com/in/sciarrillo/" target="_blank" rel="noopener" class="social-card">

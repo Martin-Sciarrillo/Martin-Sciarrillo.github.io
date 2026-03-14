@@ -935,3 +935,81 @@ document.addEventListener('keydown', e => {
     }
   }
 })
+
+function initLang() {
+  const enCache = {}
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    enCache[el.dataset.i18n] = el.textContent
+  })
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    enCache[el.dataset.i18nHtml] = el.innerHTML
+  })
+
+  const es = {
+    nav_about: 'Sobre mí',
+    nav_speaking: 'Charlas',
+    nav_news: 'En los medios',
+    nav_media: 'En cámara',
+    nav_contact: 'Contacto',
+    about_heading: 'Sobre mí',
+    speaking_heading: 'Charlas & Eventos',
+    speaking_subtitle: 'Apariciones seleccionadas en conferencias, cumbres y eventos mediáticos.',
+    news_heading: 'En los medios',
+    news_subtitle: 'Cobertura de prensa y apariciones en medios a lo largo de los años.',
+    media_heading: 'En cámara',
+    media_sub: 'Entrevistas · Podcasts · Charlas',
+    podcast_heading: 'Podcast',
+    podcast_sub: 'Episodios donde fui invitado o speaker.',
+    contact_heading: 'Conectemos',
+    contact_subtitle: 'Encontrame en la web o agendá una reunión directamente.',
+    coffee_title: 'Café virtual con Martín',
+    coffee_sub: 'Agendá un 1:1 — hablemos de IA, datos, cloud o lo que sea.',
+    social_title: 'Encontrame en',
+    about_bio: `<p>Construyo cosas con tecnología desde que tengo memoria.</p>
+<p>Mi primer encuentro con una computadora fue en mi escuela pública a principios de los 90, frente a una <strong>Commodore 64</strong>. Ahí descubrí <strong>LOGO</strong> — y ahí nació mi primer "amor" digital: una tortuga que se movía por la pantalla dibujando formas, un comando a la vez.</p>
+<p>Un año después tuve mi primera PC en casa — tenía 10 años. El lugar donde mi papá la compró también me enseñó <strong>MS BASIC</strong>. En ese momento no lo sabía, pero eso era <strong>programación</strong> — en una época en que las computadoras casi no tenían abstracción y había que escribir código para hacer cualquier cosa.</p>
+<p>Cuando empecé el secundario, descubrí el <strong>internet</strong> — y de repente el mundo no tenía fronteras. Email, IRC, gente conectándose desde todos lados… parecía magia. Pasé gran parte de mi adolescencia experimentando y construyendo con <strong>HTML</strong>, <strong>CSS</strong>, y <strong>JavaScript</strong>, y eventualmente convertí esa curiosidad en ingresos en los primeros años de la web.</p>
+<p>Después empezó el capítulo corporativo. Me fui sumando a empresas cada vez más grandes y, desde el primer día, me incliné por el <strong>global delivery</strong> — mucho antes de que se volviera lo habitual.</p>
+<p>Vi evolucionar el stack: desde redes Novell hasta <strong>Windows</strong>, <strong>Unix</strong> y <strong>Linux</strong> en datacenters on-premise tradicionales, hasta mover cargas de trabajo a la nube. De deployments clásicos a infraestructura como código.</p>
+<p>Y ahora estamos entrando en la <strong>era de la IA</strong> — donde la infraestructura no solo ejecuta sistemas, sino que potencia inteligencia.</p>
+<p>Operé en la intersección entre construir soluciones y operarlas — mientras construía equipos que hacen ambas cosas, en distintos países, regiones y zonas horarias.</p>
+<p>Tuve el privilegio de trabajar dentro de algunas de las <strong>empresas tecnológicas más grandes del mundo</strong>, colaborando con organizaciones globales en distintas industrias y mercados. Esa exposición moldeó mi visión de la tecnología: no como teoría, sino como algo que se comporta diferente según el contexto, la cultura, los incentivos y la ejecución.</p>
+<p>Actualmente soy <strong>Executive Technology Strategist</strong> en <span class="hl-grad">Microsoft</span>, trabajando con líderes senior de negocio para traducir datos, IA, nube y seguridad en resultados medibles. Anteriormente, lideré la organización de <strong>Customer Success Data &amp; AI</strong> en <strong>Spanish South America (SSA)</strong> — Argentina, Chile, Bolivia, Colombia, Ecuador, Paraguay, Perú y Uruguay — y fui <strong>CTO</strong> y miembro del <strong>Leadership Team</strong> de la subsidiaria en <span class="hl-grad">Argentina</span>, siempre enfocado en alinear la estrategia tecnológica con el impacto en el negocio.</p>
+<p>Antes de Microsoft, fui <strong>Global Leader of Multicloud Platforms</strong> en <span class="hl-grad">EY</span>, construyendo productos y servicios en entornos híbridos y cloud en EE.UU., Europa y Asia. Antes de eso, lideré el <strong>Global Unix &amp; Linux team</strong> de la firma.</p>
+<p>Y antes de eso, armé y escalé equipos tecnológicos en <span class="hl-grad">IBM</span> durante la expansión del Global Delivery Center, dando soporte a clientes en EE.UU. — siempre desde <span class="hl-grad">Argentina</span> al mundo.</p>
+<p>Soy Licenciado en Análisis de Sistemas por <strong>ORT Argentina</strong>, complementado con programas ejecutivos en la <strong>Universidad Torcuato Di Tella</strong> &amp; <strong>Universidad de San Andrés</strong>, donde también fui asesor de tesis del Máster en Negocios Digitales. Además, actualmente soy <strong>board member</strong>, <strong>asesor técnico</strong> y <strong>fractional CTO</strong> de varias startups.</p>
+<p>Soy un <strong>defensor de la IA</strong> — no desde el hype, sino con convicción. Creo que la IA es una fuerza transformadora que va a redefinir fundamentalmente la manera en que trabajamos, decidimos y construimos. Por eso hablo frecuentemente sobre su impacto en los negocios y en la sociedad, participando en eventos y medios tanto en Argentina como a nivel internacional — incluyendo Forbes, La Nación, Clarín, Ámbito Financiero, Apertura, Information Technology, IDEA Management, Nerdearla, Campus Party, entre otros.</p>
+<p>Fuera de la oficina, tengo la suerte de estar casado con <strong>Vicky</strong> y de ser el papá de <strong>Miranda</strong> 🧡</p>
+<p>Somos <strong>foodies</strong> por naturaleza y <strong>viajeros</strong> por elección. Nos encanta recibir gente en casa y hacer asados, y adoramos descubrir lugares y sabores nuevos. Cuando viajamos somos tercos en una sola cosa: seguir siendo viajeros, nunca turistas. Así es como nos mantenemos curiosos. No solo visitamos lugares — los probamos. La cultura puede ser sutil, multicapa, difícil de descifrar. Pero ponés gente alrededor de una mesa y se vuelve real rápido — platos compartidos, mercados locales, conversaciones de verdad, acá o del otro lado del mundo.</p>
+<p>Como dijo <strong>Anthony Bourdain</strong>, la comida es una de las formas más honestas de entender a las personas.</p>
+<p>Esa misma mentalidad se mete en el resto de mi vida. Soy <strong>corredor</strong> habitual — sin maratón completo todavía, pero llegando de a sprints. Juego al <strong>fútbol</strong> a un nivel muy amateur (mucho entusiasmo, poco talento). Soy un nerd del <strong>café</strong>. Y soy un devoto irredento de un <strong>Negroni</strong> bien preparado — sin atajos, nunca.</p>
+<p>Porque ya sea en tecnología, viajes, deporte, café o cócteles, me atraen las cosas que recompensan la paciencia, el oficio y la consistencia.</p>`,
+  }
+
+  function applyLang(lang) {
+    localStorage.setItem('lang', lang)
+    document.documentElement.lang = lang
+    document.querySelectorAll('.lang-toggle__btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang)
+    })
+    const dict = lang === 'es' ? es : enCache
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = dict[el.dataset.i18n]
+      if (v != null) el.textContent = v
+    })
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const v = dict[el.dataset.i18nHtml]
+      if (v != null) el.innerHTML = v
+    })
+  }
+
+  document.querySelectorAll('.lang-toggle__btn').forEach(btn => {
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang))
+  })
+
+  const saved = localStorage.getItem('lang')
+  if (saved === 'es') applyLang('es')
+}
+
+initLang()

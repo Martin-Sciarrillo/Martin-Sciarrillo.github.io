@@ -210,6 +210,33 @@ ul { list-style: none; }
   transition: transform var(--transition), opacity var(--transition);
 }
 
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 1.25rem;
+  flex-shrink: 0;
+}
+.lang-toggle__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.35);
+  padding: 2px 4px;
+  transition: color 0.2s;
+}
+.lang-toggle__btn:hover { color: rgba(255,255,255,0.7); }
+.lang-toggle__btn.active { color: #00e5ff; }
+.lang-toggle__sep {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.2);
+  pointer-events: none;
+}
+
 /* ============================================================
    HERO
    ============================================================ */
