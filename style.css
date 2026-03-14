@@ -1423,11 +1423,8 @@ html.is-booting footer { opacity: 0; }
 }
 .boot-line--sys    { color: var(--color-text-muted); text-shadow: none; }
 .boot-line--launch {
-  background: linear-gradient(105deg, #00e5ff, #ff00de);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
+  color: #00e5ff;
+  text-shadow: 0 0 6px #00e5ff, 0 0 14px rgba(0,229,255,0.3);
 }
 .boot-line--ascii  {
   background: linear-gradient(105deg, #00e5ff, #ff00de);
@@ -1451,7 +1448,7 @@ html.is-booting footer { opacity: 0; }
 .boot-line--bar {
   color: rgba(255,255,255,0.35);
   text-shadow: none;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.9rem;
   white-space: pre;
 }
 .boot-line--frame { color: rgba(0,229,255,0.28); text-shadow: none; }

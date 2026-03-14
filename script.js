@@ -511,14 +511,14 @@ function runBoot() {
 
   function showFooter(done) {
     const spacer = document.createElement('div')
-    spacer.style.height = '4rem'
+    spacer.style.height = '7rem'
     linesEl.appendChild(spacer)
     let i = 0
     const next = () => {
       if (i >= FOOTER.length) { done(); return }
       if (i === FOOTER.length - 1) {
         const spacer2 = document.createElement('div')
-        spacer2.style.height = '2rem'
+        spacer2.style.height = '5rem'
         linesEl.appendChild(spacer2)
       }
       typeLine(FOOTER[i], i === FOOTER.length - 1 ? 'boot-line--launch' : 'boot-line--ok', () => setTimeout(next, 55))
