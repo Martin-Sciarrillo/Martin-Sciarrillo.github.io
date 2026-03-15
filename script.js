@@ -414,7 +414,7 @@ function runBoot() {
     '███████║██║     ███████║   ██║   ██║██╔██╗ ██║██║     ███████║██║   ██║',
     '██╔══██║██║     ██╔══██║   ██║   ██║██║╚██╗██║██║     ██╔══██║██║   ██║',
     '██║  ██║╚██████╗██║  ██║   ██║   ██║██║ ╚████║╚██████╗██║  ██║╚██████╔╝',
-    '╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝',
+    '╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝  ',
   ]
 
   const HEADER_ROWS = LOGO.map((line, i) => {
@@ -512,7 +512,7 @@ function runBoot() {
 
   function showFooter(done) {
     const spacer = document.createElement('div')
-    spacer.style.height = '9rem'
+    spacer.style.height = '14rem'
     linesEl.appendChild(spacer)
     let i = 0
     const next = () => {
