@@ -259,11 +259,11 @@ function closeLightbox() {
   setTimeout(() => { lbImg.src = '' }, 300)
 }
 
-document.querySelectorAll('.photo-grid__item').forEach(item => {
+document.querySelectorAll('.polaroid-d').forEach(item => {
   item.style.cursor = 'pointer'
   item.addEventListener('click', () => {
-    const img = item.querySelector('.photo-grid__img')
-    const caption = item.querySelector('.photo-grid__caption')
+    const img = item.querySelector('img')
+    const caption = item.querySelector('figcaption')
     openLightbox(img.src, caption?.textContent || img.alt)
   })
 })
