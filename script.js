@@ -512,7 +512,7 @@ function runBoot() {
 
   function showFooter(done) {
     const spacer = document.createElement('div')
-    spacer.style.height = '5rem'
+    spacer.style.height = '9rem'
     linesEl.appendChild(spacer)
     let i = 0
     const next = () => {
