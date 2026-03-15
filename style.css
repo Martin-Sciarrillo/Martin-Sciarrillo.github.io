@@ -1534,7 +1534,8 @@ html.is-booting footer { opacity: 0; }
   80%      { transform: translate(1px, -1px);  filter: hue-rotate(-20deg) saturate(1.2); }
 }
 
-.photo-grid__item:hover .photo-grid__img {
+.photo-grid__item:hover .photo-grid__img,
+.polaroid-d:hover img {
   animation: photo-glitch 0.5s steps(1) infinite;
 }
 
@@ -1647,7 +1648,8 @@ html.is-booting footer { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   #boot-screen { display: none !important; }
   .hero__tagline.typing::after { display: none; }
-  .photo-grid__item:hover .photo-grid__img { animation: none; }
+  .photo-grid__item:hover .photo-grid__img,
+  .polaroid-d:hover img { animation: none; }
 }
 
 /* BACKGROUND GRID — disabled */
