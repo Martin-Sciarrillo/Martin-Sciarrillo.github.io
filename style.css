@@ -729,6 +729,11 @@ ul { list-style: none; }
 .polaroid-d:nth-child(42) { --rot-d:1.6deg;  --ty-d:-6px; }
 .polaroid-d:nth-child(43) { --rot-d:-3.9deg; --ty-d:4px; }
 .polaroid-d:nth-child(44) { --rot-d:2.3deg;  --ty-d:-1px; }
+.polaroid-d:nth-child(45) { --rot-d:-1.8deg; --ty-d:4px; }
+.polaroid-d:nth-child(46) { --rot-d:3.2deg;  --ty-d:-3px; }
+.polaroid-d:nth-child(47) { --rot-d:-2.5deg; --ty-d:5px; }
+.polaroid-d:nth-child(48) { --rot-d:1.7deg;  --ty-d:-2px; }
+.polaroid-d:nth-child(49) { --rot-d:-3.1deg; --ty-d:3px; }
 
 .polaroid-d:hover {
   transform: rotate(0deg) scale(1.05) translateY(-8px);
