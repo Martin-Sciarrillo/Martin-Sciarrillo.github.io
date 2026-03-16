@@ -522,7 +522,7 @@ function runBoot() {
       if (i >= FOOTER.length) { done(); return }
       if (i === 1) {
         const spacerMid = document.createElement('div')
-        spacerMid.style.height = '1.2rem'
+        spacerMid.style.height = '2.4rem'
         linesEl.appendChild(spacerMid)
       }
       if (i === FOOTER.length - 1) {
