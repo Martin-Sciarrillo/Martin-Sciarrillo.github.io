@@ -1476,7 +1476,7 @@ html.is-booting footer { opacity: 0; }
   font-size: clamp(1.4rem, 3vw, 2.2rem);
 }
 .boot-line--ascii-end {
-  margin-bottom: 6rem;
+  margin-bottom: 2rem;
 }
 .boot-line--ascii-block {
   font-size: clamp(0.8rem, 1.8vw, 1.8rem) !important;

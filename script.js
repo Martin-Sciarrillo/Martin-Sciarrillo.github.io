@@ -502,6 +502,9 @@ function runBoot() {
     addLine('')
     addLine('')
     addLine('')
+    addLine('')
+    addLine('')
+    addLine('')
     let completed = 0
     MODULES.forEach(([mod, color], idx) => {
       setTimeout(() => animateBar(mod, color, () => {
@@ -512,7 +515,7 @@ function runBoot() {
 
   function showFooter(done) {
     const spacer = document.createElement('div')
-    spacer.style.height = '14rem'
+    spacer.style.height = '3rem'
     linesEl.appendChild(spacer)
     let i = 0
     const next = () => {
