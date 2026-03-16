@@ -490,7 +490,7 @@ function runBoot() {
         return
       }
       const [text, cls] = HEADER_ROWS[i++]
-      glitchAsciiText(addLine(text, cls))
+      addLine(text, cls)
       setTimeout(next, 38)
     }
     next()
