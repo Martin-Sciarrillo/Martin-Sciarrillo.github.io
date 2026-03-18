@@ -482,17 +482,12 @@ function runBoot() {
 
   // ── Phases ───────────────────────────────────────────────
   function showBox(done) {
-    let i = 0
-    const next = () => {
-      if (i >= HEADER_ROWS.length) {
-        setTimeout(done, 80)
-        return
-      }
-      const [text, cls] = HEADER_ROWS[i++]
-      addLine(text, cls)
-      setTimeout(next, 38)
-    }
-    next()
+    const img = document.createElement('img')
+    img.src = 'img/ascii-art.png'
+    img.style.cssText = 'display:block;max-width:100%;height:auto;margin-bottom:2rem;opacity:0;transition:opacity 0.4s ease;'
+    linesEl.appendChild(img)
+    img.onload = () => { img.style.opacity = '1'; setTimeout(done, 200) }
+    img.onerror = () => setTimeout(done, 200)
   }
 
   function showBars(done) {
