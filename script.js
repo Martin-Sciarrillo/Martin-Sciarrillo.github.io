@@ -492,13 +492,8 @@ function runBoot() {
 
   function showBars(done) {
     addLine('')
-    addLine('  ── COMPETENCY STACK ─────────────────', 'boot-line--sys')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
-    addLine('')
+    const stackHeader = addLine('  ── COMPETENCY STACK ─────────────────', 'boot-line--sys')
+    stackHeader.style.marginBottom = '1.8rem'
     let completed = 0
     MODULES.forEach(([mod, color], idx) => {
       setTimeout(() => animateBar(mod, color, () => {
