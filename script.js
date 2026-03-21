@@ -157,6 +157,57 @@ function toggleTrail() {
   return ['[CURSOR TRAIL] enabled']
 }
 
+let _matrixActive = false
+function toggleMatrix() {
+  if (_matrixActive) {
+    _matrixActive = false
+    document.getElementById('matrix-rain')?.remove()
+    return ['[MATRIX] disabled']
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return ['[MATRIX] blocked by prefers-reduced-motion']
+  _matrixActive = true
+  const canvas = document.createElement('canvas')
+  canvas.id = 'matrix-rain'
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:9998;pointer-events:none;opacity:0.22;'
+  document.body.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+  const FS = 14
+  const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF>_#@!'
+  let W, H, COLS, drops
+  function resize() {
+    W = canvas.width  = window.innerWidth
+    H = canvas.height = window.innerHeight
+    COLS = Math.floor(W / FS)
+    drops = Array.from({ length: COLS }, () => Math.random() * -(H / FS))
+  }
+  resize()
+  window.addEventListener('resize', resize, { passive: true })
+  let raf
+  ;(function draw() {
+    if (!_matrixActive) return
+    ctx.fillStyle = 'rgba(4,4,10,0.15)'
+    ctx.fillRect(0, 0, W, H)
+    ctx.font = `bold ${FS}px monospace`
+    for (let i = 0; i < COLS; i++) {
+      const y = drops[i] * FS
+      if (y > 0 && y < H) {
+        ctx.shadowColor = '#00e5ff'; ctx.shadowBlur = 10
+        ctx.fillStyle = '#ffffff'
+        ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y)
+        ctx.shadowBlur = 0
+      }
+      if (y - FS > 0 && y - FS < H) {
+        ctx.fillStyle = `rgba(0,229,255,${0.4 + Math.random() * 0.5})`
+        ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * FS, y - FS)
+      }
+      drops[i]++
+      if (drops[i] * FS > H && Math.random() > 0.975) drops[i] = Math.random() * -20
+    }
+    raf = requestAnimationFrame(draw)
+  })()
+  return ['[MATRIX] enabled · type "matrix" again to stop']
+}
+
 // ============================================================
 // MEDIA SECTION — video modal
 // ============================================================
@@ -620,7 +671,7 @@ const termInput = document.getElementById('term-input')
 
 
 const termCmds = {
-  help:    () => ['available commands:', '  whoami   · who is this?', '  ls       · list sections', '  skills   · tech stack', '  contact  · book a coffee', '  noise    · toggle CRT noise overlay', '  trail    · toggle neon cursor trail', '  clear    · clear screen', '  exit     · close terminal'],
+  help:    () => ['available commands:', '  whoami   · who is this?', '  ls       · list sections', '  skills   · tech stack', '  contact  · book a coffee', '  noise    · toggle CRT noise overlay', '  trail    · toggle neon cursor trail', '  matrix   · toggle matrix rain effect', '  clear    · clear screen', '  exit     · close terminal'],
   whoami:  () => ['Martín Sciarrillo', 'Executive Technology Strategist · Microsoft Argentina', 'AI · Data · Cloud'],
   ls:      () => ['drwxr-xr-x  about/', 'drwxr-xr-x  speaking/', 'drwxr-xr-x  news/', 'drwxr-xr-x  contact/'],
   skills:  () => ['AI/ML · Azure · AWS · GCP', 'Data Strategy · Cloud Architecture', 'Executive Advisory · Product Leadership', 'Linux · Unix · Hybrid Cloud'],
@@ -630,6 +681,7 @@ const termCmds = {
   // hidden
   noise:   () => toggleNoise(),
   trail:   () => toggleTrail(),
+  matrix:  () => toggleMatrix(),
 }
 
 function termWrite(lines, cls = 'term-res') {
