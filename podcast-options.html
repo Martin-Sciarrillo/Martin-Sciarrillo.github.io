@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podcast Section — Cassette Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Share+Tech+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #060810; color: #e0e0e0; font-family: 'Share Tech Mono', monospace; }
+
+.selector {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(6,8,16,0.97); backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0,229,255,0.2);
+  padding: 1rem 2rem; display: flex; gap: 1rem; align-items: center;
+}
+.selector span { color: rgba(255,255,255,0.35); font-size: 0.75rem; margin-right: 0.5rem; }
+.opt-btn {
+  padding: 0.4rem 1.1rem; border: 1px solid rgba(0,229,255,0.3);
+  background: none; color: rgba(255,255,255,0.5); cursor: pointer;
+  font-family: inherit; font-size: 0.75rem; letter-spacing: 0.08em; transition: all 0.2s;
+}
+.opt-btn.active { border-color: #00e5ff; color: #00e5ff; background: rgba(0,229,255,0.07); }
+.opt-btn:hover { color: #fff; border-color: rgba(0,229,255,0.6); }
+
+.option { display: none; padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+.option.visible { display: block; }
+.section-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #4ecdc4; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: rgba(78,205,196,0.2); }
+h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; margin-bottom: 0.4rem; }
+.subtitle { color: rgba(255,255,255,0.38); font-size: 0.78rem; letter-spacing: 0.06em; margin-bottom: 3rem; }
+.opt-desc { font-size: 0.62rem; letter-spacing: 0.14em; color: rgba(255,255,255,0.2); text-transform: uppercase; margin-bottom: 2.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.opt-desc::before { content: attr(data-l); width: 22px; height: 22px; border-radius: 50%; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+
+/* ═══════════════════════════════════════════════════
+   OPTION A — CASSETTE CARDS GRID
+═══════════════════════════════════════════════════ */
+
+.cassette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem 1.8rem;
+}
+
+.cassette-card {
+  cursor: pointer;
+  position: relative;
+}
+
+/* The cassette body */
+.cassette-body {
+  background: linear-gradient(160deg, #2a2a2a 0%, #1a1a1a 60%, #222 100%);
+  border: 1px solid #3a3a3a;
+  border-radius: 4px 4px 8px 8px;
+  padding: 10px 14px 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.4),
+    0 6px 20px rgba(0,0,0,0.6);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.cassette-card:hover .cassette-body {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* top notch / write-protect tab */
+.cassette-notch {
+  display: flex; justify-content: space-between; margin-bottom: 6px;
+}
+.cassette-notch span {
+  width: 18px; height: 5px;
+  background: #111; border: 1px solid #333; border-radius: 2px;
+}
+
+/* label sticker */
+.cassette-label {
+  background: linear-gradient(135deg, #f5e6c8 0%, #ede0b8 100%);
+  border-radius: 3px;
+  padding: 8px 10px 6px;
+  margin-bottom: 8px;
+  min-height: 52px;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+}
+.cassette-label::before {
+  content: 'SIDE A';
+  position: absolute; top: 5px; right: 7px;
+  font-size: 0.45rem; letter-spacing: 0.18em;
+  color: rgba(80,40,0,0.5); font-family: 'Share Tech Mono', monospace;
+}
+.cassette-ep {
+  font-size: 0.5rem; letter-spacing: 0.15em; color: rgba(100,60,10,0.6);
+  font-family: 'Share Tech Mono', monospace; text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.cassette-title {
+  font-family: 'Special Elite', serif;
+  font-size: 0.78rem; color: #3a2010; line-height: 1.3;
+}
+
+/* reel window */
+.cassette-reels {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 8px;
+}
+.cassette-window {
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #444; border-radius: 3px;
+  padding: 6px 18px;
+  display: flex; gap: 18px; align-items: center; justify-content: center;
+}
+.reel {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 2px solid #555;
+  background: radial-gradient(circle at 50% 50%, #222 30%, transparent 30%),
+              repeating-conic-gradient(#333 0deg 30deg, #1a1a1a 30deg 60deg);
+  position: relative;
+  transition: transform 1.5s linear;
+}
+.reel::after {
+  content: '';
+  position: absolute; inset: 50%; transform: translate(-50%,-50%);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #444; border: 1px solid #555;
+}
+.cassette-card:hover .reel { transform: rotate(360deg); }
+.cassette-tape-line {
+  height: 3px; flex: 1; margin: 0 4px;
+  background: linear-gradient(90deg, #5a3a10, #7a5020, #5a3a10);
+  border-radius: 2px;
+}
+.cassette-bottom {
+  font-size: 0.48rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.2);
+  text-align: center; padding-top: 4px; text-transform: uppercase;
+}
+
+/* spotify embed shown on hover */
+.cassette-player {
+  margin-top: 8px;
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.cassette-card:hover .cassette-player,
+.cassette-card.expanded .cassette-player { max-height: 160px; }
+
+
+/* ═══════════════════════════════════════════════════
+   OPTION B — MIXTAPE J-CARDS (scattered, like polaroids)
+═══════════════════════════════════════════════════ */
+
+.mixtape-board {
+  background: linear-gradient(135deg, #0a0c0f 0%, #0d1018 100%);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 2.5rem 2rem;
+}
+
+.jcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem 1.6rem;
+}
+
+.jcard {
+  background: #f0e8d5;
+  padding: 0;
+  transform: rotate(var(--rot-j, 0deg));
+  box-shadow: 3px 6px 20px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.4);
+  transition: transform 0.3s cubic-bezier(0.2,0,0,1.3), box-shadow 0.3s ease;
+  cursor: pointer; position: relative;
+  overflow: hidden;
+}
+.jcard:nth-child(1) { --rot-j:-2.8deg; }
+.jcard:nth-child(2) { --rot-j:1.9deg; }
+.jcard:nth-child(3) { --rot-j:-1.3deg; }
+.jcard:nth-child(4) { --rot-j:3.2deg; }
+.jcard:nth-child(5) { --rot-j:-2.1deg; }
+.jcard:nth-child(6) { --rot-j:1.5deg; }
+.jcard:nth-child(7) { --rot-j:-3.5deg; }
+.jcard:nth-child(8) { --rot-j:2.4deg; }
+.jcard:nth-child(9) { --rot-j:-1.7deg; }
+
+.jcard:hover {
+  transform: rotate(0deg) scale(1.05) translateY(-8px);
+  box-shadow: 6px 22px 50px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+/* colored top band */
+.jcard__band {
+  height: 28px;
+  background: var(--band-color, #e05050);
+  display: flex; align-items: center; padding: 0 10px;
+  justify-content: space-between;
+}
+.jcard:nth-child(1) { --band-color: #c94040; }
+.jcard:nth-child(2) { --band-color: #3a7ebf; }
+.jcard:nth-child(3) { --band-color: #2e9e5a; }
+.jcard:nth-child(4) { --band-color: #b06020; }
+.jcard:nth-child(5) { --band-color: #7040b0; }
+.jcard:nth-child(6) { --band-color: #c94040; }
+.jcard:nth-child(7) { --band-color: #3a7ebf; }
+.jcard:nth-child(8) { --band-color: #2e9e5a; }
+.jcard:nth-child(9) { --band-color: #b06020; }
+.jcard__side {
+  font-size: 0.5rem; color: rgba(255,255,255,0.7);
+  letter-spacing: 0.15em; font-family: 'Share Tech Mono', monospace;
+}
+.jcard__type {
+  font-size: 0.45rem; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.1em; font-family: 'Share Tech Mono', monospace;
+}
+
+/* reel mini drawing */
+.jcard__reels {
+  background: #1a1a1a; height: 60px;
+  display: flex; align-items: center; justify-content: center; gap: 20px;
+  padding: 0 20px; position: relative;
+}
+.jcard__reels::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px; height: 4px;
+  background: #4a3010; border-radius: 2px;
+}
+.jcard__reel {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid #444;
+  background: radial-gradient(circle, #2a2a2a 35%, transparent 35%),
+              repeating-conic-gradient(#333 0deg 45deg, #222 45deg 90deg);
+  position: relative; z-index: 1;
+}
+.jcard__reel::after {
+  content: ''; position: absolute; inset: 50%; transform: translate(-50%,-50%);
+  width: 7px; height: 7px; border-radius: 50%; background: #555;
+}
+
+/* text body */
+.jcard__body { padding: 10px 10px 14px; }
+.jcard__ep {
+  font-size: 0.48rem; letter-spacing: 0.15em; color: rgba(60,30,10,0.5);
+  font-family: 'Share Tech Mono', monospace; text-transform: uppercase; margin-bottom: 4px;
+}
+.jcard__title {
+  font-family: 'Caveat', cursive;
+  font-size: 0.95rem; font-weight: 600; color: #2a1808; line-height: 1.25;
+}
+/* lined paper */
+.jcard__body::after {
+  content: '';
+  display: block; margin-top: 8px;
+  background: repeating-linear-gradient(
+    transparent, transparent 11px,
+    rgba(0,0,0,0.08) 11px, rgba(0,0,0,0.08) 12px
+  );
+  height: 24px;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   OPTION C — TAPE DECK CONSOLE
+═══════════════════════════════════════════════════ */
+
+.deck-outer {
+  background: linear-gradient(180deg, #1e1e1e 0%, #161616 100%);
+  border: 2px solid #2a2a2a;
+  border-radius: 8px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.06),
+    inset 0 -2px 0 rgba(0,0,0,0.5),
+    0 20px 60px rgba(0,0,0,0.7);
+  overflow: hidden;
+}
+
+/* top bar */
+.deck-topbar {
+  background: linear-gradient(180deg, #252525 0%, #1e1e1e 100%);
+  border-bottom: 1px solid #333;
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.deck-brand {
+  font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,200,50,0.6);
+  text-transform: uppercase;
+}
+.deck-model {
+  font-size: 0.55rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.2);
+}
+.deck-dots { display: flex; gap: 6px; margin-left: auto; }
+.deck-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #333; border: 1px solid #444;
+}
+.deck-dot.red { background: #c03030; border-color: #e04040; box-shadow: 0 0 6px rgba(200,40,40,0.5); }
+
+/* tape window */
+.deck-window {
+  margin: 16px 20px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #333; border-radius: 4px;
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 24px;
+}
+.deck-reel-big {
+  width: 54px; height: 54px; flex-shrink: 0; border-radius: 50%;
+  border: 3px solid #3a3a3a;
+  background: radial-gradient(circle at 50% 50%, #1a1a1a 30%, transparent 30%),
+              repeating-conic-gradient(#2a2a2a 0deg 30deg, #1a1a1a 30deg 60deg);
+  position: relative;
+  animation: reel-spin 4s linear infinite paused;
+}
+.deck-reel-big.spinning { animation-play-state: running; }
+.deck-reel-big::after {
+  content: ''; position: absolute; inset: 50%; transform: translate(-50%,-50%);
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #2a2a2a; border: 2px solid #444;
+}
+@keyframes reel-spin { to { transform: rotate(360deg); } }
+
+.deck-tape-path {
+  flex: 1; display: flex; flex-direction: column; gap: 8px; position: relative;
+}
+.deck-tape-line {
+  height: 5px; background: linear-gradient(90deg, #5a3a10 0%, #8a5828 50%, #5a3a10 100%);
+  border-radius: 3px; width: 100%;
+}
+.deck-display {
+  font-size: 0.7rem; letter-spacing: 0.06em;
+  color: rgba(255,200,50,0.8); text-align: center; line-height: 1.4;
+  font-family: 'Share Tech Mono', monospace;
+}
+.deck-display .track-title { font-size: 0.68rem; color: rgba(255,200,50,0.6); }
+.deck-display .now-playing { font-size: 0.5rem; letter-spacing: 0.2em; color: rgba(255,200,50,0.4); margin-bottom: 2px; }
+
+/* controls */
+.deck-controls {
+  display: flex; justify-content: center; gap: 10px;
+  padding: 0 20px 14px;
+}
+.deck-btn {
+  width: 36px; height: 36px;
+  background: linear-gradient(180deg, #2e2e2e 0%, #222 100%);
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.4); font-size: 0.9rem; cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 4px rgba(0,0,0,0.4);
+}
+.deck-btn:hover { background: linear-gradient(180deg, #363636 0%, #2a2a2a 100%); color: rgba(255,200,50,0.7); border-color: rgba(255,200,50,0.3); }
+.deck-btn.play { background: linear-gradient(180deg, #2a3020 0%, #1e2416 100%); color: rgba(100,200,80,0.7); border-color: rgba(100,200,80,0.3); }
+
+/* VU meters */
+.deck-vu {
+  display: flex; gap: 3px; align-items: flex-end; height: 28px; padding: 0 20px 14px;
+}
+.vu-bar {
+  flex: 1; border-radius: 1px 1px 0 0;
+  background: linear-gradient(180deg, #ff4444 0%, #ffaa00 40%, #44cc44 100%);
+  animation: vu-bounce var(--dur, 0.8s) ease-in-out infinite alternate;
+  height: var(--h, 50%);
+}
+@keyframes vu-bounce {
+  from { transform: scaleY(0.3); }
+  to   { transform: scaleY(1); }
+}
+
+/* track list */
+.deck-tracklist {
+  border-top: 1px solid #2a2a2a;
+  max-height: 300px; overflow-y: auto;
+}
+.deck-track {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 20px; border-bottom: 1px solid #1e1e1e;
+  cursor: pointer; transition: background 0.15s;
+}
+.deck-track:hover { background: rgba(255,200,50,0.04); }
+.deck-track.active { background: rgba(255,200,50,0.06); }
+.deck-track__num {
+  font-size: 0.5rem; color: rgba(255,200,50,0.35);
+  letter-spacing: 0.1em; width: 20px; flex-shrink: 0;
+}
+.deck-track__title {
+  font-size: 0.68rem; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.03em; flex: 1; line-height: 1.3;
+  transition: color 0.15s;
+}
+.deck-track:hover .deck-track__title { color: rgba(255,200,50,0.8); }
+.deck-track.active .deck-track__title { color: rgba(255,200,50,0.9); }
+.deck-track__arrow { font-size: 0.6rem; color: rgba(255,200,50,0.2); transition: color 0.15s; }
+.deck-track:hover .deck-track__arrow { color: rgba(255,200,50,0.6); }
+
+.deck-player { padding: 0 20px 20px; }
+</style>
+</head>
+<body>
+
+<div class="selector">
+  <span>OPTION →</span>
+  <button class="opt-btn active" onclick="show('a')">A · Cassette Cards</button>
+  <button class="opt-btn" onclick="show('b')">B · Mixtape J-Cards</button>
+  <button class="opt-btn" onclick="show('c')">C · Tape Deck Console</button>
+</div>
+
+<!-- ════ OPTION A ════════════════════════════════ -->
+<div class="option visible" id="opt-a">
+  <p class="section-label">Podcast</p>
+  <h2>Podcast</h2>
+  <p class="subtitle">Episodes where I've been a guest or speaker.</p>
+  <p class="opt-desc" data-l="A">Cassette cards — cada episodio como un cassette físico con carrete animado, sticker label, player desplegable al hover</p>
+  <div class="cassette-grid">
+
+    <div class="cassette-card">
+      <div class="cassette-body">
+        <div class="cassette-notch"><span></span><span></span></div>
+        <div class="cassette-label">
+          <p class="cassette-ep">EP. 01 · PODCAST</p>
+          <p class="cassette-title">IA sin Humo · Estrategia de IA para empresas</p>
+        </div>
+        <div class="cassette-reels">
+          <div class="cassette-window">
+            <div class="reel"></div>
+            <div class="cassette-tape-line"></div>
+            <div class="reel"></div>
+          </div>
+        </div>
+        <p class="cassette-bottom">C-60 · TYPE II · CHROME</p>
+      </div>
+      <div class="cassette-player">
+        <iframe src="https://open.spotify.com/embed/episode/4z0LhALFCOK3kiC8Ptwohk?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="cassette-card">
+      <div class="cassette-body">
+        <div class="cassette-notch"><span></span><span></span></div>
+        <div class="cassette-label">
+          <p class="cassette-ep">EP. 02 · PODCAST</p>
+          <p class="cassette-title">Herramientas de IA para emprendedores</p>
+        </div>
+        <div class="cassette-reels">
+          <div class="cassette-window">
+            <div class="reel"></div>
+            <div class="cassette-tape-line"></div>
+            <div class="reel"></div>
+          </div>
+        </div>
+        <p class="cassette-bottom">C-60 · TYPE II · CHROME</p>
+      </div>
+      <div class="cassette-player">
+        <iframe src="https://open.spotify.com/embed/episode/0KU4mcByNNScezystDO1tE?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="cassette-card">
+      <div class="cassette-body">
+        <div class="cassette-notch"><span></span><span></span></div>
+        <div class="cassette-label">
+          <p class="cassette-ep">EP. 03 · PODCAST</p>
+          <p class="cassette-title">Power BI, Excel con IA y Finanzas</p>
+        </div>
+        <div class="cassette-reels">
+          <div class="cassette-window">
+            <div class="reel"></div>
+            <div class="cassette-tape-line"></div>
+            <div class="reel"></div>
+          </div>
+        </div>
+        <p class="cassette-bottom">C-60 · TYPE II · CHROME</p>
+      </div>
+      <div class="cassette-player">
+        <iframe src="https://open.spotify.com/embed/episode/6Es7ukEZpOkH0QDfFQ64me?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="cassette-card">
+      <div class="cassette-body">
+        <div class="cassette-notch"><span></span><span></span></div>
+        <div class="cassette-label">
+          <p class="cassette-ep">EP. 04 · PODCAST</p>
+          <p class="cassette-title">AI Innovation Summit · Google & Microsoft</p>
+        </div>
+        <div class="cassette-reels">
+          <div class="cassette-window">
+            <div class="reel"></div>
+            <div class="cassette-tape-line"></div>
+            <div class="reel"></div>
+          </div>
+        </div>
+        <p class="cassette-bottom">C-60 · TYPE II · CHROME</p>
+      </div>
+      <div class="cassette-player">
+        <iframe src="https://open.spotify.com/embed/episode/0qCWHMMkAGBhVvO1wHC2FC?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="cassette-card">
+      <div class="cassette-body">
+        <div class="cassette-notch"><span></span><span></span></div>
+        <div class="cassette-label">
+          <p class="cassette-ep">EP. 05 · PODCAST</p>
+          <p class="cassette-title">HISPANOCAN 2025 · Televisión Canaria</p>
+        </div>
+        <div class="cassette-reels">
+          <div class="cassette-window">
+            <div class="reel"></div>
+            <div class="cassette-tape-line"></div>
+            <div class="reel"></div>
+          </div>
+        </div>
+        <p class="cassette-bottom">C-60 · TYPE II · CHROME</p>
+      </div>
+      <div class="cassette-player">
+        <iframe src="https://open.spotify.com/embed/episode/6RPpk7XOVcXy9m09doykhg?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="cassette-card">
+      <div class="cassette-body">
+        <div class="cassette-notch"><span></span><span></span></div>
+        <div class="cassette-label">
+          <p class="cassette-ep">EP. 06 · PODCAST</p>
+          <p class="cassette-title">La Re-Evolución del AI Generativo</p>
+        </div>
+        <div class="cassette-reels">
+          <div class="cassette-window">
+            <div class="reel"></div>
+            <div class="cassette-tape-line"></div>
+            <div class="reel"></div>
+          </div>
+        </div>
+        <p class="cassette-bottom">C-60 · TYPE II · CHROME</p>
+      </div>
+      <div class="cassette-player">
+        <iframe src="https://open.spotify.com/embed/episode/1bOz7nTlQBZUBlfwXBIcQ0?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════ OPTION B ════════════════════════════════ -->
+<div class="option" id="opt-b">
+  <p class="section-label">Podcast</p>
+  <h2>Podcast</h2>
+  <p class="subtitle">Episodes where I've been a guest or speaker.</p>
+  <p class="opt-desc" data-l="B">Mixtape J-Cards — las tarjetas de la caja del casette, inclinadas como los polaroids, con carrete mini y título manuscrito</p>
+  <div class="mixtape-board">
+    <div class="jcard-grid" id="jcard-grid">
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE A</span><span class="jcard__type">C-60 · HI-FI</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 01</p>
+          <p class="jcard__title">IA sin Humo · Estrategia de IA para empresas</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE A</span><span class="jcard__type">C-60 · HI-FI</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 02</p>
+          <p class="jcard__title">Herramientas de IA para emprendedores</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE A</span><span class="jcard__type">C-90 · HI-FI</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 03</p>
+          <p class="jcard__title">Power BI, Excel con IA y Finanzas</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE B</span><span class="jcard__type">C-60 · CHROME</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 04</p>
+          <p class="jcard__title">AI Innovation Summit · Google & Microsoft</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE B</span><span class="jcard__type">C-60 · CHROME</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 05</p>
+          <p class="jcard__title">HISPANOCAN 2025 · Televisión Canaria</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE B</span><span class="jcard__type">C-90 · CHROME</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 06</p>
+          <p class="jcard__title">La Re-Evolución del AI Generativo</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE A</span><span class="jcard__type">C-60 · METAL</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 07</p>
+          <p class="jcard__title">Talento Tech · Negocios Digitales</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE A</span><span class="jcard__type">C-60 · METAL</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 08</p>
+          <p class="jcard__title">Tech Intensity · Transformación Digital</p>
+        </div>
+      </div>
+
+      <div class="jcard">
+        <div class="jcard__band"><span class="jcard__side">SIDE B</span><span class="jcard__type">C-90 · METAL</span></div>
+        <div class="jcard__reels"><div class="jcard__reel"></div><div class="jcard__reel"></div></div>
+        <div class="jcard__body">
+          <p class="jcard__ep">EP 09</p>
+          <p class="jcard__title">El poder transformador de la innovación</p>
+        </div>
+      </div>
+
+    </div>
+    <!-- player area appears on click -->
+    <div id="jcard-player-area" style="margin-top:2rem; display:none;"></div>
+  </div>
+</div>
+
+
+<!-- ════ OPTION C ════════════════════════════════ -->
+<div class="option" id="opt-c">
+  <p class="section-label">Podcast</p>
+  <h2>Podcast</h2>
+  <p class="subtitle">Episodes where I've been a guest or speaker.</p>
+  <p class="opt-desc" data-l="C">Tape Deck Console — un solo equipo de audio vintage con VU meters, ruedas girando, tracklist y player integrado al hacer click</p>
+
+  <div class="deck-outer">
+
+    <div class="deck-topbar">
+      <span class="deck-brand">ACATINCHO AUDIO</span>
+      <span class="deck-model">MODEL PT-9000 · STEREO CASSETTE DECK</span>
+      <div class="deck-dots">
+        <div class="deck-dot red"></div>
+        <div class="deck-dot"></div>
+        <div class="deck-dot"></div>
+      </div>
+    </div>
+
+    <div class="deck-window">
+      <div class="deck-reel-big" id="reel-l"></div>
+      <div class="deck-tape-path">
+        <div class="deck-tape-line"></div>
+        <div class="deck-display">
+          <p class="now-playing">▶ NOW PLAYING</p>
+          <p id="deck-now-title">IA sin Humo · Estrategia de IA para empresas</p>
+          <p class="track-title">EP 01 / 09 — SELECT A TRACK BELOW</p>
+        </div>
+        <div class="deck-tape-line"></div>
+      </div>
+      <div class="deck-reel-big" id="reel-r"></div>
+    </div>
+
+    <div class="deck-vu" id="vu-meters"></div>
+
+    <div class="deck-controls">
+      <div class="deck-btn">⏮</div>
+      <div class="deck-btn">⏪</div>
+      <div class="deck-btn play" id="deck-play-btn">▶</div>
+      <div class="deck-btn">⏩</div>
+      <div class="deck-btn">⏹</div>
+      <div class="deck-btn">⏏</div>
+    </div>
+
+    <div class="deck-tracklist" id="deck-tracklist"></div>
+    <div class="deck-player" id="deck-player"></div>
+
+  </div>
+</div>
+
+
+<script>
+// ── Tab switch ──
+function show(id) {
+  document.querySelectorAll('.option').forEach(el => el.classList.remove('visible'))
+  document.querySelectorAll('.opt-btn').forEach(el => el.classList.remove('active'))
+  document.getElementById('opt-' + id).classList.add('visible')
+  document.querySelector(`[onclick="show('${id}')"]`).classList.add('active')
+}
+
+// ── Option B: jcard click shows player ──
+const EPISODES = [
+  ['4z0LhALFCOK3kiC8Ptwohk', 'IA sin Humo · Estrategia de IA para empresas'],
+  ['0KU4mcByNNScezystDO1tE', 'Herramientas de IA para emprendedores'],
+  ['6Es7ukEZpOkH0QDfFQ64me', 'Power BI, Excel con IA y Finanzas'],
+  ['0qCWHMMkAGBhVvO1wHC2FC', 'AI Innovation Summit · Google & Microsoft'],
+  ['6RPpk7XOVcXy9m09doykhg', 'HISPANOCAN 2025 · Televisión Canaria'],
+  ['1bOz7nTlQBZUBlfwXBIcQ0', 'La Re-Evolución del AI Generativo'],
+  ['2fchLgJMnpDdxJ6rhkgYPQ', 'Talento Tech · Negocios Digitales'],
+  ['16jwYaEkkE9y5gqWDIAcvA', 'Tech Intensity · Transformación Digital'],
+  ['3YydWW1kx43FdV7EB2gedn', 'El poder transformador de la innovación'],
+]
+
+document.querySelectorAll('#opt-b .jcard').forEach((card, i) => {
+  card.style.cursor = 'pointer'
+  card.addEventListener('click', () => {
+    const area = document.getElementById('jcard-player-area')
+    area.style.display = 'block'
+    area.innerHTML = `<iframe src="https://open.spotify.com/embed/episode/${EPISODES[i][0]}?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`
+    area.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  })
+})
+
+// ── VU meters ──
+const vuContainer = document.getElementById('vu-meters')
+const vuDurs = [0.6,0.8,0.5,0.9,0.7,1.0,0.55,0.75,0.65,0.85,0.6,0.95,0.7,0.5,0.8,0.9,0.6,0.75,0.55,0.85]
+vuDurs.forEach((d, i) => {
+  const bar = document.createElement('div')
+  bar.className = 'vu-bar'
+  bar.style.setProperty('--dur', d + 's')
+  bar.style.setProperty('--h', (30 + Math.random() * 60) + '%')
+  bar.style.animationDelay = (i * 0.04) + 's'
+  vuContainer.appendChild(bar)
+})
+
+// ── Deck tracklist ──
+const tracklist = document.getElementById('deck-tracklist')
+const deckPlayer = document.getElementById('deck-player')
+const deckTitle = document.getElementById('deck-now-title')
+let activeTrack = null
+
+EPISODES.forEach(([id, title], i) => {
+  const row = document.createElement('div')
+  row.className = 'deck-track' + (i === 0 ? ' active' : '')
+  row.innerHTML = `<span class="deck-track__num">${String(i+1).padStart(2,'0')}</span><span class="deck-track__title">${title}</span><span class="deck-track__arrow">▶</span>`
+  row.addEventListener('click', () => {
+    document.querySelectorAll('.deck-track').forEach(t => t.classList.remove('active'))
+    row.classList.add('active')
+    deckTitle.textContent = title
+    deckPlayer.innerHTML = `<iframe src="https://open.spotify.com/embed/episode/${id}?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`
+    // spin reels
+    document.getElementById('reel-l').classList.add('spinning')
+    document.getElementById('reel-r').classList.add('spinning')
+  })
+  tracklist.appendChild(row)
+})
+
+// load first track
+deckPlayer.innerHTML = `<iframe src="https://open.spotify.com/embed/episode/${EPISODES[0][0]}?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`
+</script>
+</body>
+</html>

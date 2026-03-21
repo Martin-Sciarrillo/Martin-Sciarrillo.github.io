@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FX Demo — Background Effects</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cyan:    #00e5ff;
+      --magenta: #ff00de;
+      --green:   #39ff14;
+      --violet:  #a78bfa;
+      --bg:      #0d0d0d;
+    }
+    body {
+      background: var(--bg);
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+    }
+    h1 {
+      color: var(--cyan);
+      text-align: center;
+      font-size: 1.4rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 0 24px rgba(0,229,255,0.5);
+    }
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      margin-bottom: 2.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+    .card {
+      position: relative;
+      background: #111;
+      border: 1px solid rgba(0,229,255,0.12);
+      border-radius: 3px;
+      overflow: hidden;
+      height: 210px;
+    }
+    .card:hover { border-color: rgba(0,229,255,0.35); }
+    .card__label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(6px);
+      padding: 0.45rem 0.75rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      z-index: 10;
+      border-top: 1px solid rgba(0,229,255,0.18);
+    }
+    .card__label em {
+      font-style: normal;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.63rem;
+    }
+    canvas.fx {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .center-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      letter-spacing: 0.3em;
+      color: rgba(0,229,255,0.45);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ── 01 Scanlines ── */
+    .fx-scanlines::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(0,229,255,0.045) 3px, rgba(0,229,255,0.045) 4px
+      );
+      z-index: 1; pointer-events: none;
+    }
+
+    /* ── 02 Dot Matrix ── */
+    .fx-dots {
+      background:
+        radial-gradient(circle, rgba(0,229,255,0.18) 1px, transparent 1px);
+      background-size: 14px 14px;
+    }
+
+    /* ── 03 Aurora ── */
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(45px);
+      opacity: 0.32;
+      animation: aurora-float var(--dur, 5s) ease-in-out infinite alternate;
+    }
+    @keyframes aurora-float {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(var(--dx,30px), var(--dy,20px)) scale(var(--sc,1.15)); }
+    }
+
+    /* ── 04 Vignette ── */
+    .fx-vignette::before {
+      content: '';
+      position: absolute; inset: 0;
+      animation: vignette-pulse 3.5s ease-in-out infinite;
+      z-index: 1; pointer-events: none;
+    }
+    @keyframes vignette-pulse {
+      0%,100% { box-shadow: inset 0 0 55px rgba(0,0,0,0.85); }
+      50%      { box-shadow: inset 0 0 110px rgba(0,0,0,0.97); }
+    }
+  </style>
+</head>
+<body>
+
+<h1>// FX_DEMO.exe</h1>
+<p class="subtitle">background effects for martin-sciarrillo.github.io — hover to inspect · click where indicated</p>
+
+<div class="grid">
+
+  <!-- 01 Scanlines -->
+  <div class="card fx-scanlines">
+    <div class="center-text">SCANLINES</div>
+    <div class="card__label">01 — Scanlines CSS <em>// cero JS, puro CSS</em></div>
+  </div>
+
+  <!-- 02 Dot Matrix -->
+  <div class="card fx-dots">
+    <div class="center-text">DOT MATRIX</div>
+    <div class="card__label">02 — Dot Matrix <em>// CSS radial-gradient repeat</em></div>
+  </div>
+
+  <!-- 03 Aurora -->
+  <div class="card" style="background:#0a0a0a;overflow:hidden;">
+    <div class="aurora-blob" style="width:200px;height:140px;background:#00e5ff;top:-30px;left:-40px;--dur:5s;--dx:50px;--dy:25px;--sc:1.2"></div>
+    <div class="aurora-blob" style="width:160px;height:160px;background:#ff00de;top:50px;right:-50px;--dur:7s;--dx:-35px;--dy:-25px;--sc:0.88"></div>
+    <div class="aurora-blob" style="width:130px;height:110px;background:#a78bfa;bottom:-20px;left:70px;--dur:6s;--dx:25px;--dy:-30px;--sc:1.1"></div>
+    <div class="card__label">03 — Aurora Borealis <em>// CSS gradients en movimiento</em></div>
+  </div>
+
+  <!-- 04 Vignette Pulsante -->
+  <div class="card fx-vignette" style="background:#131313;">
+    <div class="center-text">VIGNETTE</div>
+    <div class="card__label">04 — Vignette Pulsante <em>// box-shadow inset animado</em></div>
+  </div>
+
+  <!-- 05 Digital Rain -->
+  <div class="card">
+    <canvas id="c-rain" class="fx"></canvas>
+    <div class="card__label">05 — Digital Rain <em>// caracteres japoneses cayendo</em></div>
+  </div>
+
+  <!-- 06 Binary Rain -->
+  <div class="card">
+    <canvas id="c-binary" class="fx"></canvas>
+    <div class="card__label">06 — Binary Rain <em>// 0s y 1s, minimalista</em></div>
+  </div>
+
+  <!-- 07 Hex Dump -->
+  <div class="card">
+    <canvas id="c-hex" class="fx"></canvas>
+    <div class="card__label">07 — Hex Dump <em>// memoria dumpeada en tiempo real</em></div>
+  </div>
+
+  <!-- 08 Starfield -->
+  <div class="card">
+    <canvas id="c-stars" class="fx"></canvas>
+    <div class="card__label">08 — Starfield / Warp <em>// velocidad de curvatura</em></div>
+  </div>
+
+  <!-- 09 Network Graph -->
+  <div class="card">
+    <canvas id="c-net" class="fx"></canvas>
+    <div class="card__label">09 — Network Graph <em>// nodos con conexiones vivas</em></div>
+  </div>
+
+  <!-- 10 Grid Perspectiva -->
+  <div class="card">
+    <canvas id="c-grid" class="fx"></canvas>
+    <div class="card__label">10 — Grid Perspectiva (Tron) <em>// vanishing point scroll</em></div>
+  </div>
+
+  <!-- 11 Líneas Interferencia -->
+  <div class="card">
+    <canvas id="c-lines" class="fx"></canvas>
+    <div class="card__label">11 — Líneas Interferencia <em>// señal de TV rota</em></div>
+  </div>
+
+  <!-- 12 Oscilloscope -->
+  <div class="card">
+    <canvas id="c-osc" class="fx"></canvas>
+    <div class="card__label">12 — Oscilloscope <em>// onda senoidal compuesta</em></div>
+  </div>
+
+  <!-- 13 Radar -->
+  <div class="card">
+    <canvas id="c-radar" class="fx"></canvas>
+    <div class="card__label">13 — Radar Sweep <em>// sonar / targeting reticle</em></div>
+  </div>
+
+  <!-- 14 EKG -->
+  <div class="card">
+    <canvas id="c-ekg" class="fx"></canvas>
+    <div class="card__label">14 — EKG / Heartbeat <em>// latido de sistema</em></div>
+  </div>
+
+  <!-- 15 Cursor Trail (interactive) -->
+  <div class="card" id="card-trail" style="cursor:crosshair;">
+    <canvas id="c-trail" class="fx"></canvas>
+    <div class="card__label" style="z-index:11;">15 — Cursor Trail <em>// mové el mouse acá</em></div>
+  </div>
+
+  <!-- 16 Glitch Tiles -->
+  <div class="card">
+    <canvas id="c-glitch" class="fx"></canvas>
+    <div class="card__label">16 — Glitch Tiles <em>// micro-glitch aleatorio</em></div>
+  </div>
+
+  <!-- 17 ASCII Dinámico -->
+  <div class="card">
+    <canvas id="c-ascii" class="fx"></canvas>
+    <div class="card__label">17 — ASCII Dinámico <em>// ░▒▓█ patterns que evolucionan</em></div>
+  </div>
+
+  <!-- 18 Mouse Ripple (interactive) -->
+  <div class="card" id="card-ripple" style="cursor:crosshair;background:#0f0f0f;">
+    <canvas id="c-ripple" class="fx"></canvas>
+    <div class="card__label" style="z-index:11;">18 — Mouse Ripple <em>// clickeá acá</em></div>
+  </div>
+
+</div>
+
+<script>
+const CYAN    = '#00e5ff'
+const MAGENTA = '#ff00de'
+const GREEN   = '#39ff14'
+const VIOLET  = '#a78bfa'
+
+function setup(id) {
+  const canvas = document.getElementById(id)
+  const card   = canvas.closest('.card')
+  const W = card.clientWidth
+  const H = card.clientHeight - 32 // label height approx
+  canvas.width  = W
+  canvas.height = card.clientHeight
+  return { canvas, ctx: canvas.getContext('2d'), W, H: canvas.height }
+}
+
+// ── 05 Digital Rain ────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-rain')
+  const KANA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
+  const SIZE = 13, cols = Math.floor(W / SIZE)
+  const drops = Array.from({ length: cols }, () => Math.random() * -20)
+  setInterval(() => {
+    ctx.fillStyle = 'rgba(13,13,13,0.14)'
+    ctx.fillRect(0, 0, W, H)
+    ctx.font = SIZE + 'px monospace'
+    drops.forEach((y, i) => {
+      const x = i * SIZE
+      ctx.fillStyle = '#fff'
+      ctx.fillText(KANA[Math.random() * KANA.length | 0], x, y * SIZE)
+      ctx.fillStyle = 'rgba(0,229,255,0.6)'
+      ctx.fillText(KANA[Math.random() * KANA.length | 0], x, (y-1)*SIZE)
+      ctx.fillStyle = 'rgba(0,229,255,0.2)'
+      ctx.fillText(KANA[Math.random() * KANA.length | 0], x, (y-2)*SIZE)
+      if (y * SIZE > H && Math.random() > 0.975) drops[i] = 0
+      else drops[i] += 0.5
+    })
+  }, 40)
+})()
+
+// ── 06 Binary Rain ─────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-binary')
+  const SIZE = 11, cols = Math.floor(W / SIZE)
+  const drops = Array.from({ length: cols }, () => Math.random() * -20)
+  setInterval(() => {
+    ctx.fillStyle = 'rgba(13,13,13,0.18)'
+    ctx.fillRect(0, 0, W, H)
+    ctx.font = SIZE + 'px monospace'
+    drops.forEach((y, i) => {
+      const x = i * SIZE
+      ctx.fillStyle = 'rgba(0,229,255,0.9)'
+      ctx.fillText(Math.random() > .5 ? '1' : '0', x, y * SIZE)
+      ctx.fillStyle = 'rgba(0,229,255,0.18)'
+      ctx.fillText(Math.random() > .5 ? '1' : '0', x, (y-1)*SIZE)
+      if (y * SIZE > H && Math.random() > 0.97) drops[i] = 0
+      else drops[i] += 0.6
+    })
+  }, 45)
+})()
+
+// ── 07 Hex Dump ────────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-hex')
+  const rh = 15, rw = 30
+  const rows = Math.ceil(H / rh) + 1
+  const cols = Math.ceil(W / rw) + 1
+  setInterval(() => {
+    ctx.fillStyle = '#0d0d0d'
+    ctx.fillRect(0, 0, W, H)
+    ctx.font = '9.5px monospace'
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const v = (Math.random() * 256 | 0).toString(16).padStart(2,'0').toUpperCase()
+        const a = 0.06 + Math.random() * 0.28
+        ctx.fillStyle = `rgba(0,229,255,${a})`
+        ctx.fillText('0x'+v, c * rw, r * rh + 11)
+      }
+    }
+  }, 110)
+})()
+
+// ── 08 Starfield ───────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-stars')
+  const CX = W/2, CY = H/2
+  const stars = Array.from({ length: 130 }, () => ({
+    x: (Math.random()-.5)*W, y: (Math.random()-.5)*H,
+    z: Math.random()*W, pz: W
+  }))
+  setInterval(() => {
+    ctx.fillStyle = 'rgba(13,13,13,0.22)'
+    ctx.fillRect(0, 0, W, H)
+    stars.forEach(s => {
+      s.pz = s.z; s.z -= 3.5
+      if (s.z <= 0) { s.x=(Math.random()-.5)*W; s.y=(Math.random()-.5)*H; s.z=W; s.pz=W }
+      const sx = s.x/s.z*W+CX, sy = s.y/s.z*H+CY
+      const px = s.x/s.pz*W+CX, py = s.y/s.pz*H+CY
+      ctx.beginPath()
+      ctx.strokeStyle = `rgba(0,229,255,${0.4+(1-s.z/W)*0.6})`
+      ctx.lineWidth = Math.max(.3, (1-s.z/W)*2.2)
+      ctx.moveTo(px,py); ctx.lineTo(sx,sy); ctx.stroke()
+    })
+  }, 28)
+})()
+
+// ── 09 Network Graph ───────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-net')
+  const nodes = Array.from({ length: 32 }, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    vx: (Math.random()-.5)*.45, vy: (Math.random()-.5)*.45,
+    r: 1.5 + Math.random()*2
+  }))
+  setInterval(() => {
+    ctx.fillStyle = 'rgba(13,13,13,0.28)'
+    ctx.fillRect(0,0,W,H)
+    nodes.forEach(n => {
+      n.x+=n.vx; n.y+=n.vy
+      if(n.x<0||n.x>W)n.vx*=-1
+      if(n.y<0||n.y>H)n.vy*=-1
+      nodes.forEach(m => {
+        const d = Math.hypot(n.x-m.x, n.y-m.y)
+        if(d<85){
+          ctx.beginPath()
+          ctx.strokeStyle=`rgba(0,229,255,${.55*(1-d/85)})`
+          ctx.lineWidth=.5
+          ctx.moveTo(n.x,n.y); ctx.lineTo(m.x,m.y); ctx.stroke()
+        }
+      })
+      ctx.beginPath()
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2)
+      ctx.fillStyle='rgba(0,229,255,0.85)'
+      ctx.fill()
+    })
+  }, 28)
+})()
+
+// ── 10 Grid Perspectiva ────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-grid')
+  let offset = 0
+  const CX = W/2, HOR = H*.48
+  const VCOLS = 10, HROWS = 14
+  setInterval(() => {
+    ctx.fillStyle = '#0d0d0d'
+    ctx.fillRect(0,0,W,H)
+    offset = (offset + .55) % ((H-HOR)/HROWS)
+    ctx.strokeStyle = 'rgba(0,229,255,0.22)'
+    ctx.lineWidth = .8
+    for(let c=0;c<=VCOLS;c++){
+      const t = c/VCOLS
+      const topX = CX+(t-.5)*W*.28
+      const botX = CX+(t-.5)*W
+      ctx.beginPath(); ctx.moveTo(topX,HOR); ctx.lineTo(botX,H); ctx.stroke()
+    }
+    for(let r=0;r<HROWS;r++){
+      const y = HOR + ((r/HROWS*(H-HOR)+offset)%(H-HOR))
+      const t = (y-HOR)/(H-HOR)
+      ctx.globalAlpha = .12+t*.7
+      ctx.beginPath()
+      ctx.moveTo(CX-t*W*.5, y); ctx.lineTo(CX+t*W*.5, y); ctx.stroke()
+      ctx.globalAlpha = 1
+    }
+    const g = ctx.createLinearGradient(0,HOR-5,0,HOR+5)
+    g.addColorStop(0,'transparent')
+    g.addColorStop(.5,'rgba(0,229,255,0.65)')
+    g.addColorStop(1,'transparent')
+    ctx.fillStyle=g; ctx.fillRect(0,HOR-5,W,10)
+  }, 28)
+})()
+
+// ── 11 Líneas Interferencia ────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-lines')
+  setInterval(() => {
+    ctx.fillStyle = 'rgba(13,13,13,0.38)'
+    ctx.fillRect(0,0,W,H)
+    const n = Math.random() > .6 ? Math.floor(Math.random()*4)+1 : 0
+    for(let i=0;i<n;i++){
+      const y  = Math.floor(Math.random()*H)
+      const h  = 1+Math.floor(Math.random()*4)
+      const a  = .3+Math.random()*.5
+      ctx.fillStyle = Math.random()>.5 ? `rgba(0,229,255,${a})` : `rgba(255,0,222,${a})`
+      ctx.fillRect(0,y,W,h)
+      if(Math.random()>.5){
+        const sx=Math.floor(Math.random()*W*.3)
+        const sw=Math.floor(Math.random()*W*.5)+20
+        const dx=(Math.random()-.5)*28
+        try{const d=ctx.getImageData(sx,y,sw,h);ctx.putImageData(d,sx+dx,y)}catch(e){}
+      }
+    }
+  }, 75)
+})()
+
+// ── 12 Oscilloscope ────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-osc')
+  let t = 0
+  setInterval(() => {
+    ctx.fillStyle = 'rgba(13,13,13,0.14)'
+    ctx.fillRect(0,0,W,H)
+    ctx.strokeStyle='rgba(0,229,255,0.06)'; ctx.lineWidth=.5
+    for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+    ctx.beginPath()
+    ctx.strokeStyle=CYAN; ctx.lineWidth=1.6
+    ctx.shadowBlur=10; ctx.shadowColor=CYAN
+    for(let x=0;x<W;x++){
+      const y = H/2
+        + Math.sin(x/W*Math.PI*4+t)*(H*.17)
+        + Math.sin(x/W*Math.PI*10+t*1.7)*(H*.05)
+        + Math.sin(x/W*Math.PI*1+t*.3)*(H*.07)
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+    }
+    ctx.stroke(); ctx.shadowBlur=0
+    t+=.04
+  }, 28)
+})()
+
+// ── 13 Radar ───────────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-radar')
+  const CX=W/2, CY=H/2, R=Math.min(W,H)*.42
+  let angle=0
+  const blips = Array.from({length:7},()=>({
+    a:Math.random()*Math.PI*2, r:Math.random()*R*.8, age:0
+  }))
+  setInterval(() => {
+    ctx.fillStyle='rgba(13,13,13,0.22)'
+    ctx.fillRect(0,0,W,H)
+    ctx.strokeStyle='rgba(0,229,255,0.14)'; ctx.lineWidth=.8
+    ;[.33,.66,1].forEach(f=>{
+      ctx.beginPath(); ctx.arc(CX,CY,R*f,0,Math.PI*2); ctx.stroke()
+    })
+    ctx.beginPath();ctx.moveTo(CX-R,CY);ctx.lineTo(CX+R,CY);ctx.stroke()
+    ctx.beginPath();ctx.moveTo(CX,CY-R);ctx.lineTo(CX,CY+R);ctx.stroke()
+    // sweep
+    ctx.save(); ctx.translate(CX,CY); ctx.rotate(angle)
+    const g=ctx.createLinearGradient(0,0,R,0)
+    g.addColorStop(0,'rgba(0,229,255,0.45)')
+    g.addColorStop(1,'rgba(0,229,255,0)')
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,R,-0.5,0); ctx.closePath()
+    ctx.fillStyle=g; ctx.fill()
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(R,0)
+    ctx.strokeStyle='rgba(0,229,255,0.9)'; ctx.lineWidth=1.3; ctx.stroke()
+    ctx.restore()
+    blips.forEach(b=>{
+      const diff=((angle-b.a)+Math.PI*2)%(Math.PI*2)
+      if(diff<.18) b.age=1
+      b.age*=.97
+      if(b.age>.04){
+        const bx=CX+Math.cos(b.a)*b.r, by=CY+Math.sin(b.a)*b.r
+        ctx.beginPath(); ctx.arc(bx,by,2.5,0,Math.PI*2)
+        ctx.fillStyle=`rgba(0,229,255,${b.age})`
+        ctx.shadowBlur=10; ctx.shadowColor=CYAN; ctx.fill(); ctx.shadowBlur=0
+      }
+    })
+    angle+=.024; if(angle>Math.PI*2) angle-=Math.PI*2
+  }, 28)
+})()
+
+// ── 14 EKG ─────────────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-ekg')
+  const data=new Array(W).fill(H/2)
+  let pos=0, beatTimer=0
+  function addBeat(p){
+    for(let i=0;i<8;i++)  data[(p+i)%W]=H/2-9*Math.sin(i/8*Math.PI)
+    for(let i=8;i<16;i++) data[(p+i)%W]=H/2
+    data[(p+16)%W]=H/2+7; data[(p+17)%W]=H/2+9
+    data[(p+18)%W]=H/2-52; data[(p+19)%W]=H/2+22
+    data[(p+20)%W]=H/2-11; data[(p+21)%W]=H/2
+    for(let i=22;i<36;i++) data[(p+i)%W]=H/2-13*Math.sin((i-22)/14*Math.PI)
+    for(let i=36;i<52;i++) data[(p+i)%W]=H/2
+  }
+  setInterval(()=>{
+    ctx.fillStyle='rgba(13,13,13,0.38)'; ctx.fillRect(0,0,W,H)
+    ctx.strokeStyle='rgba(0,229,255,0.07)'; ctx.lineWidth=.5
+    for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+    data[pos]=H/2; data[(pos+1)%W]=H/2; data[(pos+2)%W]=H/2
+    beatTimer--
+    if(beatTimer<=0){addBeat(pos);beatTimer=60+Math.floor(Math.random()*12)}
+    ctx.beginPath(); ctx.strokeStyle=CYAN; ctx.lineWidth=1.6
+    ctx.shadowBlur=7; ctx.shadowColor=CYAN
+    for(let i=0;i<W;i++){
+      const x=(pos+i)%W
+      i===0?ctx.moveTo(i,data[x]):ctx.lineTo(i,data[x])
+    }
+    ctx.stroke(); ctx.shadowBlur=0
+    pos=(pos+2)%W
+  }, 28)
+})()
+
+// ── 15 Cursor Trail ────────────────────────────────────────
+;(function() {
+  const { canvas, ctx, W, H } = setup('c-trail')
+  const card=document.getElementById('card-trail')
+  const pts=[]
+  card.addEventListener('mousemove', e=>{
+    const r=canvas.getBoundingClientRect()
+    pts.push({x:e.clientX-r.left, y:e.clientY-r.top, age:1})
+    if(pts.length>70) pts.shift()
+  })
+  setInterval(()=>{
+    ctx.fillStyle='rgba(13,13,13,0.3)'; ctx.fillRect(0,0,W,H)
+    if(!pts.length){
+      ctx.fillStyle='rgba(0,229,255,0.2)'; ctx.font='11px monospace'; ctx.textAlign='center'
+      ctx.fillText('> mové el mouse acá', W/2, H/2); ctx.textAlign='left'
+    }
+    pts.forEach((p,i)=>{
+      p.age*=.94
+      const t=i/pts.length
+      ctx.beginPath(); ctx.arc(p.x,p.y,1.5+t*4,0,Math.PI*2)
+      ctx.fillStyle=`rgba(0,229,255,${p.age*t})`
+      ctx.shadowBlur=10*t; ctx.shadowColor=CYAN; ctx.fill(); ctx.shadowBlur=0
+    })
+    for(let i=pts.length-1;i>=0;i--) if(pts[i].age<.02) pts.splice(i,1)
+  }, 28)
+})()
+
+// ── 16 Glitch Tiles ────────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-glitch')
+  const T=16
+  const cols=Math.ceil(W/T), rows=Math.ceil(H/T)
+  setInterval(()=>{
+    ctx.fillStyle='rgba(13,13,13,0.4)'; ctx.fillRect(0,0,W,H)
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      if(Math.random()>.967){
+        const color=Math.random()>.5?CYAN:MAGENTA
+        ctx.fillStyle=color+'1a'
+        ctx.fillRect(c*T+(Math.random()-.5)*5, r*T, T, T)
+      }
+    }
+    if(Math.random()>.82){
+      const y=Math.floor(Math.random()*H)
+      const h=Math.floor(Math.random()*5)+1
+      try{const d=ctx.getImageData(0,y,W,h);ctx.putImageData(d,(Math.random()-.5)*35,y)}catch(e){}
+    }
+  }, 55)
+})()
+
+// ── 17 ASCII Dinámico ──────────────────────────────────────
+;(function() {
+  const { ctx, W, H } = setup('c-ascii')
+  const CHARS='░░░▒▒▓█ '
+  const SZ=13, cols=Math.floor(W/SZ), rows=Math.floor(H/SZ)
+  const grid=Array.from({length:rows},()=>
+    Array.from({length:cols},()=>({ch:' ',age:0}))
+  )
+  setInterval(()=>{
+    ctx.fillStyle='#0d0d0d'; ctx.fillRect(0,0,W,H)
+    ctx.font=SZ+'px monospace'
+    grid.forEach((row,r)=>row.forEach((cell,c)=>{
+      if(Math.random()>.968){cell.ch=CHARS[Math.random()*CHARS.length|0]; cell.age=1}
+      cell.age*=.955
+      if(cell.ch!==' '&&cell.age>.025){
+        ctx.fillStyle=`rgba(0,229,255,${cell.age*.75})`
+        ctx.fillText(cell.ch, c*SZ, r*SZ+SZ)
+      }
+    }))
+  }, 48)
+})()
+
+// ── 18 Mouse Ripple ────────────────────────────────────────
+;(function() {
+  const { canvas, ctx, W, H } = setup('c-ripple')
+  const card=document.getElementById('card-ripple')
+  const ripples=[]
+  card.addEventListener('click', e=>{
+    const r=canvas.getBoundingClientRect()
+    ripples.push({x:e.clientX-r.left, y:e.clientY-r.top, radius:0, alpha:1})
+  })
+  setInterval(()=>{
+    ctx.fillStyle='rgba(10,10,10,0.35)'; ctx.fillRect(0,0,W,H)
+    if(!ripples.length){
+      ctx.fillStyle=`rgba(0,229,255,${.15+Math.abs(Math.sin(Date.now()/800))*.15})`
+      ctx.font='11px monospace'; ctx.textAlign='center'
+      ctx.fillText('> clickeá acá', W/2, H/2); ctx.textAlign='left'
+    }
+    for(let i=ripples.length-1;i>=0;i--){
+      const rp=ripples[i]
+      rp.radius+=3; rp.alpha*=.965
+      ctx.beginPath(); ctx.arc(rp.x,rp.y,rp.radius,0,Math.PI*2)
+      ctx.strokeStyle=`rgba(0,229,255,${rp.alpha})`
+      ctx.lineWidth=1.8; ctx.shadowBlur=14; ctx.shadowColor=CYAN; ctx.stroke()
+      ctx.shadowBlur=0
+      if(rp.radius>25){
+        ctx.beginPath(); ctx.arc(rp.x,rp.y,rp.radius*.55,0,Math.PI*2)
+        ctx.strokeStyle=`rgba(255,0,222,${rp.alpha*.38})`
+        ctx.lineWidth=.9; ctx.stroke()
+      }
+      if(rp.alpha<.02) ripples.splice(i,1)
+    }
+  }, 28)
+})()
+</script>
+</body>
+</html>

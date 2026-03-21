@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Podcast · Option C variants</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#080b10; font-family:'Courier New',monospace; color:#ccc; padding:2rem; }
+
+/* ── NAV ── */
+nav { display:flex; gap:1rem; margin-bottom:3rem; flex-wrap:wrap; }
+nav button {
+  background:transparent; border:1px solid #2a3040; color:#666;
+  padding:0.5rem 1.2rem; font-family:inherit; font-size:0.75rem;
+  letter-spacing:0.1em; cursor:pointer; transition:all 0.2s;
+}
+nav button.active, nav button:hover { border-color:#00e5ff; color:#00e5ff; }
+
+.panel { display:none; }
+.panel.active { display:block; }
+
+h2 { color:#444; font-size:0.65rem; letter-spacing:0.2em; margin-bottom:0.5rem; text-transform:uppercase; }
+.desc { color:#333; font-size:0.7rem; margin-bottom:2rem; max-width:600px; line-height:1.6; }
+
+/* ═══════════════════════════════════
+   C1 — Tape deck · cover as cassette label
+═══════════════════════════════════ */
+.c1-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap:1.5rem;
+}
+.c1-card {
+  background:#0d1018;
+  border:1px solid #1a2030;
+  border-radius:4px;
+  display:flex;
+  align-items:stretch;
+  overflow:hidden;
+  transition:border-color 0.2s;
+  cursor:pointer;
+}
+.c1-card:hover { border-color:#00e5ff44; }
+.c1-cover {
+  width:110px;
+  min-height:110px;
+  flex-shrink:0;
+  position:relative;
+  overflow:hidden;
+}
+.c1-cover img {
+  width:100%; height:100%; object-fit:cover;
+  filter:grayscale(30%) brightness(0.85);
+  transition:filter 0.3s;
+}
+.c1-card:hover .c1-cover img { filter:grayscale(0%) brightness(1); }
+.c1-cover::after {
+  content:'';
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.25) 3px, rgba(0,0,0,0.25) 4px
+  );
+  pointer-events:none;
+}
+.c1-body {
+  flex:1; padding:0.9rem 1rem;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.c1-show { font-size:0.6rem; letter-spacing:0.12em; color:#00e5ff88; text-transform:uppercase; margin-bottom:0.3rem; }
+.c1-title { font-size:0.78rem; line-height:1.4; color:#c8d0d8; flex:1; }
+.c1-footer { display:flex; align-items:center; gap:0.5rem; margin-top:0.6rem; }
+.c1-reel {
+  width:18px; height:18px;
+  border:2px solid #333; border-radius:50%;
+  position:relative;
+}
+.c1-reel::after {
+  content:''; position:absolute; inset:4px;
+  border-radius:50%; background:#1a2030;
+  box-shadow:0 0 0 1px #333;
+}
+.c1-tape { flex:1; height:3px; background:#1a2030; border-radius:2px; position:relative; overflow:hidden; }
+.c1-tape::after {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:60%; background:linear-gradient(90deg,#00e5ff,#a855f7);
+  border-radius:2px;
+}
+.c1-play {
+  width:22px; height:22px; border-radius:50%;
+  border:1px solid #2a3040; background:transparent;
+  color:#00e5ff; font-size:0.6rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+/* ═══════════════════════════════════
+   C2 — Large cover · tape console header per card
+═══════════════════════════════════ */
+.c2-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap:1.2rem;
+}
+.c2-card {
+  background:#0d1018;
+  border:1px solid #1a2030;
+  border-radius:4px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:border-color 0.2s, transform 0.2s;
+}
+.c2-card:hover { border-color:#00e5ff44; transform:translateY(-3px); }
+.c2-art {
+  position:relative;
+  aspect-ratio:1;
+  overflow:hidden;
+}
+.c2-art img {
+  width:100%; height:100%; object-fit:cover;
+  filter:grayscale(40%) brightness(0.8);
+  transition:filter 0.3s;
+}
+.c2-card:hover .c2-art img { filter:grayscale(0%) brightness(1); }
+/* scanlines */
+.c2-art::after {
+  content:'';
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 3px
+  );
+  pointer-events:none;
+}
+/* gradient overlay bottom */
+.c2-art::before {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:50%;
+  background:linear-gradient(transparent, #0d1018);
+  pointer-events:none; z-index:1;
+}
+.c2-console {
+  padding:0.75rem 0.9rem 0.9rem;
+  border-top:1px solid #1a2030;
+}
+.c2-label { font-size:0.55rem; letter-spacing:0.15em; color:#00e5ff66; text-transform:uppercase; margin-bottom:0.3rem; }
+.c2-title { font-size:0.72rem; line-height:1.35; color:#b0bac5; margin-bottom:0.7rem; }
+.c2-controls { display:flex; align-items:center; gap:0.5rem; }
+.c2-dot { width:6px; height:6px; border-radius:50%; background:#1e2a38; flex-shrink:0; }
+.c2-dot.on { background:#00e5ff; box-shadow:0 0 4px #00e5ff; }
+.c2-bar { flex:1; height:3px; background:#131822; border-radius:2px; overflow:hidden; }
+.c2-bar-fill { height:100%; width:45%; background:linear-gradient(90deg,#00e5ff,#a855f7); border-radius:2px; }
+.c2-num { font-size:0.55rem; color:#333; letter-spacing:0.05em; }
+
+/* ═══════════════════════════════════
+   C3 — Split: big cover left, tracklist right (Featured + list)
+═══════════════════════════════════ */
+.c3-wrap { display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:960px; }
+@media(max-width:700px){ .c3-wrap { grid-template-columns:1fr; } }
+
+.c3-featured {
+  position:relative; border-radius:6px; overflow:hidden;
+  aspect-ratio:1; cursor:pointer;
+  border:1px solid #1a2030;
+}
+.c3-featured img {
+  width:100%; height:100%; object-fit:cover;
+  filter:grayscale(20%) brightness(0.7);
+  transition:filter 0.4s;
+}
+.c3-featured:hover img { filter:grayscale(0%) brightness(0.9); }
+.c3-featured::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to top, #080b10 0%, transparent 60%);
+  pointer-events:none;
+}
+.c3-feat-info {
+  position:absolute; bottom:0; left:0; right:0; padding:1.2rem;
+  z-index:1;
+}
+.c3-feat-badge {
+  display:inline-block;
+  font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:#00e5ff; border:1px solid #00e5ff44;
+  padding:0.2rem 0.5rem; margin-bottom:0.5rem;
+}
+.c3-feat-title { font-size:0.88rem; line-height:1.4; color:#e0e8f0; }
+.c3-feat-play {
+  margin-top:0.8rem;
+  width:38px; height:38px; border-radius:50%;
+  border:1px solid #00e5ff66; background:rgba(0,229,255,0.1);
+  color:#00e5ff; font-size:0.8rem;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+
+.c3-list { display:flex; flex-direction:column; gap:0; }
+.c3-item {
+  display:flex; align-items:center; gap:0.8rem;
+  padding:0.7rem 0; border-bottom:1px solid #111820;
+  cursor:pointer; transition:background 0.15s;
+}
+.c3-item:hover { background:#0d1118; padding-left:0.4rem; }
+.c3-thumb { width:48px; height:48px; flex-shrink:0; border-radius:2px; overflow:hidden; position:relative; }
+.c3-thumb img { width:100%; height:100%; object-fit:cover; filter:grayscale(30%); }
+.c3-thumb::after {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.2) 2px,rgba(0,0,0,0.2) 3px);
+}
+.c3-meta { flex:1; min-width:0; }
+.c3-show-label { font-size:0.55rem; letter-spacing:0.1em; color:#00e5ff66; text-transform:uppercase; }
+.c3-item-title { font-size:0.7rem; color:#9aa5b0; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.c3-idx { font-size:0.65rem; color:#222; width:18px; text-align:right; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <button class="active" onclick="show('c1')">C1 · Cover como label de cassette</button>
+  <button onclick="show('c2')">C2 · Cover grande + consola debajo</button>
+  <button onclick="show('c3')">C3 · Featured grande + tracklist</button>
+</nav>
+
+<!-- ── C1 ── -->
+<div class="panel active" id="p-c1">
+  <h2>C1 — Cover como label del cassette · fila horizontal</h2>
+  <p class="desc">La imagen del podcast ocupa el lado izquierdo como el label de un cassette. La barra de tape y los reels son decorativos. Click abre el embed de Spotify.</p>
+  <div class="c1-grid" id="g-c1"></div>
+</div>
+
+<!-- ── C2 ── -->
+<div class="panel" id="p-c2">
+  <h2>C2 — Cover cuadrado grande + consola tape debajo</h2>
+  <p class="desc">La imagen ocupa el espacio principal. Debajo, una pequeña consola con título, indicator LED y progress bar. Estilo "Walkman screen".</p>
+  <div class="c2-grid" id="g-c2"></div>
+</div>
+
+<!-- ── C3 ── -->
+<div class="panel" id="p-c3">
+  <h2>C3 — Featured + tracklist lateral · estilo música</h2>
+  <p class="desc">El primer episodio destacado a la izquierda grande. A la derecha, el resto como tracklist con thumbnails. Muy parecido a Spotify / Apple Music.</p>
+  <div class="c3-wrap">
+    <div class="c3-featured" id="feat"></div>
+    <div class="c3-list" id="tracklist"></div>
+  </div>
+</div>
+
+<script>
+const EPISODES = [
+  { id:'4z0LhALFCOK3kiC8Ptwohk', title:'Director de Microsoft habla sobre AGI, OpenAI, Estrategia IA para pymes y empresas', show:'IA sin humo', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab6772ab000015bebd55b7b220a34f1928d0c333' },
+  { id:'0KU4mcByNNScezystDO1tE', title:'"La IA es una disrupción comparable a la imprenta"', show:'Tech & Coffee', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab67656300005f1fa63a2a7ca220ff17079327e7' },
+  { id:'6Es7ukEZpOkH0QDfFQ64me', title:'#E38 — Dilemas en GenAI: ROI y Gobernanza', show:'Director Podcast', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab6772ab000015be0bbde336f329ea61b2bcf45f' },
+  { id:'0qCWHMMkAGBhVvO1wHC2FC', title:'Los SECRETOS de la IA contados desde MICROSOFT', show:'IA sin humo', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab6772ab000015bef98938e6cc6f46817d636548' },
+  { id:'6RPpk7XOVcXy9m09doykhg', title:'IA en empresas — consejos del director de Data & AI', show:'Spotify', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab67656300005f1f87314e424cd0817c5fe71bcf' },
+  { id:'1bOz7nTlQBZUBlfwXBIcQ0', title:'#E14 — IA, IA, IA… sí, Inteligencia Artificial', show:'CTO Crack', thumb:'https://image-cdn-fa.spotifycdn.com/image/ab6772ab000015be06a2901b14c0dc0ac827ee7a' },
+  { id:'2fchLgJMnpDdxJ6rhkgYPQ', title:'ChatGPT irrumpe en marketing digital – parte 2', show:'Marketing Digital', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab67656300005f1f101c9192cac441d8e6b34ff5' },
+  { id:'16jwYaEkkE9y5gqWDIAcvA', title:'ChatGPT irrumpe en marketing digital', show:'Marketing Digital', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab67656300005f1f101c9192cac441d8e6b34ff5' },
+  { id:'3YydWW1kx43FdV7EB2gedn', title:'El Futuro Tecnológico — E06', show:'El Futuro Tech', thumb:'https://image-cdn-ak.spotifycdn.com/image/ab67656300005f1f1fd370a24c2fffc210ffcf36' },
+];
+
+// Build C1
+const g1 = document.getElementById('g-c1');
+EPISODES.forEach((ep,i) => {
+  g1.innerHTML += `
+  <div class="c1-card">
+    <div class="c1-cover"><img src="${ep.thumb}" alt="${ep.show}"></div>
+    <div class="c1-body">
+      <div>
+        <div class="c1-show">${ep.show}</div>
+        <div class="c1-title">${ep.title}</div>
+      </div>
+      <div class="c1-footer">
+        <div class="c1-reel"></div>
+        <div class="c1-tape"></div>
+        <div class="c1-reel"></div>
+        <button class="c1-play">▶</button>
+      </div>
+    </div>
+  </div>`;
+});
+
+// Build C2
+const g2 = document.getElementById('g-c2');
+EPISODES.forEach((ep,i) => {
+  g2.innerHTML += `
+  <div class="c2-card">
+    <div class="c2-art"><img src="${ep.thumb}" alt="${ep.show}"></div>
+    <div class="c2-console">
+      <div class="c2-label">${ep.show}</div>
+      <div class="c2-title">${ep.title}</div>
+      <div class="c2-controls">
+        <div class="c2-dot ${i===0?'on':''}"></div>
+        <div class="c2-bar"><div class="c2-bar-fill" style="width:${20+i*8}%"></div></div>
+        <div class="c2-num">0${i+1}</div>
+      </div>
+    </div>
+  </div>`;
+});
+
+// Build C3
+const feat = document.getElementById('feat');
+const ep0 = EPISODES[0];
+feat.innerHTML = `
+  <img src="${ep0.thumb}" alt="${ep0.show}">
+  <div class="c3-feat-info">
+    <div class="c3-feat-badge">▶ Reproducir episodio</div>
+    <div class="c3-feat-title">${ep0.title}</div>
+    <div class="c3-feat-play">▶</div>
+  </div>`;
+
+const tl = document.getElementById('tracklist');
+EPISODES.slice(1).forEach((ep,i) => {
+  tl.innerHTML += `
+  <div class="c3-item">
+    <div class="c3-thumb"><img src="${ep.thumb}" alt="${ep.show}"></div>
+    <div class="c3-meta">
+      <div class="c3-show-label">${ep.show}</div>
+      <div class="c3-item-title">${ep.title}</div>
+    </div>
+    <div class="c3-idx">0${i+2}</div>
+  </div>`;
+});
+
+function show(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

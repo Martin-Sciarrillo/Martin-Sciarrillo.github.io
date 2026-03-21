@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podcast Options</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #060810; color: #e0e0e0; font-family: monospace; }
+
+.selector { position: sticky; top: 0; z-index: 100; background: rgba(6,8,16,0.97); border-bottom: 1px solid rgba(0,229,255,0.2); padding: 1rem 2rem; display: flex; gap: 1rem; align-items: center; }
+.selector span { color: rgba(255,255,255,0.35); font-size: 0.75rem; margin-right: 0.5rem; }
+.opt-btn { padding: 0.4rem 1.1rem; border: 1px solid rgba(0,229,255,0.3); background: none; color: rgba(255,255,255,0.5); cursor: pointer; font-family: inherit; font-size: 0.75rem; letter-spacing: 0.08em; transition: all 0.2s; }
+.opt-btn.active { border-color: #00e5ff; color: #00e5ff; background: rgba(0,229,255,0.07); }
+
+.option { display: none; padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
+.option.visible { display: block; }
+.slabel { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #4ecdc4; margin-bottom: 0.5rem; }
+h2 { font-size: 2rem; font-weight: 700; margin-bottom: 0.4rem; }
+.sub { color: rgba(255,255,255,0.38); font-size: 0.75rem; margin-bottom: 2.5rem; }
+.desc { font-size: 0.58rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.2); text-transform: uppercase; margin-bottom: 2rem; padding: 0.5rem 0.75rem; border-left: 2px solid rgba(0,229,255,0.2); }
+
+/* ── A: CASSETTE CARDS ── */
+.cass-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.cass { background: linear-gradient(160deg,#2a2a2a,#1a1a1a 60%,#222); border: 1px solid #3a3a3a; border-radius: 4px 4px 8px 8px; padding: 10px 14px 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 8px 24px rgba(0,0,0,0.6); cursor: pointer; transition: transform .3s, box-shadow .3s; }
+.cass:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(0,0,0,0.7); }
+.notch { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.notch span { width: 16px; height: 5px; background: #111; border: 1px solid #333; border-radius: 2px; }
+.label { background: linear-gradient(135deg,#f5e6c8,#ede0b8); border-radius: 3px; padding: 8px 10px 6px; margin-bottom: 8px; min-height: 56px; position: relative; }
+.label::before { content: 'SIDE A'; position: absolute; top: 5px; right: 7px; font-size: 0.42rem; letter-spacing: 0.16em; color: rgba(80,40,0,0.45); }
+.ep-num { font-size: 0.45rem; letter-spacing: 0.14em; color: rgba(100,60,10,0.5); margin-bottom: 2px; }
+.ep-title { font-size: 0.75rem; color: #3a2010; line-height: 1.3; font-family: Georgia, serif; }
+.reels { background: rgba(0,0,0,0.8); border: 1px solid #444; border-radius: 3px; padding: 7px 16px; display: flex; gap: 16px; align-items: center; justify-content: center; margin-bottom: 6px; }
+.reel { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #555; background: conic-gradient(#333 0deg 60deg, #1a1a1a 60deg 120deg, #333 120deg 180deg, #1a1a1a 180deg 240deg, #333 240deg 300deg, #1a1a1a 300deg 360deg); position: relative; transition: transform 1.5s linear; }
+.cass:hover .reel { transform: rotate(180deg); }
+.reel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 8px; height: 8px; border-radius: 50%; background: #444; border: 1px solid #555; }
+.tape-line { height: 3px; flex: 1; background: linear-gradient(90deg,#5a3a10,#7a5020,#5a3a10); border-radius: 2px; }
+.cass-foot { font-size: 0.42rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.18); text-align: center; }
+
+/* ── B: J-CARDS ── */
+.jboard { background: linear-gradient(135deg,#0a0c0f,#0d1018); border: 1px solid rgba(255,255,255,0.05); padding: 2.5rem 2rem; }
+.jgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 2rem 1.6rem; }
+.jcard { background: #f0e8d5; transform: rotate(var(--r,0deg)); box-shadow: 3px 6px 20px rgba(0,0,0,0.65); cursor: pointer; transition: transform .3s cubic-bezier(.2,0,0,1.3), box-shadow .3s; position: relative; overflow: hidden; }
+.jcard:nth-child(1){--r:-2.8deg} .jcard:nth-child(2){--r:1.9deg} .jcard:nth-child(3){--r:-1.3deg} .jcard:nth-child(4){--r:3.2deg} .jcard:nth-child(5){--r:-2.1deg} .jcard:nth-child(6){--r:1.5deg} .jcard:nth-child(7){--r:-3.5deg} .jcard:nth-child(8){--r:2.4deg} .jcard:nth-child(9){--r:-1.7deg}
+.jcard:hover { transform: rotate(0deg) scale(1.06) translateY(-8px); box-shadow: 6px 22px 50px rgba(0,0,0,0.7); z-index: 10; }
+.jband { height: 26px; background: var(--bc,#c94040); display: flex; align-items: center; padding: 0 10px; justify-content: space-between; }
+.jcard:nth-child(1){--bc:#c94040} .jcard:nth-child(2){--bc:#3a7ebf} .jcard:nth-child(3){--bc:#2e9e5a} .jcard:nth-child(4){--bc:#b06020} .jcard:nth-child(5){--bc:#7040b0} .jcard:nth-child(6){--bc:#c94040} .jcard:nth-child(7){--bc:#3a7ebf} .jcard:nth-child(8){--bc:#2e9e5a} .jcard:nth-child(9){--bc:#b06020}
+.jband span { font-size: 0.45rem; color: rgba(255,255,255,0.65); letter-spacing: 0.14em; }
+.jreels { background: #1a1a1a; height: 54px; display: flex; align-items: center; justify-content: center; gap: 20px; position: relative; }
+.jreels::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 28px; height: 4px; background: #4a3010; border-radius: 2px; }
+.jreel { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #444; background: conic-gradient(#2a2a2a 0deg 90deg,#222 90deg 180deg,#2a2a2a 180deg 270deg,#222 270deg 360deg); position: relative; z-index: 1; }
+.jreel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 7px; height: 7px; border-radius: 50%; background: #555; }
+.jbody { padding: 10px 10px 14px; }
+.jep { font-size: 0.44rem; letter-spacing: 0.14em; color: rgba(60,30,10,0.45); text-transform: uppercase; margin-bottom: 3px; }
+.jtitle { font-size: 0.88rem; color: #2a1808; line-height: 1.25; font-family: cursive; font-weight: bold; }
+.jlines { display: block; margin-top: 8px; background: repeating-linear-gradient(transparent,transparent 11px,rgba(0,0,0,0.07) 11px,rgba(0,0,0,0.07) 12px); height: 24px; }
+
+/* ── C: TAPE DECK ── */
+.deck { background: linear-gradient(180deg,#1e1e1e,#161616); border: 2px solid #2a2a2a; border-radius: 8px; box-shadow: inset 0 2px 0 rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.7); overflow: hidden; }
+.dtop { background: linear-gradient(180deg,#252525,#1e1e1e); border-bottom: 1px solid #333; padding: 10px 20px; display: flex; align-items: center; gap: 16px; }
+.dbrand { font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,200,50,0.6); }
+.dmodel { font-size: 0.5rem; letter-spacing: 0.18em; color: rgba(255,255,255,0.18); }
+.ddots { display: flex; gap: 6px; margin-left: auto; }
+.ddot { width: 8px; height: 8px; border-radius: 50%; background: #333; border: 1px solid #444; }
+.ddot.r { background: #c03030; border-color: #e04040; box-shadow: 0 0 6px rgba(200,40,40,0.5); }
+.dwindow { margin: 14px 20px; background: rgba(0,0,0,0.7); border: 1px solid #333; border-radius: 4px; padding: 14px 18px; display: flex; align-items: center; gap: 20px; }
+.dreel { width: 52px; height: 52px; flex-shrink: 0; border-radius: 50%; border: 3px solid #3a3a3a; background: conic-gradient(#2a2a2a 0deg 30deg,#1a1a1a 30deg 60deg,#2a2a2a 60deg 90deg,#1a1a1a 90deg 120deg,#2a2a2a 120deg 150deg,#1a1a1a 150deg 180deg,#2a2a2a 180deg 210deg,#1a1a1a 210deg 240deg,#2a2a2a 240deg 270deg,#1a1a1a 270deg 300deg,#2a2a2a 300deg 330deg,#1a1a1a 330deg 360deg); position: relative; animation: spin 4s linear infinite; }
+.dreel::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:16px; height:16px; border-radius:50%; background:#2a2a2a; border:2px solid #444; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.dpath { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.dtape { height: 5px; background: linear-gradient(90deg,#5a3a10,#8a5828,#5a3a10); border-radius: 3px; }
+.ddisp { font-size: 0.68rem; letter-spacing: 0.05em; color: rgba(255,200,50,0.8); text-align: center; line-height: 1.5; }
+.ddisp small { font-size: 0.45rem; letter-spacing: 0.2em; color: rgba(255,200,50,0.38); display: block; }
+.dvu { display: flex; gap: 3px; align-items: flex-end; height: 24px; padding: 0 20px 12px; }
+.vbar { flex: 1; border-radius: 1px 1px 0 0; background: linear-gradient(180deg,#ff4444 0%,#ffaa00 40%,#44cc44 100%); animation: vb var(--d,.8s) ease-in-out infinite alternate; }
+@keyframes vb { from{transform:scaleY(.25)} to{transform:scaleY(1)} }
+.dctrl { display: flex; justify-content: center; gap: 10px; padding: 0 20px 14px; }
+.dbtn { width: 36px; height: 36px; background: linear-gradient(180deg,#2e2e2e,#222); border: 1px solid #3a3a3a; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.4); font-size: 0.9rem; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+.dbtn.play { background: linear-gradient(180deg,#2a3020,#1e2416); color: rgba(100,200,80,0.8); border-color: rgba(100,200,80,0.3); }
+.dtracks { border-top: 1px solid #2a2a2a; }
+.dtrack { display: flex; align-items: center; gap: 12px; padding: 9px 20px; border-bottom: 1px solid #1a1a1a; cursor: pointer; }
+.dtrack:hover { background: rgba(255,200,50,0.04); }
+.dtrack.on { background: rgba(255,200,50,0.07); }
+.dtn { font-size: 0.48rem; color: rgba(255,200,50,0.35); width: 18px; flex-shrink: 0; }
+.dtt { font-size: 0.65rem; color: rgba(255,255,255,0.45); flex: 1; line-height: 1.3; }
+.dtrack:hover .dtt, .dtrack.on .dtt { color: rgba(255,200,50,0.85); }
+.darr { font-size: 0.55rem; color: rgba(255,200,50,0.18); }
+.dtrack:hover .darr, .dtrack.on .darr { color: rgba(255,200,50,0.6); }
+</style>
+</head>
+<body>
+
+<div class="selector">
+  <span>OPTION →</span>
+  <button class="opt-btn active" onclick="show('a')">A · Cassette Cards</button>
+  <button class="opt-btn" onclick="show('b')">B · Mixtape J-Cards</button>
+  <button class="opt-btn" onclick="show('c')">C · Tape Deck Console</button>
+</div>
+
+<!-- A -->
+<div class="option visible" id="opt-a">
+  <p class="slabel">Podcast</p><h2>Podcast</h2>
+  <p class="sub">Episodes where I've been a guest or speaker.</p>
+  <p class="desc">A · Cada episodio = un cassette físico con carrete que gira al hover, sticker label crema, player Spotify desplegable abajo</p>
+  <div class="cass-grid">
+    <div class="cass"><div class="notch"><span></span><span></span></div><div class="label"><p class="ep-num">EP 01 · PODCAST</p><p class="ep-title">IA sin Humo · Estrategia de IA para empresas</p></div><div class="reels"><div class="reel"></div><div class="tape-line"></div><div class="reel"></div></div><p class="cass-foot">C-60 · TYPE II · CHROME</p></div>
+    <div class="cass"><div class="notch"><span></span><span></span></div><div class="label"><p class="ep-num">EP 02 · PODCAST</p><p class="ep-title">Herramientas de IA para emprendedores</p></div><div class="reels"><div class="reel"></div><div class="tape-line"></div><div class="reel"></div></div><p class="cass-foot">C-60 · TYPE II · CHROME</p></div>
+    <div class="cass"><div class="notch"><span></span><span></span></div><div class="label"><p class="ep-num">EP 03 · PODCAST</p><p class="ep-title">Power BI, Excel con IA y Finanzas · CPCECABA</p></div><div class="reels"><div class="reel"></div><div class="tape-line"></div><div class="reel"></div></div><p class="cass-foot">C-90 · TYPE II · CHROME</p></div>
+    <div class="cass"><div class="notch"><span></span><span></span></div><div class="label"><p class="ep-num">EP 04 · PODCAST</p><p class="ep-title">AI Innovation Summit · Google &amp; Microsoft</p></div><div class="reels"><div class="reel"></div><div class="tape-line"></div><div class="reel"></div></div><p class="cass-foot">C-60 · TYPE II · CHROME</p></div>
+    <div class="cass"><div class="notch"><span></span><span></span></div><div class="label"><p class="ep-num">EP 05 · PODCAST</p><p class="ep-title">HISPANOCAN 2025 · Televisión Canaria</p></div><div class="reels"><div class="reel"></div><div class="tape-line"></div><div class="reel"></div></div><p class="cass-foot">C-60 · METAL · HI-FI</p></div>
+    <div class="cass"><div class="notch"><span></span><span></span></div><div class="label"><p class="ep-num">EP 06 · PODCAST</p><p class="ep-title">La Re-Evolución del AI Generativo</p></div><div class="reels"><div class="reel"></div><div class="tape-line"></div><div class="reel"></div></div><p class="cass-foot">C-90 · METAL · HI-FI</p></div>
+  </div>
+</div>
+
+<!-- B -->
+<div class="option" id="opt-b">
+  <p class="slabel">Podcast</p><h2>Podcast</h2>
+  <p class="sub">Episodes where I've been a guest or speaker.</p>
+  <p class="desc">B · Las J-Cards (tarjetas del interior de la caja), inclinadas como los polaroids. Banda de color por ep, carrete mini, título manuscrito. Click = abre player.</p>
+  <div class="jboard">
+    <div class="jgrid">
+      <div class="jcard"><div class="jband"><span>SIDE A</span><span>C-60</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 01</p><p class="jtitle">IA sin Humo · Estrategia IA para empresas</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE A</span><span>C-60</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 02</p><p class="jtitle">Herramientas de IA para emprendedores</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE A</span><span>C-90</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 03</p><p class="jtitle">Power BI, Excel con IA y Finanzas</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE B</span><span>C-60</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 04</p><p class="jtitle">AI Innovation Summit</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE B</span><span>C-60</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 05</p><p class="jtitle">HISPANOCAN 2025 · TV Canaria</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE B</span><span>C-90</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 06</p><p class="jtitle">La Re-Evolución del AI Generativo</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE A</span><span>METAL</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 07</p><p class="jtitle">Talento Tech · Negocios Digitales</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE A</span><span>METAL</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 08</p><p class="jtitle">Tech Intensity · Transformación Digital</p><span class="jlines"></span></div></div>
+      <div class="jcard"><div class="jband"><span>SIDE B</span><span>METAL</span></div><div class="jreels"><div class="jreel"></div><div class="jreel"></div></div><div class="jbody"><p class="jep">EP 09</p><p class="jtitle">El poder transformador de la innovación</p><span class="jlines"></span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- C -->
+<div class="option" id="opt-c">
+  <p class="slabel">Podcast</p><h2>Podcast</h2>
+  <p class="sub">Episodes where I've been a guest or speaker.</p>
+  <p class="desc">C · Una sola consola tape deck vintage: ruedas girando, VU meters, botones físicos, tracklist. Click en track = carga el player de Spotify.</p>
+  <div class="deck">
+    <div class="dtop">
+      <span class="dbrand">ACATINCHO AUDIO</span>
+      <span class="dmodel">MODEL PT-9000 · STEREO CASSETTE DECK</span>
+      <div class="ddots"><div class="ddot r"></div><div class="ddot"></div><div class="ddot"></div></div>
+    </div>
+    <div class="dwindow">
+      <div class="dreel"></div>
+      <div class="dpath">
+        <div class="dtape"></div>
+        <div class="ddisp"><small>▶ NOW PLAYING</small>IA sin Humo · Estrategia de IA para empresas<br><small>EP 01 / 09</small></div>
+        <div class="dtape"></div>
+      </div>
+      <div class="dreel"></div>
+    </div>
+    <div class="dvu" id="dvu"></div>
+    <div class="dctrl">
+      <div class="dbtn">⏮</div><div class="dbtn">⏪</div>
+      <div class="dbtn play">▶</div>
+      <div class="dbtn">⏩</div><div class="dbtn">⏹</div><div class="dbtn">⏏</div>
+    </div>
+    <div class="dtracks">
+      <div class="dtrack on"><span class="dtn">01</span><span class="dtt">IA sin Humo · Estrategia de IA para empresas</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">02</span><span class="dtt">Herramientas de IA para emprendedores</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">03</span><span class="dtt">Power BI, Excel con IA y Finanzas · CPCECABA</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">04</span><span class="dtt">AI Innovation Summit · Google &amp; Microsoft</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">05</span><span class="dtt">HISPANOCAN 2025 · Televisión Canaria</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">06</span><span class="dtt">La Re-Evolución del AI Generativo</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">07</span><span class="dtt">Talento Tech · Negocios Digitales</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">08</span><span class="dtt">Tech Intensity · Transformación Digital</span><span class="darr">▶</span></div>
+      <div class="dtrack"><span class="dtn">09</span><span class="dtt">El poder transformador de la innovación</span><span class="darr">▶</span></div>
+    </div>
+    <div class="deck-player-ph" style="padding:0 20px 20px;background:#070707;height:60px;display:flex;align-items:center;justify-content:center;color:rgba(255,200,50,0.25);font-size:0.58rem;letter-spacing:0.12em;">▶ CLICK TRACK TO LOAD SPOTIFY PLAYER</div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.option').forEach(e=>e.classList.remove('visible'))
+  document.querySelectorAll('.opt-btn').forEach(e=>e.classList.remove('active'))
+  document.getElementById('opt-'+id).classList.add('visible')
+  document.querySelector('[onclick="show(\''+id+'\')"]').classList.add('active')
+}
+// VU bars
+const vu = document.getElementById('dvu')
+for(let i=0;i<28;i++){const b=document.createElement('div');b.className='vbar';b.style.setProperty('--d',(0.4+Math.random()*0.8)+'s');b.style.animationDelay=(i*0.03)+'s';vu.appendChild(b)}
+// Deck track clicks
+document.querySelectorAll('.dtrack').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.dtrack').forEach(x=>x.classList.remove('on'))
+    t.classList.add('on')
+  })
+})
+</script>
+</body>
+</html>

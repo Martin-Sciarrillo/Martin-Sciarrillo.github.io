@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Me — Effects Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan:    #00e5ff;
+      --magenta: #ff00c8;
+      --green:   #00ff9d;
+      --dark:    #04040a;
+      --mono:    'JetBrains Mono', monospace;
+    }
+
+    body {
+      background: #080810;
+      color: #c8ccd4;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* ── Header ──────────────────────────────────────────── */
+    .demo-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .demo-header__eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 0.5rem;
+    }
+    .demo-header h1 {
+      font-family: var(--mono);
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0,229,255,0.4);
+      letter-spacing: 0.05em;
+    }
+    .demo-header h1 span { color: var(--cyan); }
+    .demo-header__sub {
+      font-size: 0.85rem;
+      color: rgba(200,204,212,0.5);
+      margin-top: 0.75rem;
+      font-family: var(--mono);
+    }
+
+    /* ── Grid ────────────────────────────────────────────── */
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 3rem 2.5rem;
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    /* ── Effect card ─────────────────────────────────────── */
+    .effect-card { display: flex; flex-direction: column; gap: 1rem; }
+
+    .effect-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--cyan);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .effect-label strong { color: #fff; opacity: 1; font-size: 0.8rem; letter-spacing: 0.06em; }
+    .effect-desc {
+      font-size: 0.75rem;
+      color: rgba(200,204,212,0.45);
+      font-family: var(--mono);
+      line-height: 1.5;
+      margin-top: -0.5rem;
+    }
+
+    /* ── Monitor frame (from main site) ─────────────────── */
+    .monitor {
+      width: 100%;
+      border-radius: 18px 18px 10px 10px;
+      background: linear-gradient(175deg, #1c1c2e 0%, #0e0e1c 50%, #0a0a16 100%);
+      box-shadow:
+        0 0 80px rgba(0,229,255,0.07),
+        0 40px 100px rgba(0,0,0,0.95),
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 1px 0 0 rgba(255,255,255,0.05),
+        inset -1px 0 0 rgba(0,0,0,0.5),
+        inset 0 -1px 0 rgba(0,0,0,0.7);
+      padding: 22px 22px 0;
+      position: relative;
+    }
+
+    .monitor .screen {
+      background: #04040a;
+      border-radius: 6px 6px 0 0;
+      border: 1px solid rgba(0,229,255,0.22);
+      border-bottom: none;
+      box-shadow: inset 0 0 60px rgba(0,0,0,0.97), 0 0 25px rgba(0,229,255,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* scanlines */
+    .monitor .screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom, transparent 0px, transparent 3px,
+        rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .monitor .screen-scroll {
+      max-height: 340px;
+      overflow-y: auto;
+      padding: 24px 28px;
+      position: relative;
+      z-index: 1;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,229,255,0.35) transparent;
+    }
+    .monitor .screen-scroll::-webkit-scrollbar { width: 4px; }
+    .monitor .screen-scroll::-webkit-scrollbar-track { background: transparent; }
+    .monitor .screen-scroll::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.35); border-radius: 2px; }
+
+    .monitor .screen-scroll p {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: rgba(200,210,220,0.82);
+      margin-bottom: 0.9rem;
+    }
+    .monitor .screen-scroll p:last-child { margin-bottom: 0; }
+    .monitor .screen-scroll strong { color: #e8edf2; }
+
+    .monitor .chin {
+      background: linear-gradient(180deg, #0d0d1a 0%, #080810 100%);
+      border: 1px solid rgba(0,229,255,0.18);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .chin-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: rgba(0,229,255,0.6);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 70%;
+    }
+    .chin-btns { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
+    .btn-sq { width: 8px; height: 5px; background: rgba(0,229,255,0.25); border-radius: 1px; }
+    .btn-rd { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,229,255,0.2); }
+    .btn-rd.power { background: rgba(0,229,255,0.5); box-shadow: 0 0 6px rgba(0,229,255,0.4); }
+
+    /* ── Progress bar (effect 5) ─────────────────────────── */
+    .chin-progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      width: 0%;
+      transition: width 0.1s linear;
+      border-radius: 0 1px 0 0;
+    }
+    .chin.has-progress { position: relative; }
+
+    /* ── Effect 02 — Line Numbers ────────────────────────── */
+    .ln-wrap {
+      display: flex;
+      gap: 0;
+    }
+    .ln-gutter {
+      flex-shrink: 0;
+      width: 2.2rem;
+      padding: 24px 8px 24px 4px;
+      border-right: 1px solid rgba(0,229,255,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+      background: rgba(0,229,255,0.02);
+    }
+    .ln-gutter span {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: rgba(0,229,255,0.25);
+      line-height: 1.7;
+      display: block;
+      height: calc(0.78rem * 1.7);
+    }
+    .ln-content {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 340px;
+      padding: 24px 28px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,229,255,0.35) transparent;
+    }
+    .ln-content::-webkit-scrollbar { width: 4px; }
+    .ln-content::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.35); border-radius: 2px; }
+    .ln-content p {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: rgba(200,210,220,0.82);
+      margin-bottom: 0.9rem;
+    }
+    .ln-content p:last-child { margin-bottom: 0; }
+    .ln-content strong { color: #e8edf2; }
+
+    /* ── Effect 03 — Dim on hover ────────────────────────── */
+    .dim-scroll { position: relative; z-index: 1; }
+    .dim-scroll p {
+      transition: opacity 0.2s, filter 0.2s;
+    }
+    .dim-scroll:hover p { opacity: 0.25; filter: blur(0.4px); }
+    .dim-scroll:hover p:hover { opacity: 1; filter: none; color: #fff; }
+
+    /* ── Effect 04 — Typewriter ──────────────────────────── */
+    .tw-p { visibility: hidden; }
+    .tw-p.typed { visibility: visible; }
+    .tw-cursor::after {
+      content: '▌';
+      color: var(--cyan);
+      animation: blink-cur 0.7s step-end infinite;
+    }
+    @keyframes blink-cur { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Effect 06 — 3D Parallax ─────────────────────────── */
+    .monitor-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.08s ease-out;
+      will-change: transform;
+    }
+    .monitor-3d .screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at var(--mx,50%) var(--my,50%), rgba(0,229,255,0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 2;
+      transition: background 0.1s;
+    }
+
+    /* ── Effect 07 — Glitch on fast scroll ───────────────── */
+    @keyframes glitch-h {
+      0%   { clip-path: inset(30% 0 40% 0); transform: translateX(-4px); }
+      25%  { clip-path: inset(60% 0 10% 0); transform: translateX(4px); }
+      50%  { clip-path: inset(10% 0 70% 0); transform: translateX(-2px); }
+      75%  { clip-path: inset(80% 0 5%  0); transform: translateX(3px); }
+      100% { clip-path: inset(0); transform: translateX(0); }
+    }
+    .glitch-active .screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      z-index: 4;
+      animation: glitch-h 0.18s steps(1) 2;
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .glitch-active {
+      box-shadow:
+        0 0 80px rgba(0,229,255,0.07),
+        0 40px 100px rgba(0,0,0,0.95),
+        -4px 0 0 rgba(255,0,200,0.4),
+        4px 0 0 rgba(0,229,255,0.4);
+    }
+
+    /* ── Effect 01 — Decrypt ─────────────────────────────── */
+    .decrypt-p { position: relative; }
+
+    /* ── Utility ─────────────────────────────────────────── */
+    .hl { color: var(--cyan); font-style: normal; }
+
+    /* Interactive hint */
+    .hint {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: rgba(0,229,255,0.4);
+      text-align: center;
+      padding: 4px 0 6px;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Section divider ─────────────────────────────────── */
+    .demo-section-title {
+      grid-column: 1 / -1;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: rgba(0,229,255,0.35);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 2rem 0 0.5rem;
+      border-top: 1px solid rgba(0,229,255,0.08);
+      margin-top: 1rem;
+    }
+
+    /* ── Effect 08 — Power Off on Leave ─────────────────── */
+    .screen-inner {
+      transform-origin: center center;
+      transition: transform 0.22s ease-in, opacity 0.28s ease, filter 0.28s ease;
+    }
+    .powered-off .screen-inner {
+      transform: scaleY(0.025) scaleX(1.04);
+      opacity: 0;
+      filter: brightness(3);
+    }
+    @keyframes power-on {
+      0%   { transform: scaleY(0.02); filter: brightness(4); opacity: 0.9; }
+      35%  { transform: scaleY(1.03) scaleX(0.99); filter: brightness(1.2); opacity: 1; }
+      55%  { transform: scaleY(0.97); }
+      75%  { transform: scaleY(1.01); }
+      100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
+    }
+    .powering-on .screen-inner {
+      animation: power-on 0.55s ease-out forwards;
+    }
+
+    /* ── Effect 09 — Signal Noise Burst ──────────────────── */
+    @keyframes noise-shift {
+      0%,100% { clip-path: inset(0 0 95% 0); transform: translateX(0); }
+      20%  { clip-path: inset(20% 0 60% 0); transform: translateX(-5px); }
+      40%  { clip-path: inset(50% 0 30% 0); transform: translateX(4px); }
+      60%  { clip-path: inset(75% 0 10% 0); transform: translateX(-3px); }
+      80%  { clip-path: inset(10% 0 80% 0); transform: translateX(6px); }
+    }
+    .noise-burst .screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+        transparent 0%, rgba(0,229,255,0.15) 48%, rgba(255,0,200,0.12) 52%, transparent 100%
+      );
+      z-index: 5;
+      pointer-events: none;
+      animation: noise-shift 0.12s steps(1) 3;
+    }
+    .noise-burst { outline: 1px solid rgba(0,229,255,0.3); }
+
+    /* ── Effect 10 — Channel Static ──────────────────────── */
+    .monitor-static { position: relative; }
+    .static-canvas {
+      position: absolute;
+      inset: 22px 22px 0;
+      border-radius: 6px 6px 0 0;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .monitor-static.is-off .static-canvas { opacity: 1; }
+    .monitor-static.is-off .screen-inner  { opacity: 0.04; }
+    .btn-rd.power { cursor: pointer; }
+    .btn-rd.power:hover { background: rgba(0,229,255,0.85) !important; box-shadow: 0 0 10px rgba(0,229,255,0.7) !important; }
+
+    /* ── Effect 11 — Keyword Pulse ───────────────────────── */
+    .kw {
+      display: inline;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+    @keyframes kw-pulse {
+      0%   { color: #e8edf2; text-shadow: 0 0 0 transparent; }
+      25%  { color: #fff;    text-shadow: 0 0 18px var(--cyan), 0 0 40px rgba(0,229,255,0.5); }
+      60%  { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+      100% { color: inherit; text-shadow: none; }
+    }
+    .kw.pulsing { animation: kw-pulse 1.1s ease-out forwards; }
+
+    /* ── Effect 12 — Fake Terminal Chin ──────────────────── */
+    .chin-cmd {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: rgba(0,229,255,0.7);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .chin-cmd .prompt { color: rgba(0,255,157,0.7); }
+    .chin-cmd .cursor-blink {
+      display: inline-block;
+      width: 6px; height: 0.7em;
+      background: var(--cyan);
+      vertical-align: text-bottom;
+      animation: blink-cur 0.7s step-end infinite;
+    }
+    @keyframes blink-cur { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Effect 13 — Cursor Crosshair ────────────────────── */
+    .monitor-cross .screen-scroll { cursor: none; }
+    #crosshair-h, #crosshair-v {
+      position: absolute;
+      background: rgba(0,229,255,0.5);
+      pointer-events: none;
+      z-index: 6;
+      transition: opacity 0.1s;
+    }
+    #crosshair-h { height: 1px; left: 0; right: 0; }
+    #crosshair-v { width:  1px; top: 0; bottom: 0; }
+    .crosshair-dot-center {
+      position: absolute;
+      width: 5px; height: 5px;
+      border: 1px solid var(--cyan);
+      border-radius: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      z-index: 7;
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    /* ── Effect 14 — Magnetic Snap ───────────────────────── */
+    .monitor-mag {
+      transition: transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.18s ease;
+      will-change: transform;
+    }
+    .monitor-mag:hover {
+      box-shadow:
+        0 0 80px rgba(0,229,255,0.14),
+        0 40px 100px rgba(0,0,0,0.95),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    /* ── Effect 15 — Rain on Glass ───────────────────────── */
+    .rain-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      border-radius: 6px 6px 0 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-header">
+    <div class="demo-header__eyebrow">root@tincho · ~/about-effects</div>
+    <h1>About Me <span>Effects</span> Demo</h1>
+    <div class="demo-header__sub">// interactuá con cada monitor para ver el efecto en acción</div>
+  </div>
+
+  <div class="demo-grid">
+
+    <!-- ── 01 — TEXT DECRYPT ─────────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 01 — <strong>Text Decrypt on Scroll</strong></div>
+        <div class="effect-desc">Cada párrafo entra con chars scrambleados → se decodifica al texto real</div>
+      </div>
+      <div class="monitor" id="m-decrypt">
+        <div class="screen">
+          <div class="screen-scroll" id="decrypt-scroll">
+            <p class="decrypt-p">I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p class="decrypt-p">From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+            <p class="decrypt-p">I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p class="decrypt-p">I&rsquo;ve had the privilege of working inside some of the <strong>world&rsquo;s largest technology companies</strong>, partnering with global organizations across industries and markets.</p>
+            <p class="decrypt-p">I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p class="decrypt-p">Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products and services across hybrid and cloud environments throughout the U.S., Europe, and Asia.</p>
+            <p class="decrypt-p">Outside the office, I&rsquo;m lucky enough to be married to <strong>Vicky</strong> and to be <strong>Miranda</strong>&rsquo;s dad 🧡. We are <strong>foodies</strong> by nature and <strong>travelers</strong> by choice.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↕ scrolleá para ver el efecto</div>
+    </div>
+
+    <!-- ── 02 — LINE NUMBERS ──────────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 02 — <strong>Line Numbers (Editor Style)</strong></div>
+        <div class="effect-desc">Gutter izquierdo con numeración tipo VS Code / Vim</div>
+      </div>
+      <div class="monitor">
+        <div class="screen">
+          <div class="ln-wrap">
+            <div class="ln-gutter" id="ln-gutter"></div>
+            <div class="ln-content" id="ln-content">
+              <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+              <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+              <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+              <p>I&rsquo;ve had the privilege of working inside some of the <strong>world&rsquo;s largest technology companies</strong>, partnering with global organizations across industries and markets.</p>
+              <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+              <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products and services across hybrid and cloud environments throughout the U.S., Europe, and Asia.</p>
+              <p>Outside the office, I&rsquo;m lucky enough to be married to <strong>Vicky</strong> and to be <strong>Miranda</strong>&rsquo;s dad 🧡. We are <strong>foodies</strong> by nature and <strong>travelers</strong> by choice.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md · UTF-8</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">// gutter permanente al scrollear</div>
+    </div>
+
+    <!-- ── 03 — DIM ON HOVER ──────────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 03 — <strong>Paragraph Dim on Hover</strong></div>
+        <div class="effect-desc">Hover sobre un párrafo dimea los demás — foco terminal</div>
+      </div>
+      <div class="monitor">
+        <div class="screen">
+          <div class="screen-scroll dim-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;ve had the privilege of working inside some of the <strong>world&rsquo;s largest technology companies</strong>, partnering with global organizations across industries and markets.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products and services across hybrid and cloud environments.</p>
+            <p>Outside the office, I&rsquo;m lucky enough to be married to <strong>Vicky</strong> and to be <strong>Miranda</strong>&rsquo;s dad 🧡. We are <strong>foodies</strong> by nature and <strong>travelers</strong> by choice.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↖ pasá el mouse sobre cada párrafo</div>
+    </div>
+
+    <!-- ── 04 — TYPEWRITER ON SCROLL ─────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 04 — <strong>Typewriter on Scroll</strong></div>
+        <div class="effect-desc">Cada párrafo se escribe solo al entrar al viewport del monitor</div>
+      </div>
+      <div class="monitor">
+        <div class="screen">
+          <div class="screen-scroll" id="tw-scroll">
+            <p class="tw-p">I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into global delivery — long before it became the norm.</p>
+            <p class="tw-p">From managing Windows, Unix & Linux on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the AI era, where infrastructure meets intelligence.</p>
+            <p class="tw-p">I've operated at the intersection of building solutions and running them — while building teams that do both, across countries, regions, and time zones.</p>
+            <p class="tw-p">I've had the privilege of working inside some of the world's largest technology companies, partnering with global organizations across industries and markets.</p>
+            <p class="tw-p">I'm currently an Executive Technology Strategist at Microsoft, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p class="tw-p">Before Microsoft, I was Global Leader of Multicloud Platforms at EY, building products and services across hybrid and cloud environments.</p>
+            <p class="tw-p">Outside the office, I'm lucky enough to be married to Vicky and to be Miranda's dad. We are foodies by nature and travelers by choice.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↕ scrolleá para ver cómo se escriben</div>
+    </div>
+
+    <!-- ── 05 — PROGRESS BAR + LIVE CHIN ─────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 05 — <strong>Reading Progress + Live Position</strong></div>
+        <div class="effect-desc">Barra de progreso en el chin + indicador de línea en tiempo real</div>
+      </div>
+      <div class="monitor">
+        <div class="screen">
+          <div class="screen-scroll" id="prog-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;ve had the privilege of working inside some of the <strong>world&rsquo;s largest technology companies</strong>, partnering with global organizations across industries and markets.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products and services across hybrid and cloud environments throughout the U.S., Europe, and Asia.</p>
+            <p>Outside the office, I&rsquo;m lucky enough to be married to <strong>Vicky</strong> and to be <strong>Miranda</strong>&rsquo;s dad 🧡. We are <strong>foodies</strong> by nature and <strong>travelers</strong> by choice.</p>
+          </div>
+        </div>
+        <div class="chin has-progress" id="prog-chin">
+          <span class="chin-label" id="prog-label">ROOT@TINCHO — ~/about.md [L:1]</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+          <div class="chin-progress" id="chin-bar"></div>
+        </div>
+      </div>
+      <div class="hint">↕ scrolleá para ver el progreso</div>
+    </div>
+
+    <!-- ── 06 — 3D PARALLAX TILT ──────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 06 — <strong>Mouse Parallax 3D Tilt</strong></div>
+        <div class="effect-desc">El monitor tiltea siguiendo el mouse — CSS perspective + rotateX/Y</div>
+      </div>
+      <div class="monitor monitor-3d" id="m-tilt">
+        <div class="screen">
+          <div class="screen-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;ve had the privilege of working inside some of the <strong>world&rsquo;s largest technology companies</strong>, partnering with global organizations across industries and markets.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products and services across hybrid and cloud environments throughout the U.S., Europe, and Asia.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↖ mové el mouse sobre el monitor</div>
+    </div>
+
+    <!-- ── 07 — GLITCH ON FAST SCROLL ────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 07 — <strong>Glitch on Fast Scroll</strong></div>
+        <div class="effect-desc">Scrolleá rápido para disparar el glitch en la pantalla</div>
+      </div>
+      <div class="monitor" id="m-glitch">
+        <div class="screen">
+          <div class="screen-scroll" id="glitch-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;ve had the privilege of working inside some of the <strong>world&rsquo;s largest technology companies</strong>, partnering with global organizations across industries and markets.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products and services across hybrid and cloud environments throughout the U.S., Europe, and Asia.</p>
+            <p>Outside the office, I&rsquo;m lucky enough to be married to <strong>Vicky</strong> and to be <strong>Miranda</strong>&rsquo;s dad 🧡. We are <strong>foodies</strong> by nature and <strong>travelers</strong> by choice.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label" id="glitch-label">ROOT@TINCHO — ~/about.md · STABLE</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">⚡ scrolleá rápido para triggerear</div>
+    </div>
+
+    <!-- ────────────────── SECTION 2 ──────────────────────── -->
+    <div class="demo-section-title">// nuevos efectos — ronda 2</div>
+
+    <!-- ── 08 — POWER OFF ON LEAVE ──────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 08 — <strong>Power Off on Mouse Leave</strong></div>
+        <div class="effect-desc">Al salir del monitor → CRT power off. Al volver → boot line expansion</div>
+      </div>
+      <div class="monitor" id="m-power">
+        <div class="screen">
+          <div class="screen-inner">
+            <div class="screen-scroll">
+              <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+              <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical datacenters to moving workloads to the cloud, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+              <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+              <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate AI, cloud, and security into measurable business outcomes.</p>
+              <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products across hybrid and cloud environments in the U.S., Europe, and Asia.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label" id="power-label">ROOT@TINCHO — ~/about.md · ON</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↖ sacá el mouse del monitor</div>
+    </div>
+
+    <!-- ── 09 — SIGNAL NOISE BURST ───────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 09 — <strong>Signal Noise Burst</strong></div>
+        <div class="effect-desc">Cada 3s micro-glitch automático de 120ms — interferencia de señal</div>
+      </div>
+      <div class="monitor" id="m-noise">
+        <div class="screen">
+          <div class="screen-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical datacenters to moving workloads to the cloud, and now into the <strong>AI era</strong>.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products across hybrid and cloud environments throughout the U.S., Europe, and Asia.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label" id="noise-label">ROOT@TINCHO — ~/about.md · SIGNAL OK</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">// auto — observá cada ~3 segundos</div>
+    </div>
+
+    <!-- ── 10 — CHANNEL STATIC ───────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 10 — <strong>Channel Static (Power Button)</strong></div>
+        <div class="effect-desc">Click el botón de power → TV static. Click de nuevo → enciende</div>
+      </div>
+      <div class="monitor monitor-static" id="m-static">
+        <canvas class="static-canvas" id="static-canvas"></canvas>
+        <div class="screen">
+          <div class="screen-inner">
+            <div class="screen-scroll">
+              <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+              <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical datacenters to moving workloads to the cloud, and now into the <strong>AI era</strong>.</p>
+              <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+              <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders.</p>
+              <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products across hybrid and cloud environments.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label" id="static-label">ROOT@TINCHO — ~/about.md · ON</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power" id="power-btn" title="Power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">⏻ hacé click en el botón de power</div>
+    </div>
+
+    <!-- ── 11 — KEYWORD PULSE ────────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 11 — <strong>Keyword Pulse on Scroll</strong></div>
+        <div class="effect-desc">Microsoft · AI · EY · IBM · cloud pulsan en cyan al scrollearlos</div>
+      </div>
+      <div class="monitor">
+        <div class="screen">
+          <div class="screen-scroll" id="kw-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong><span class="kw">Unix</span> &amp; <span class="kw">Linux</span></strong> on-premise to moving workloads to the <span class="kw">cloud</span>, and now into the <strong><span class="kw">AI</span> era</strong>, where infrastructure meets intelligence.</p>
+            <p>I&rsquo;ve had the privilege of working inside some of the world&rsquo;s largest technology companies, partnering with global organizations across industries and markets.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <strong><span class="kw">Microsoft</span></strong>, partnering with senior business leaders to translate data, <span class="kw">AI</span>, <span class="kw">cloud</span>, and security into measurable business outcomes.</p>
+            <p>Before <span class="kw">Microsoft</span>, I was <strong>Global Leader of Multicloud Platforms</strong> at <strong><span class="kw">EY</span></strong>, building products across hybrid and <span class="kw">cloud</span> environments throughout the U.S., Europe, and Asia.</p>
+            <p>And before that, I built and scaled technology teams at <strong><span class="kw">IBM</span></strong> during the early expansion of the Global Delivery Center, supporting U.S.-based clients from Argentina to the world.</p>
+            <p>Outside the office, I&rsquo;m lucky enough to be married to <strong>Vicky</strong> and to be <strong>Miranda</strong>&rsquo;s dad 🧡. We are <strong>foodies</strong> by nature and <strong>travelers</strong> by choice.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↕ scrolleá para ver los keywords brillar</div>
+    </div>
+
+    <!-- ── 12 — FAKE TERMINAL CHIN ───────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 12 — <strong>Fake Terminal Commands Chin</strong></div>
+        <div class="effect-desc">El chin cicla comandos fake → cat · grep · wc · vim · tail</div>
+      </div>
+      <div class="monitor">
+        <div class="screen">
+          <div class="screen-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical datacenters to moving workloads to the cloud, and now into the <strong>AI era</strong>.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products across hybrid and cloud environments.</p>
+          </div>
+        </div>
+        <div class="chin" style="padding: 6px 14px;">
+          <span class="chin-cmd"><span class="prompt">root@tincho:~$&nbsp;</span><span id="fake-cmd"></span><span class="cursor-blink"></span></span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">// auto — comandos cada 2.5s</div>
+    </div>
+
+    <!-- ── 13 — CURSOR CROSSHAIR ─────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 13 — <strong>Cursor Crosshair</strong></div>
+        <div class="effect-desc">Dentro del monitor el cursor se convierte en crosshair de precisión</div>
+      </div>
+      <div class="monitor monitor-cross">
+        <div class="screen" id="cross-screen" style="position:relative;">
+          <div id="crosshair-h"></div>
+          <div id="crosshair-v"></div>
+          <div class="crosshair-dot-center" id="cross-dot"></div>
+          <div class="screen-scroll" id="cross-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical datacenters to moving workloads to the cloud, and now into the <strong>AI era</strong>.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products across hybrid and cloud environments.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label" id="cross-label">ROOT@TINCHO — ~/about.md · x:— y:—</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↖ mové el mouse sobre la pantalla</div>
+    </div>
+
+    <!-- ── 14 — MAGNETIC SNAP ────────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 14 — <strong>Magnetic Snap</strong></div>
+        <div class="effect-desc">El monitor se desplaza sutilmente hacia donde está el mouse</div>
+      </div>
+      <div class="monitor monitor-mag" id="m-mag">
+        <div class="screen">
+          <div class="screen-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical datacenters to moving workloads to the cloud, and now into the <strong>AI era</strong>.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products across hybrid and cloud environments.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">↖ mové el mouse sobre y alrededor del monitor</div>
+    </div>
+
+    <!-- ── 15 — RAIN ON GLASS ────────────────────────────── -->
+    <div class="effect-card">
+      <div>
+        <div class="effect-label">EFFECT 15 — <strong>Rain on Glass</strong></div>
+        <div class="effect-desc">Gotas de lluvia resbalando sobre el vidrio del monitor con física simple</div>
+      </div>
+      <div class="monitor">
+        <div class="screen" style="position:relative;">
+          <canvas class="rain-canvas" id="rain-canvas"></canvas>
+          <div class="screen-scroll">
+            <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+            <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical datacenters to moving workloads to the cloud, and now into the <strong>AI era</strong>.</p>
+            <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+            <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <em class="hl">Microsoft</em>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes.</p>
+            <p>Before Microsoft, I was <strong>Global Leader of Multicloud Platforms</strong> at <em class="hl">EY</em>, building products across hybrid and cloud environments.</p>
+          </div>
+        </div>
+        <div class="chin">
+          <span class="chin-label">ROOT@TINCHO — ~/about.md</span>
+          <div class="chin-btns">
+            <div class="btn-sq"></div><div class="btn-sq"></div>
+            <div class="btn-rd"></div><div class="btn-rd"></div>
+            <div class="btn-rd power"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">// auto — lluvia permanente sobre el vidrio</div>
+    </div>
+
+  </div><!-- /demo-grid -->
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 01 — Text Decrypt on Scroll
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const CHARS = 'アイウエオカキクケコサシスセソ0123456789ABCDEF@#$%&!?><_'
+  const DURATION = 480
+  const decrypted = new Set()
+
+  function decrypt(el) {
+    if (decrypted.has(el)) return
+    decrypted.add(el)
+    const orig = el.textContent
+    const start = performance.now()
+
+    function frame(now) {
+      const t = Math.min((now - start) / DURATION, 1)
+      const revealed = Math.floor(t * orig.length)
+      let out = ''
+      for (let i = 0; i < orig.length; i++) {
+        if (i < revealed || orig[i] === ' ') {
+          out += orig[i]
+        } else {
+          out += CHARS[Math.floor(Math.random() * CHARS.length)]
+        }
+      }
+      el.textContent = out
+      if (t < 1) requestAnimationFrame(frame)
+      else el.textContent = orig
+    }
+    requestAnimationFrame(frame)
+  }
+
+  const scroll = document.getElementById('decrypt-scroll')
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) decrypt(e.target) })
+  }, { root: scroll, threshold: 0.2 })
+
+  scroll.querySelectorAll('.decrypt-p').forEach(p => obs.observe(p))
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 02 — Line Numbers
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const content = document.getElementById('ln-content')
+  const gutter  = document.getElementById('ln-gutter')
+
+  // Count approximate lines per paragraph based on char count + width
+  function buildGutter() {
+    gutter.innerHTML = ''
+    const lineH = parseFloat(getComputedStyle(content).lineHeight) || 21
+    const pEls  = content.querySelectorAll('p')
+    let lineNum = 1
+    pEls.forEach(p => {
+      const lines = Math.max(1, Math.round(p.offsetHeight / lineH))
+      for (let i = 0; i < lines; i++) {
+        const s = document.createElement('span')
+        s.textContent = lineNum++
+        gutter.appendChild(s)
+      }
+      // blank line between paragraphs
+      const blank = document.createElement('span')
+      blank.textContent = ''
+      gutter.appendChild(blank)
+      lineNum++
+    })
+  }
+
+  // Sync scroll
+  content.addEventListener('scroll', () => {
+    gutter.scrollTop = content.scrollTop
+  })
+
+  setTimeout(buildGutter, 100)
+  window.addEventListener('resize', buildGutter)
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 04 — Typewriter on Scroll
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const scroll  = document.getElementById('tw-scroll')
+  const typed   = new Set()
+  let   current = null
+
+  function typeEl(el, cb) {
+    if (typed.has(el)) return
+    typed.add(el)
+    const orig = el.textContent.trim()
+    el.textContent = ''
+    el.classList.add('typed', 'tw-cursor')
+    el.style.visibility = 'visible'
+    let i = 0
+    function tick() {
+      el.textContent = orig.slice(0, i++)
+      if (i <= orig.length) setTimeout(tick, 18)
+      else { el.classList.remove('tw-cursor'); cb?.() }
+    }
+    tick()
+  }
+
+  // Queue them so they don't all fire at once
+  const queue = []
+  let busy = false
+  function runQueue() {
+    if (busy || !queue.length) return
+    busy = true
+    const el = queue.shift()
+    typeEl(el, () => { busy = false; setTimeout(runQueue, 80) })
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !typed.has(e.target)) {
+        queue.push(e.target)
+        runQueue()
+      }
+    })
+  }, { root: scroll, threshold: 0.1 })
+
+  scroll.querySelectorAll('.tw-p').forEach(p => obs.observe(p))
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 05 — Reading Progress + Live Position
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const scroll = document.getElementById('prog-scroll')
+  const bar    = document.getElementById('chin-bar')
+  const label  = document.getElementById('prog-label')
+  const ps     = scroll.querySelectorAll('p')
+  const total  = ps.length
+
+  scroll.addEventListener('scroll', () => {
+    const max = scroll.scrollHeight - scroll.clientHeight
+    const pct = max > 0 ? scroll.scrollTop / max : 0
+    bar.style.width = (pct * 100) + '%'
+
+    // Which paragraph is most visible?
+    let visible = 1
+    ps.forEach((p, i) => {
+      const rect = p.getBoundingClientRect()
+      const sRect = scroll.getBoundingClientRect()
+      if (rect.top < sRect.bottom && rect.bottom > sRect.top) visible = i + 1
+    })
+    label.textContent = `ROOT@TINCHO — ~/about.md  [§${visible}/${total} · ${Math.round(pct*100)}%]`
+  }, { passive: true })
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 06 — 3D Parallax Tilt
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const mon = document.getElementById('m-tilt')
+  const screen = mon.querySelector('.screen')
+  const MAX = 10
+
+  mon.addEventListener('mousemove', e => {
+    const r   = mon.getBoundingClientRect()
+    const x   = (e.clientX - r.left) / r.width  - 0.5   // -0.5 to 0.5
+    const y   = (e.clientY - r.top)  / r.height - 0.5
+    const rx  =  y * MAX * -1
+    const ry  =  x * MAX
+    mon.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`
+    screen.style.setProperty('--mx', `${(x + 0.5) * 100}%`)
+    screen.style.setProperty('--my', `${(y + 0.5) * 100}%`)
+  })
+
+  mon.addEventListener('mouseleave', () => {
+    mon.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)'
+    screen.style.setProperty('--mx', '50%')
+    screen.style.setProperty('--my', '50%')
+  })
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 07 — Glitch on Fast Scroll
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const mon    = document.getElementById('m-glitch')
+  const scroll = document.getElementById('glitch-scroll')
+  const label  = document.getElementById('glitch-label')
+  const THRESH = 18   // px/ms velocity threshold
+  let lastY = 0, lastT = 0, glitching = false
+
+  scroll.addEventListener('scroll', () => {
+    const now = performance.now()
+    const dy  = Math.abs(scroll.scrollTop - lastY)
+    const dt  = now - lastT || 1
+    const vel = dy / dt
+
+    lastY = scroll.scrollTop
+    lastT = now
+
+    if (vel > THRESH && !glitching) {
+      glitching = true
+      mon.classList.add('glitch-active')
+      label.textContent = 'ROOT@TINCHO — ~/about.md · ⚠ SIGNAL CORRUPTED'
+      label.style.color = 'rgba(255,0,200,0.9)'
+      setTimeout(() => {
+        mon.classList.remove('glitch-active')
+        label.textContent = 'ROOT@TINCHO — ~/about.md · STABLE'
+        label.style.color = ''
+        glitching = false
+      }, 380)
+    }
+  }, { passive: true })
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 08 — Power Off on Mouse Leave
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const mon   = document.getElementById('m-power')
+  const label = document.getElementById('power-label')
+  let off = false, timer = null
+
+  mon.addEventListener('mouseleave', () => {
+    if (off) return
+    off = true
+    mon.classList.add('powered-off')
+    mon.classList.remove('powering-on')
+    label.textContent = 'ROOT@TINCHO — ~/about.md · OFF'
+    label.style.color = 'rgba(255,0,200,0.6)'
+  })
+
+  mon.addEventListener('mouseenter', () => {
+    if (!off) return
+    off = false
+    mon.classList.remove('powered-off')
+    mon.classList.add('powering-on')
+    label.textContent = 'ROOT@TINCHO — ~/about.md · BOOTING...'
+    label.style.color = 'rgba(0,229,255,0.5)'
+    setTimeout(() => {
+      mon.classList.remove('powering-on')
+      label.textContent = 'ROOT@TINCHO — ~/about.md · ON'
+      label.style.color = ''
+    }, 580)
+  })
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 09 — Signal Noise Burst (auto every ~3s)
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const mon   = document.getElementById('m-noise')
+  const label = document.getElementById('noise-label')
+  const MSGS  = ['⚠ SIGNAL LOST', '⚠ INTERFERENCE', '⚠ CORRUPTED', '⚠ SYNC ERROR']
+
+  function burst() {
+    const msg = MSGS[Math.floor(Math.random() * MSGS.length)]
+    mon.classList.add('noise-burst')
+    label.textContent = `ROOT@TINCHO — ~/about.md · ${msg}`
+    label.style.color = 'rgba(255,0,200,0.9)'
+    setTimeout(() => {
+      mon.classList.remove('noise-burst')
+      label.textContent = 'ROOT@TINCHO — ~/about.md · SIGNAL OK'
+      label.style.color = ''
+    }, 400)
+  }
+
+  // Auto-fire
+  function schedule() { setTimeout(() => { burst(); schedule() }, 2800 + Math.random() * 1800) }
+  schedule()
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 10 — Channel Static (Power Button toggle)
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const mon    = document.getElementById('m-static')
+  const btn    = document.getElementById('power-btn')
+  const canvas = document.getElementById('static-canvas')
+  const label  = document.getElementById('static-label')
+  const ctx    = canvas.getContext('2d')
+  let isOff = false, rafId = null
+
+  function sizeCanvas() {
+    canvas.width  = mon.offsetWidth  - 44
+    canvas.height = mon.offsetHeight - 44
+  }
+  sizeCanvas()
+
+  function drawStatic() {
+    if (!isOff) return
+    const W = canvas.width, H = canvas.height
+    const img = ctx.createImageData(W, H)
+    const d   = img.data
+    for (let i = 0; i < d.length; i += 4) {
+      const v = Math.random() > 0.5 ? 255 : 0
+      d[i] = d[i+1] = d[i+2] = v
+      d[i+3] = Math.random() < 0.6 ? 180 : 0
+    }
+    ctx.putImageData(img, 0, 0)
+    // scanline overlay
+    ctx.fillStyle = 'rgba(0,0,0,0.25)'
+    for (let y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 2)
+    rafId = requestAnimationFrame(drawStatic)
+  }
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation()
+    isOff = !isOff
+    if (isOff) {
+      mon.classList.add('is-off')
+      label.textContent = 'ROOT@TINCHO — ~/about.md · OFF'
+      label.style.color = 'rgba(255,100,100,0.7)'
+      drawStatic()
+    } else {
+      mon.classList.remove('is-off')
+      label.textContent = 'ROOT@TINCHO — ~/about.md · ON'
+      label.style.color = ''
+      cancelAnimationFrame(rafId)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+    }
+  })
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 11 — Keyword Pulse on Scroll
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const scroll  = document.getElementById('kw-scroll')
+  const pulsed  = new Set()
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !pulsed.has(e.target)) {
+        pulsed.add(e.target)
+        e.target.classList.add('pulsing')
+        setTimeout(() => e.target.classList.remove('pulsing'), 1200)
+        // Allow re-trigger after timeout
+        setTimeout(() => pulsed.delete(e.target), 3000)
+      }
+    })
+  }, { root: scroll, threshold: 0.6 })
+
+  scroll.querySelectorAll('.kw').forEach(kw => obs.observe(kw))
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 12 — Fake Terminal Commands in Chin
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const el   = document.getElementById('fake-cmd')
+  const CMDS = [
+    'cat about.md',
+    'grep -i "AI" about.md',
+    'wc -l about.md',
+    'head -20 about.md',
+    'tail -5 about.md',
+    'vim about.md',
+    'less about.md',
+    'diff about.md about_v2.md',
+    'echo $CAREER | grep Microsoft',
+    'ls -la ~/experience/',
+  ]
+  let idx = 0
+
+  function typeCmd(cmd, cb) {
+    el.textContent = ''
+    let i = 0
+    function tick() {
+      el.textContent = cmd.slice(0, i++)
+      if (i <= cmd.length) setTimeout(tick, 55 + Math.random() * 30)
+      else setTimeout(cb, 900)
+    }
+    tick()
+  }
+
+  function eraseCmd(cb) {
+    const len = el.textContent.length
+    let i = len
+    function tick() {
+      el.textContent = el.textContent.slice(0, --i)
+      if (i > 0) setTimeout(tick, 28)
+      else cb()
+    }
+    tick()
+  }
+
+  function loop() {
+    const cmd = CMDS[idx % CMDS.length]
+    idx++
+    typeCmd(cmd, () => eraseCmd(() => setTimeout(loop, 300)))
+  }
+
+  setTimeout(loop, 800)
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 13 — Cursor Crosshair
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const screen = document.getElementById('cross-screen')
+  const hLine  = document.getElementById('crosshair-h')
+  const vLine  = document.getElementById('crosshair-v')
+  const dot    = document.getElementById('cross-dot')
+  const label  = document.getElementById('cross-label')
+  let visible  = false
+
+  ;[hLine, vLine, dot].forEach(el => el.style.opacity = '0')
+
+  screen.addEventListener('mousemove', e => {
+    const r = screen.getBoundingClientRect()
+    const x = e.clientX - r.left
+    const y = e.clientY - r.top
+    hLine.style.top    = y + 'px'
+    vLine.style.left   = x + 'px'
+    dot.style.left     = x + 'px'
+    dot.style.top      = y + 'px'
+    if (!visible) {
+      visible = true
+      ;[hLine, vLine, dot].forEach(el => el.style.opacity = '1')
+    }
+    label.textContent = `ROOT@TINCHO — ~/about.md · x:${Math.round(x)} y:${Math.round(y)}`
+  })
+
+  screen.addEventListener('mouseleave', () => {
+    visible = false
+    ;[hLine, vLine, dot].forEach(el => el.style.opacity = '0')
+    label.textContent = 'ROOT@TINCHO — ~/about.md · x:— y:—'
+  })
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 14 — Magnetic Snap
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const mon    = document.getElementById('m-mag')
+  const CARD   = mon.closest('.effect-card')
+  const PULL   = 10  // max px pull
+
+  CARD.addEventListener('mousemove', e => {
+    const r  = mon.getBoundingClientRect()
+    const cx = r.left + r.width  / 2
+    const cy = r.top  + r.height / 2
+    const dx = (e.clientX - cx) / (r.width  / 2)
+    const dy = (e.clientY - cy) / (r.height / 2)
+    const tx = dx * PULL
+    const ty = dy * PULL * 0.6
+    mon.style.transform = `translate(${tx}px, ${ty}px)`
+  })
+
+  CARD.addEventListener('mouseleave', () => {
+    mon.style.transform = 'translate(0,0)'
+  })
+})()
+
+// ─────────────────────────────────────────────────────────────────
+// EFFECT 15 — Rain on Glass
+// ─────────────────────────────────────────────────────────────────
+;(function() {
+  const canvas = document.getElementById('rain-canvas')
+  const screen = canvas.parentElement
+  const ctx    = canvas.getContext('2d')
+
+  function resize() {
+    canvas.width  = screen.offsetWidth  || 400
+    canvas.height = screen.offsetHeight || 340
+  }
+  resize()
+
+  // Each drop: x, y, speed, length, opacity, wobble
+  const drops = Array.from({ length: 38 }, () => spawnDrop())
+
+  function spawnDrop() {
+    return {
+      x:    Math.random() * (canvas.width || 400),
+      y:    Math.random() * -canvas.height,
+      spd:  1.2 + Math.random() * 2.2,
+      len:  18  + Math.random() * 40,
+      op:   0.25 + Math.random() * 0.45,
+      wx:   (Math.random() - 0.5) * 0.4,  // horizontal drift
+      w:    0.8 + Math.random() * 1.2,     // width
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    drops.forEach(d => {
+      // drop body
+      const grad = ctx.createLinearGradient(d.x, d.y, d.x, d.y + d.len)
+      grad.addColorStop(0, `rgba(0,229,255,0)`)
+      grad.addColorStop(0.4, `rgba(0,229,255,${d.op * 0.6})`)
+      grad.addColorStop(1, `rgba(200,240,255,${d.op})`)
+      ctx.beginPath()
+      ctx.moveTo(d.x, d.y)
+      ctx.lineTo(d.x + d.wx * d.len, d.y + d.len)
+      ctx.strokeStyle = grad
+      ctx.lineWidth   = d.w
+      ctx.stroke()
+
+      // tiny splash dot at head
+      ctx.beginPath()
+      ctx.arc(d.x + d.wx * d.len, d.y + d.len, d.w * 1.2, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(200,240,255,${d.op * 0.8})`
+      ctx.fill()
+
+      d.x += d.wx * 0.5
+      d.y += d.spd
+
+      if (d.y - d.len > canvas.height) Object.assign(d, spawnDrop(), { y: -d.len })
+    })
+    requestAnimationFrame(draw)
+  }
+  draw()
+})()
+</script>
+
+</body>
+</html>

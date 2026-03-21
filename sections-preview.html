@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sections Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --color-bg: #060810;
+  --color-cyan: #00e5ff;
+  --color-magenta: #ff00c8;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+body { background: var(--color-bg); color: #e0e0e0; font-family: var(--font-mono); }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 6rem 0; }
+
+.section-label {
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--color-magenta); margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,0,200,0.2); }
+.section__title {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700; margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+.section__subtitle, .section__sub {
+  color: rgba(255,255,255,0.38); font-size: 0.78rem;
+  letter-spacing: 0.06em; margin-bottom: 3rem;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SPEAKING — SCATTERED POLAROIDS (Option D)
+═══════════════════════════════════════════════════════ */
+.speaking {
+  border-top: 1px solid rgba(255,0,200,0.15);
+  border-bottom: 1px solid rgba(255,0,200,0.15);
+  background: var(--color-bg);
+}
+
+.table-board {
+  background: linear-gradient(135deg, #0a0c0f 0%, #0c0f14 100%);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 2.5rem 2rem;
+}
+
+.scattered-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1.6rem 1.4rem;
+}
+
+.polaroid-d {
+  background: #f2ede4;
+  padding: 9px 9px 46px 9px;
+  transform: rotate(var(--rot-d, 0deg)) translateY(var(--ty-d, 0px));
+  box-shadow: 3px 6px 18px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4);
+  transition: transform 0.3s cubic-bezier(0.2,0,0,1.3), box-shadow 0.3s ease;
+  cursor: pointer; position: relative;
+}
+.polaroid-d:nth-child(1)  { --rot-d:-3.5deg; --ty-d:4px; }
+.polaroid-d:nth-child(2)  { --rot-d:2deg;    --ty-d:-2px; }
+.polaroid-d:nth-child(3)  { --rot-d:-1.2deg; --ty-d:6px; }
+.polaroid-d:nth-child(4)  { --rot-d:3.8deg;  --ty-d:-4px; }
+.polaroid-d:nth-child(5)  { --rot-d:-2.7deg; --ty-d:2px; }
+.polaroid-d:nth-child(6)  { --rot-d:1.5deg;  --ty-d:-6px; }
+.polaroid-d:nth-child(7)  { --rot-d:-4deg;   --ty-d:3px; }
+.polaroid-d:nth-child(8)  { --rot-d:2.2deg;  --ty-d:-1px; }
+.polaroid-d:nth-child(9)  { --rot-d:-1.8deg; --ty-d:5px; }
+.polaroid-d:nth-child(10) { --rot-d:3.2deg;  --ty-d:-3px; }
+.polaroid-d:nth-child(11) { --rot-d:-2deg;   --ty-d:4px; }
+.polaroid-d:nth-child(12) { --rot-d:1deg;    --ty-d:-5px; }
+.polaroid-d:nth-child(13) { --rot-d:-3deg;   --ty-d:2px; }
+.polaroid-d:nth-child(14) { --rot-d:2.5deg;  --ty-d:-4px; }
+.polaroid-d:nth-child(15) { --rot-d:-1.5deg; --ty-d:6px; }
+.polaroid-d:nth-child(16) { --rot-d:3.5deg;  --ty-d:-2px; }
+.polaroid-d:nth-child(17) { --rot-d:-2.3deg; --ty-d:3px; }
+.polaroid-d:nth-child(18) { --rot-d:1.8deg;  --ty-d:-5px; }
+.polaroid-d:nth-child(19) { --rot-d:-3.8deg; --ty-d:4px; }
+.polaroid-d:nth-child(20) { --rot-d:2.7deg;  --ty-d:-3px; }
+.polaroid-d:nth-child(21) { --rot-d:-1.2deg; --ty-d:5px; }
+.polaroid-d:nth-child(22) { --rot-d:3deg;    --ty-d:-1px; }
+.polaroid-d:nth-child(23) { --rot-d:-2.5deg; --ty-d:2px; }
+.polaroid-d:nth-child(24) { --rot-d:1.5deg;  --ty-d:-6px; }
+.polaroid-d:hover {
+  transform: rotate(0deg) scale(1.06) translateY(-10px);
+  box-shadow: 6px 20px 50px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 20;
+}
+.polaroid-d img {
+  width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+  filter: sepia(0.2) contrast(1.08) brightness(0.88) saturate(0.85);
+  transition: filter 0.3s ease;
+}
+.polaroid-d:hover img { filter: sepia(0) contrast(1.05) brightness(1) saturate(1); }
+.polaroid-d figcaption {
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem; font-weight: 600;
+  color: #3a2a18; text-align: center;
+  padding-top: 6px; line-height: 1.2;
+}
+/* corner fold */
+.polaroid-d::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 14px 14px;
+  border-color: transparent transparent rgba(0,0,0,0.12) transparent;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ON CAMERA — FILM SHEET
+═══════════════════════════════════════════════════════ */
+.media-section {
+  background: #050505;
+  border-top: 1px solid rgba(0,229,255,0.08);
+}
+.media-section .section-label::after { background: rgba(0,229,255,0.15); }
+.media-section .section-label { color: var(--color-cyan); }
+
+.film-outer {
+  background: #080808;
+  border: 1px solid #1a1a1a;
+}
+
+.film-sprocket {
+  background: #060606;
+  height: 30px;
+  display: flex; align-items: center;
+  padding: 0 6px; gap: 0;
+  border-bottom: 2px solid #111;
+  overflow: hidden;
+  position: relative;
+}
+.film-sprocket.bottom { border-top: 2px solid #111; border-bottom: none; }
+.sprocket-hole {
+  width: 18px; height: 14px; flex-shrink: 0;
+  background: #000; border: 1px solid #222;
+  border-radius: 2px; margin-right: 10px;
+}
+.film-strip-label {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  font-size: 0.5rem; letter-spacing: 0.22em;
+  color: rgba(255,200,50,0.35); white-space: nowrap;
+  pointer-events: none;
+}
+
+.film-inner {
+  padding: 1.8rem 1.2rem;
+  background: #080808;
+}
+
+.film-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 3px;
+}
+
+.film-card {
+  position: relative; cursor: pointer;
+  background: #0a0a0a;
+  border: 1px solid #1c1c1c;
+  overflow: hidden;
+  transition: border-color 0.25s ease;
+}
+.film-card:hover { border-color: rgba(255,200,50,0.4); z-index: 5; }
+
+/* frame number */
+.film-card__frame {
+  position: absolute; top: 5px; left: 7px;
+  font-size: 0.5rem; color: rgba(255,200,50,0.55);
+  letter-spacing: 0.12em; z-index: 5;
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.film-card__thumb {
+  position: relative; overflow: hidden;
+}
+.film-card__thumb img {
+  width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;
+  filter: grayscale(0.55) contrast(1.12) brightness(0.72) sepia(0.1);
+  transition: filter 0.3s ease, transform 0.35s ease;
+}
+.film-card:hover .film-card__thumb img {
+  filter: grayscale(0) contrast(1.08) brightness(0.95) sepia(0);
+  transform: scale(1.04);
+}
+
+/* play button */
+.film-card__play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.25s ease;
+}
+.film-card__play span {
+  width: 42px; height: 42px;
+  background: rgba(255,200,50,0.15);
+  border: 1.5px solid rgba(255,200,50,0.6);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: rgba(255,200,50,0.9);
+  padding-left: 3px;
+}
+.film-card:hover .film-card__play { opacity: 1; }
+
+/* caption bar */
+.film-card__caption {
+  padding: 5px 8px 7px;
+  background: #060606;
+  border-top: 1px solid #161616;
+  display: flex; align-items: flex-start; gap: 0.4rem;
+}
+.film-card__caption-frame {
+  font-size: 0.5rem; color: rgba(255,200,50,0.4);
+  letter-spacing: 0.08em; flex-shrink: 0; padding-top: 1px;
+}
+.film-card__title {
+  font-size: 0.62rem; color: rgba(255,200,50,0.7);
+  letter-spacing: 0.04em; line-height: 1.4;
+  text-transform: uppercase;
+  transition: color 0.25s ease;
+}
+.film-card:hover .film-card__title { color: rgba(255,200,50,0.95); }
+
+@media (max-width: 900px) {
+  .film-grid { grid-template-columns: repeat(3, 1fr); }
+  .scattered-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+}
+@media (max-width: 600px) {
+  .film-grid { grid-template-columns: repeat(2, 1fr); }
+  .scattered-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ SPEAKING ══════════ -->
+<section class="section speaking" id="speaking">
+  <div class="container">
+    <p class="section-label">Public Speaking &amp; Events</p>
+    <h2 class="section__title">Charlas &amp; Eventos</h2>
+    <p class="section__subtitle">Selected appearances at conferences, summits, and media events.</p>
+    <div class="table-board">
+      <div class="scattered-grid">
+        <figure class="polaroid-d"><img src="bio-2.jpg" alt="Team 2024" loading="lazy"><figcaption>Team · 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-team-oct24.jpg" alt="Team Oct 2024" loading="lazy"><figcaption>Team · Oct 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="Nerdearla 2024.jpg" alt="Nerdearla 2024" loading="lazy"><figcaption>Nerdearla 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-event-jul24b.jpg" alt="Event Jul 2024" loading="lazy"><figcaption>Event · Jul 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-event-jul24a.jpg" alt="Event Jul 2024" loading="lazy"><figcaption>Event · Jul 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-panel-apr24.jpg" alt="Panel Apr 2024" loading="lazy"><figcaption>Panel · Apr 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-eou0.jpg" alt="Team Feb 2024" loading="lazy"><figcaption>Team · Feb 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-euo2.jpg" alt="Team Feb 2024" loading="lazy"><figcaption>Team · Feb 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-ebc1.jpg" alt="EBC Feb 2024" loading="lazy"><figcaption>EBC · Feb 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-ebc4.jpg" alt="EBC Feb 2024" loading="lazy"><figcaption>EBC · Feb 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-ebc8.jpg" alt="EBC Feb 2024" loading="lazy"><figcaption>EBC · Feb 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-ebc11.jpg" alt="EBC Feb 2024" loading="lazy"><figcaption>EBC · Feb 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-team-feb24.jpg" alt="Team Feb 2024" loading="lazy"><figcaption>Team · Feb 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-irizar.jpg" alt="Almirante Irizar 2024" loading="lazy"><figcaption>Irizar · 2024</figcaption></figure>
+        <figure class="polaroid-d"><img src="Nerdearla 2023.jpg" alt="Nerdearla 2023" loading="lazy"><figcaption>Nerdearla 2023</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-ssa-elt.jpg" alt="SSA ELT 2023" loading="lazy"><figcaption>SSA ELT · 2023</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-ms-github-jun23.jpg" alt="Microsoft Jun 2023" loading="lazy"><figcaption>Microsoft · Jun 2023</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-1.jpg" alt="2023" loading="lazy"><figcaption>2023</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-idea1.jpg" alt="Idea 2023" loading="lazy"><figcaption>Idea · 2023</figcaption></figure>
+        <figure class="polaroid-d"><img src="TECO Summit.jpeg" alt="TECO Summit 2023" loading="lazy"><figcaption>TECO Summit · 2023</figcaption></figure>
+        <figure class="polaroid-d"><img src="Migoya.jpg" alt="With Migoya" loading="lazy"><figcaption>With Migoya</figcaption></figure>
+        <figure class="polaroid-d"><img src="Fernandez.jpg" alt="With Fernandez" loading="lazy"><figcaption>With Fernandez</figcaption></figure>
+        <figure class="polaroid-d"><img src="Nerdearla 2022.jpg" alt="Nerdearla 2022" loading="lazy"><figcaption>Nerdearla 2022</figcaption></figure>
+        <figure class="polaroid-d"><img src="bio-apertura2.jpg" alt="Apertura 2022" loading="lazy"><figcaption>Apertura · 2022</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ON CAMERA ══════════ -->
+<section class="section media-section" id="media">
+  <div class="container">
+    <p class="section-label">On Camera</p>
+    <h2 class="section__title">En Cámara</h2>
+    <p class="section__sub">Interviews · Podcasts · Talks</p>
+    <div class="film-outer">
+      <div class="film-sprocket" id="sp-top">
+        <span class="film-strip-label">ACATINCHO · 135mm · ON CAMERA · ©MARTINSCIARRILLO</span>
+      </div>
+      <div class="film-inner">
+        <div class="film-grid" id="film-grid"></div>
+      </div>
+      <div class="film-sprocket bottom" id="sp-bot"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Sprocket holes
+const holes = 90
+for (let i = 0; i < holes; i++) {
+  document.getElementById('sp-top').insertAdjacentHTML('beforeend', '<div class="sprocket-hole"></div>')
+  document.getElementById('sp-bot').insertAdjacentHTML('beforeend', '<div class="sprocket-hole"></div>')
+}
+
+// Video cards
+const VIDEOS = [
+  ['xEUHbbHAyD4', 'Director de Microsoft · Estrategia IA para empresas'],
+  ['aRa7kat8jN8', 'Un emprendedor puede tener las mismas herramientas de IA que CHEVRON'],
+  ['e0iPtAKXfUc', 'Jornada Power BI, Excel con IA y Finanzas · CPCECABA'],
+  ['h14PsR-6Ryg', 'Congreso AI Innovation Summit · Google &amp; Microsoft'],
+  ['6I6zUwnhfJM', 'HISPANOCAN 2025 · Televisión Canaria'],
+  ['P5_Zdx-4KPc', 'CIITI 2025 · Bloque Arquitectura'],
+  ['RL4JGaI0w8U', 'Tech Forum Argentina'],
+  ['hLxDYo3j-7M', 'Gen-AI Revolution Year II · 10mo aniversario de Nerdearla'],
+  ['Ww6Q3eC1InY', 'Los secretos de la IA desde Microsoft · ¿Ya nos superó?'],
+  ['2Fsi0fgcp-g', 'Demo OpenAI o1 · Generating Code'],
+  ['5b9F4UYxbuo', 'Innovación &amp; Tecnología · Ámbito debate'],
+  ['MDBh1b5yTW0', 'NXT Conference · Beyond Data &amp; AI'],
+  ['OqRRTb4s36Q', 'Talento Tech · Entrevista'],
+  ['tm8uz9baUnM', 'Conectado Talento Tech · Día 2'],
+]
+
+const grid = document.getElementById('film-grid')
+VIDEOS.forEach(([vid, title], i) => {
+  const frameNum = String(i + 1).padStart(2, '0') + 'A'
+  grid.insertAdjacentHTML('beforeend', `
+    <article class="film-card" data-vid="${vid}" tabindex="0" role="button">
+      <div class="film-card__thumb">
+        <img src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="${title}" loading="lazy">
+        <div class="film-card__play"><span>▶</span></div>
+      </div>
+      <div class="film-card__caption">
+        <span class="film-card__caption-frame">${frameNum}</span>
+        <p class="film-card__title">${title}</p>
+      </div>
+    </article>`)
+})
+</script>
+</body>
+</html>

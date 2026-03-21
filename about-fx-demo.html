@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>About Me FX Demo</title>
+<style>
+  :root {
+    --cyan: #00e5ff;
+    --magenta: #ff00de;
+    --green: #39ff14;
+    --amber: #ffb000;
+    --bg: #060606;
+    --text: rgba(255,255,255,0.88);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', monospace;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 2.5rem;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .card__label {
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .sample-text {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .sample-text strong { color: var(--cyan); }
+
+  /* ── 1. SCANLINES ── */
+  .fx-scanlines {
+    position: relative;
+    padding: 1.5rem;
+    background: rgba(0,229,255,0.03);
+  }
+  .fx-scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.35) 3px,
+      rgba(0,0,0,0.35) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── 2. ASCII BOX ── */
+  .fx-ascii-box {
+    padding: 0;
+  }
+  .fx-ascii-box .ascii-top,
+  .fx-ascii-box .ascii-bottom {
+    color: var(--cyan);
+    font-size: 0.82rem;
+    opacity: 0.8;
+    white-space: pre;
+  }
+  .fx-ascii-box .ascii-title {
+    background: var(--cyan);
+    color: #000;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 0.1rem 0.5rem;
+    display: inline-block;
+  }
+  .fx-ascii-box .ascii-body {
+    padding: 1rem 1.25rem;
+    border-left: 1px solid rgba(0,229,255,0.4);
+    border-right: 1px solid rgba(0,229,255,0.4);
+  }
+
+  /* ── 3. PHOSPHOR ── */
+  .fx-phosphor {
+    padding: 1.5rem;
+    background: rgba(0,10,0,0.6);
+    border: 1px solid rgba(57,255,20,0.2);
+  }
+  .fx-phosphor .sample-text {
+    color: #b8ffb8;
+    text-shadow: 0 0 6px rgba(57,255,20,0.6), 0 0 14px rgba(57,255,20,0.25);
+  }
+  .fx-phosphor .sample-text strong {
+    color: var(--green);
+    text-shadow: 0 0 8px rgba(57,255,20,0.9);
+  }
+
+  /* ── 4. GLITCH BORDER ── */
+  .fx-glitch-border {
+    position: relative;
+    padding: 1.5rem 1.5rem 1.5rem 2rem;
+    border-left: 4px solid var(--cyan);
+    animation: border-glitch 3s steps(1) infinite;
+  }
+  @keyframes border-glitch {
+    0%,88%,100% { border-color: var(--cyan); transform: none; }
+    89% { border-color: var(--magenta); transform: translateX(2px); }
+    90% { border-color: var(--cyan); transform: translateX(-1px); }
+    91% { border-color: var(--magenta); transform: none; }
+    92% { border-color: var(--cyan); }
+  }
+  .fx-glitch-border::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--magenta);
+    opacity: 0;
+    animation: border-ghost 3s steps(1) infinite;
+  }
+  @keyframes border-ghost {
+    0%,88%,100% { opacity: 0; transform: none; }
+    89% { opacity: 0.6; transform: translateX(3px); }
+    90% { opacity: 0; }
+    91% { opacity: 0.4; transform: translateX(-2px); }
+    92% { opacity: 0; }
+  }
+
+  /* ── 5. VIGNETTE ── */
+  .fx-vignette {
+    position: relative;
+    padding: 2rem;
+    background: radial-gradient(ellipse at center, rgba(0,229,255,0.04) 0%, rgba(0,0,0,0.5) 100%);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .fx-vignette::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.75) 100%);
+    pointer-events: none;
+  }
+
+  /* ── 6. STATIC CORNERS ── */
+  .fx-static-corners {
+    position: relative;
+    padding: 1.5rem;
+  }
+  .fx-static-corners canvas {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  /* ── 7. LOADING BAR ── */
+  .fx-loading {
+    padding: 0;
+  }
+  .fx-loading .load-header {
+    font-size: 0.72rem;
+    color: var(--green);
+    text-shadow: 0 0 6px rgba(57,255,20,0.5);
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(57,255,20,0.3);
+    border-bottom: none;
+    letter-spacing: 0.08em;
+  }
+  .fx-loading .load-bar {
+    height: 3px;
+    background: linear-gradient(to right, var(--cyan), var(--magenta));
+    box-shadow: 0 0 8px var(--cyan);
+    margin-bottom: 0;
+  }
+  .fx-loading .load-body {
+    padding: 1.25rem;
+    border: 1px solid rgba(0,229,255,0.2);
+    border-top: none;
+  }
+
+  /* ── 8. RGB OFFSET ── */
+  .fx-rgb-offset {
+    position: relative;
+    padding: 1.5rem;
+    border: 1px solid var(--cyan);
+  }
+  .fx-rgb-offset::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--magenta);
+    transform: translate(2px, 2px);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .fx-rgb-offset::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid rgba(57,255,20,0.4);
+    transform: translate(-1px, -1px);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. SCANLINES -->
+<div class="card">
+  <div class="card__label">01 — Scanlines CRT overlay</div>
+  <div class="fx-scanlines">
+    <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+  </div>
+</div>
+
+<!-- 2. ASCII BOX -->
+<div class="card">
+  <div class="card__label">02 — ASCII terminal window</div>
+  <div class="fx-ascii-box">
+    <div class="ascii-top">╔══<span class="ascii-title"> ROOT@TINCHO: ~/about </span>══════════════╗</div>
+    <div class="ascii-body">
+      <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+    </div>
+    <div class="ascii-bottom">╚══════════════════════════════════════════╝</div>
+  </div>
+</div>
+
+<!-- 3. PHOSPHOR -->
+<div class="card">
+  <div class="card__label">03 — Phosphor green glow</div>
+  <div class="fx-phosphor">
+    <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+  </div>
+</div>
+
+<!-- 4. GLITCH BORDER -->
+<div class="card">
+  <div class="card__label">04 — Glitch border left</div>
+  <div class="fx-glitch-border">
+    <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+  </div>
+</div>
+
+<!-- 5. VIGNETTE -->
+<div class="card">
+  <div class="card__label">05 — CRT vignette curvatura</div>
+  <div class="fx-vignette">
+    <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+  </div>
+</div>
+
+<!-- 6. STATIC CORNERS -->
+<div class="card">
+  <div class="card__label">06 — Static noise corners</div>
+  <div class="fx-static-corners" id="static-wrap">
+    <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+  </div>
+</div>
+
+<!-- 7. LOADING BAR -->
+<div class="card">
+  <div class="card__label">07 — Loading header + bar</div>
+  <div class="fx-loading">
+    <div class="load-header">LOADING PROFILE... [████████████████] 100% &nbsp;✓</div>
+    <div class="load-bar"></div>
+    <div class="load-body">
+      <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 8. RGB OFFSET -->
+<div class="card">
+  <div class="card__label">08 — RGB offset double border</div>
+  <div class="fx-rgb-offset">
+    <p class="sample-text">I've been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> — long before it became the norm.</p>
+  </div>
+</div>
+
+<script>
+// Static noise corners
+;(function() {
+  const wrap = document.getElementById('static-wrap')
+  const SIZE = 60
+  const positions = [
+    { top: 0, left: 0 }, { top: 0, right: 0 },
+    { bottom: 0, left: 0 }, { bottom: 0, right: 0 }
+  ]
+  positions.forEach(pos => {
+    const c = document.createElement('canvas')
+    c.width = SIZE; c.height = SIZE
+    Object.assign(c.style, { width: SIZE+'px', height: SIZE+'px', opacity: 0.55 })
+    Object.entries(pos).forEach(([k,v]) => c.style[k] = v + 'px')
+    wrap.appendChild(c)
+    const ctx = c.getContext('2d')
+    let t = 0
+    ;(function draw() {
+      requestAnimationFrame(draw)
+      if (++t % 3 !== 0) return
+      const img = ctx.createImageData(SIZE, SIZE)
+      const d = img.data
+      for (let i = 0; i < d.length; i += 4) {
+        const v = Math.random() < 0.35 ? Math.floor(Math.random() * 200) : 0
+        d[i] = d[i+1] = d[i+2] = v
+        d[i+3] = v > 0 ? 180 : 0
+      }
+      ctx.putImageData(img, 0, 0)
+    })()
+  })
+})()
+</script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Monitor Frame Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00e5ff;
+    --magenta: #ff00de;
+    --green: #39ff14;
+    --text-muted: #666680;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #060606;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Inter', sans-serif;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.6;
+    text-align: center;
+  }
+
+  /* ── About text — exact match to site ── */
+  .bio p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
+  .bio p + p { margin-top: 1rem; }
+  .bio strong {
+    background: linear-gradient(105deg, #ffffff, #00e5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+  .bio .hl-grad {
+    background: linear-gradient(105deg, #00e5ff, #ff00de);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+
+  /* ── Scrollable screen content ── */
+  .screen-scroll {
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 36px 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .screen-scroll::-webkit-scrollbar { width: 5px; }
+  .screen-scroll::-webkit-scrollbar-track { background: transparent; }
+  .screen-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0,229,255,0.25);
+    border-radius: 4px;
+  }
+  .screen-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,229,255,0.5);
+  }
+
+  /* ── Grain canvas ── */
+  .screen-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .grain-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    image-rendering: pixelated;
+  }
+
+  /* ══════════════════════════════════════
+     01 — CYBERPUNK DARK BEZEL
+  ══════════════════════════════════════ */
+  .monitor-cyber {
+    width: min(820px, 96vw);
+    border-radius: 18px 18px 10px 10px;
+    background: linear-gradient(175deg, #1c1c2e 0%, #0e0e1c 50%, #0a0a16 100%);
+    box-shadow:
+      0 0 80px rgba(0,229,255,0.07),
+      0 40px 100px rgba(0,0,0,0.95),
+      inset 0 1px 0 rgba(255,255,255,0.1),
+      inset 1px 0 0 rgba(255,255,255,0.05),
+      inset -1px 0 0 rgba(0,0,0,0.5),
+      inset 0 -1px 0 rgba(0,0,0,0.7);
+    padding: 28px 28px 0;
+  }
+  .monitor-cyber .screen-wrap {
+    background: #04040a;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid rgba(0,229,255,0.22);
+    border-bottom: none;
+    box-shadow: inset 0 0 60px rgba(0,0,0,0.97), 0 0 25px rgba(0,229,255,0.12);
+  }
+  /* scanlines overlay */
+  .monitor-cyber .screen-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 3px,
+      rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px
+    );
+    pointer-events: none;
+    z-index: 3;
+  }
+  .monitor-cyber__chin {
+    padding: 14px 28px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .monitor-cyber__brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: rgba(0,229,255,0.25);
+    text-transform: uppercase;
+  }
+  .monitor-cyber__btns { display: flex; gap: 10px; align-items: center; }
+  .btn-round {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #252535, #111120);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .btn-round--power {
+    background: radial-gradient(circle at 35% 35%, #1a3028, #0a1810);
+    box-shadow: 0 0 8px rgba(57,255,20,0.35), inset 0 1px 3px rgba(0,0,0,0.7);
+  }
+  .btn-square {
+    width: 20px; height: 7px; border-radius: 2px;
+    background: radial-gradient(circle at 50% 30%, #1e1e30, #0d0d1e);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  /* ══════════════════════════════════════
+     02 — CLASSIC BEIGE CRT
+  ══════════════════════════════════════ */
+  .monitor-beige {
+    width: min(820px, 96vw);
+    border-radius: 20px 20px 14px 14px;
+    background: linear-gradient(160deg, #d4cfc4 0%, #b8b3a8 40%, #a8a39a 100%);
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.9),
+      inset 0 2px 0 rgba(255,255,255,0.5),
+      inset 2px 0 0 rgba(255,255,255,0.3),
+      inset -2px 0 0 rgba(0,0,0,0.2),
+      inset 0 -2px 0 rgba(0,0,0,0.3);
+    padding: 26px 26px 0;
+  }
+  .monitor-beige .screen-wrap {
+    background: #04080c;
+    border-radius: 8px 8px 0 0;
+    border: 3px solid #8a857c;
+    border-bottom: none;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.98), inset 4px 4px 12px rgba(0,0,0,0.8);
+  }
+  /* vignette */
+  .monitor-beige .screen-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .monitor-beige__chin {
+    padding: 14px 26px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #b0ab9e 0%, #9e9990 100%);
+    border-radius: 0 0 14px 14px;
+    border-top: 2px solid #8a857c;
+  }
+  .monitor-beige__brand {
+    font-size: 0.65rem; letter-spacing: 0.18em;
+    color: rgba(60,55,50,0.7); font-style: italic; font-family: serif;
+  }
+  .monitor-beige__btns { display: flex; gap: 8px; align-items: center; }
+  .beige-btn {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ccc5b8, #8a8278);
+    box-shadow: inset 0 2px 3px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.4);
+  }
+  .beige-btn--power {
+    width: 14px; height: 14px;
+    background: radial-gradient(circle at 35% 30%, #888075, #5a5650);
+  }
+  .beige-slider {
+    width: 40px; height: 8px; border-radius: 4px;
+    background: linear-gradient(to right, #6a6560, #9a9590);
+    box-shadow: inset 0 2px 3px rgba(0,0,0,0.5);
+  }
+
+  /* ══════════════════════════════════════
+     03 — INDUSTRIAL RACK
+  ══════════════════════════════════════ */
+  .monitor-rack {
+    width: min(820px, 96vw);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #181820 0%, #0f0f18 100%);
+    box-shadow:
+      0 0 0 1px rgba(0,229,255,0.15),
+      0 0 0 3px rgba(0,0,0,0.8),
+      0 0 0 4px rgba(0,229,255,0.06),
+      0 30px 80px rgba(0,0,0,0.95);
+    overflow: hidden;
+  }
+  .monitor-rack__topbar {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 8px 16px;
+    background: linear-gradient(180deg, #1e1e2c, #141420);
+    border-bottom: 1px solid rgba(0,229,255,0.18);
+  }
+  .rack-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .rack-dot:nth-child(1) { background: #ff5f57; box-shadow: 0 0 6px #ff5f5788; }
+  .rack-dot:nth-child(2) { background: #febc2e; box-shadow: 0 0 6px #febc2e88; }
+  .rack-dot:nth-child(3) { background: #28c840; box-shadow: 0 0 6px #28c84088; }
+  .rack-title {
+    flex: 1; text-align: center; margin-left: -3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(0,229,255,0.5);
+  }
+  .monitor-rack .screen-wrap {
+    background: #030308;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.98);
+  }
+  /* subtle scanlines */
+  .monitor-rack .screen-wrap::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 2px,
+      rgba(0,229,255,0.012) 2px, rgba(0,229,255,0.012) 3px
+    );
+    pointer-events: none; z-index: 3;
+  }
+  .monitor-rack__bottombar {
+    padding: 8px 16px;
+    background: linear-gradient(180deg, #141420, #0e0e1a);
+    border-top: 1px solid rgba(0,229,255,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; color: rgba(0,229,255,0.3); letter-spacing: 0.12em;
+  }
+  .rack-led {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 6px var(--green);
+    animation: blink 2.5s steps(1) infinite;
+  }
+  @keyframes blink {
+    0%,90%,100% { opacity: 1; }
+    92% { opacity: 0; } 94% { opacity: 1; } 96% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<template id="bio-tpl">
+  <div class="bio">
+    <p>I&rsquo;ve been a tech junkie for as long as I can remember. I got my first PC at 10, started tinkering immediately, and never really stopped. From day one of my corporate career, I leaned into <strong>global delivery</strong> &mdash; long before it became the norm.</p>
+    <p>From managing <strong>Windows</strong>, <strong>Unix &amp; Linux</strong> on-premise with physical traditional datacenters to moving workloads to the cloud, from traditional deployments to engineering everything as code, and now into the <strong>AI era</strong>, where infrastructure meets intelligence.</p>
+    <p>I&rsquo;ve operated at the intersection of building solutions and running them &mdash; while building teams that do both, across countries, regions, and time zones.</p>
+    <p>I&rsquo;ve had the privilege of working inside some of the <strong>world&rsquo;s largest technology companies</strong>, partnering with global organizations across industries and markets. That exposure shaped how I see technology: not as theory, but as something that behaves differently depending on context, culture, incentives, and execution.</p>
+    <p>I&rsquo;m currently an <strong>Executive Technology Strategist</strong> at <span class="hl-grad">Microsoft</span>, partnering with senior business leaders to translate data, AI, cloud, and security into measurable business outcomes. Previously, I led the <strong>Customer Success Data &amp; AI</strong> organization across <strong>Spanish South America (SSA)</strong> &mdash; Argentina, Chile, Bolivia, Colombia, Ecuador, Paraguay, Peru, and Uruguay &mdash; and served as <strong>CTO</strong> and member of the subsidiary <strong>Leadership Team</strong> in <span class="hl-grad">Argentina</span>, consistently focused on aligning technology strategy with business impact.</p>
+    <p>Before <span class="hl-grad">Microsoft</span>, I was <strong>Global Leader of Multicloud Platforms</strong> at <span class="hl-grad">EY</span>, building products and services across hybrid and cloud environments throughout the U.S., Europe, and Asia. Earlier, I led the firm&rsquo;s <strong>Global Unix &amp; Linux team</strong>.</p>
+    <p>And before that, I built and scaled technology teams at <span class="hl-grad">IBM</span> during the early expansion of the Global Delivery Center, supporting U.S.-based clients &mdash; always from <span class="hl-grad">Argentina</span> to the world.</p>
+    <p>I hold a Bachelor&rsquo;s degree in Systems Analysis from <strong>ORT Argentina</strong>, that was later complemented by executive management programs at <strong>Universidad Torcuato Di Tella</strong> &amp; <strong>Universidad de San Andr&eacute;s</strong>, where I also served as thesis advisor for the Master&rsquo;s in Digital Business program. I also currently serve as <strong>board member</strong>, <strong>technical advisor</strong>, and <strong>fractional CTO</strong> for several startups.</p>
+    <p>I&rsquo;m an <strong>AI advocate</strong> &mdash; not in a hype-driven way, but with conviction. I believe AI is a transformative force that will fundamentally reshape how we work, decide, and build. That&rsquo;s why I speak frequently about its business and societal impact, participating in events and media both in Argentina and internationally &mdash; including Forbes, La Naci&oacute;n, Clar&iacute;n, &Aacute;mbito Financiero, Apertura, Information Technology, IDEA Management, Nerdearla, Campus Party, to name some.</p>
+    <p>Outside the office, I&rsquo;m lucky enough to be married to <strong>Vicky</strong> and to be <strong>Miranda</strong>&rsquo;s dad 🧡</p>
+    <p>We are <strong>foodies</strong> by nature and <strong>travelers</strong> by choice. We&rsquo;re really fond of receiving people at home and grilling delicious things, and we love discovering new places &amp; flavors. When we travel we&rsquo;re stubborn about one thing: remain travelers, never drift into tourist mode. That&rsquo;s how we stay curious. We try not just to visit places &mdash; we taste them. Culture can be layered, subtle, even hard to decode. But put people around a table and it gets real fast &mdash; shared plates, local markets, real conversations, at home or abroad.</p>
+    <p>As <strong>Anthony Bourdain</strong> said, food is one of the most honest ways to understand people.</p>
+    <p>That same mindset spills into the rest of my life. I&rsquo;m a habitual <strong>runner</strong> &mdash; no full marathon yet, but getting there sprint after sprint. I play <strong>football</strong> at a very amateur level (heavy on enthusiasm, light on talent). I&rsquo;m a <strong>coffee nerd</strong>. And I&rsquo;m unapologetically devoted to a properly made <strong>Negroni</strong> &mdash; no shortcuts, ever.</p>
+    <p>Because whether it&rsquo;s work in technology, travel, sport, coffee or cocktails, I&rsquo;m drawn to things that reward patience, craft and consistency.</p>
+  </div>
+</template>
+
+<!-- 01 CYBERPUNK -->
+<div>
+  <p class="label">01 — Cyberpunk dark bezel + scanlines + grain</p>
+  <div class="monitor-cyber">
+    <div class="screen-wrap" id="wrap1">
+      <div class="screen-scroll" id="screen1"></div>
+    </div>
+    <div class="monitor-cyber__chin">
+      <span class="monitor-cyber__brand">ROOT@TINCHO — ~/about.md</span>
+      <div class="monitor-cyber__btns">
+        <div class="btn-square"></div><div class="btn-square"></div>
+        <div class="btn-round"></div><div class="btn-round"></div>
+        <div class="btn-round btn-round--power"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 BEIGE -->
+<div>
+  <p class="label">02 — Classic beige CRT + vignette + grain</p>
+  <div class="monitor-beige">
+    <div class="screen-wrap" id="wrap2">
+      <div class="screen-scroll" id="screen2"></div>
+    </div>
+    <div class="monitor-beige__chin">
+      <span class="monitor-beige__brand">AcatiVision 2600</span>
+      <div class="monitor-beige__btns">
+        <div class="beige-slider"></div>
+        <div class="beige-btn"></div><div class="beige-btn"></div>
+        <div class="beige-btn beige-btn--power"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 RACK -->
+<div>
+  <p class="label">03 — Industrial rack / terminal window + grain</p>
+  <div class="monitor-rack">
+    <div class="monitor-rack__topbar">
+      <div class="rack-dot"></div><div class="rack-dot"></div><div class="rack-dot"></div>
+      <span class="rack-title">ROOT@TINCHO — ~/about.md</span>
+    </div>
+    <div class="screen-wrap" id="wrap3">
+      <div class="screen-scroll" id="screen3"></div>
+    </div>
+    <div class="monitor-rack__bottombar">
+      <span>UTF-8 · LF · INTER</span>
+      <div class="rack-led"></div>
+      <span>ONLINE</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Inject bio text into each screen
+  ['screen1','screen2','screen3'].forEach(id => {
+    const tpl = document.getElementById('bio-tpl').content.cloneNode(true)
+    document.getElementById(id).appendChild(tpl)
+  })
+
+  // Add grain canvas to each screen-wrap
+  function addGrain(wrapId) {
+    const wrap = document.getElementById(wrapId)
+    const canvas = document.createElement('canvas')
+    canvas.className = 'grain-canvas'
+    canvas.width = 256; canvas.height = 256
+    wrap.appendChild(canvas)
+    const ctx = canvas.getContext('2d')
+    let tick = 0
+    ;(function draw() {
+      requestAnimationFrame(draw)
+      if (++tick % 3 !== 0) return
+      const img = ctx.createImageData(256, 256)
+      const d = img.data
+      for (let i = 0; i < d.length; i += 4) {
+        d[i] = d[i+1] = d[i+2] = 255
+        d[i+3] = Math.random() < 0.3 ? Math.floor(Math.random() * 22) : 0
+      }
+      ctx.putImageData(img, 0, 0)
+    })()
+  }
+
+  ['wrap1','wrap2','wrap3'].forEach(addGrain)
+</script>
+</body>
+</html>

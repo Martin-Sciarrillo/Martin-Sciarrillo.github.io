@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaking Section — Design Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #060810; color: #e0e0e0; font-family: 'Share Tech Mono', monospace; }
+
+  .selector {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(6,8,16,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0,229,255,0.2);
+    padding: 1rem 2rem;
+    display: flex; gap: 1rem; align-items: center;
+  }
+  .selector span { color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-right: 0.5rem; }
+  .opt-btn {
+    padding: 0.4rem 1.1rem; border: 1px solid rgba(0,229,255,0.3);
+    background: none; color: rgba(255,255,255,0.5); cursor: pointer;
+    font-family: inherit; font-size: 0.75rem; letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+  .opt-btn.active { border-color: #00e5ff; color: #00e5ff; background: rgba(0,229,255,0.07); }
+  .opt-btn:hover { color: #fff; border-color: rgba(0,229,255,0.6); }
+
+  .option { display: none; padding: 4rem 2rem; max-width: 1400px; margin: 0 auto; }
+  .option.visible { display: block; }
+
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; color: #ff00c8;
+    text-transform: uppercase; margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,0,200,0.2); }
+  h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .subtitle { color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-bottom: 3rem; letter-spacing: 0.05em; }
+
+
+  /* ─── OPTION A: CORKBOARD POLAROIDS ─────────────────────────────── */
+  .cork-board {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(80,50,30,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(60,40,20,0.1) 0%, transparent 50%),
+      repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px
+      ),
+      linear-gradient(135deg, #0d0e10 0%, #101214 50%, #0d0f11 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 2px;
+    padding: 2.5rem;
+  }
+
+  .polaroid-grid-a {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem 1.8rem;
+  }
+
+  .polaroid-a {
+    background: #f5f0e8;
+    padding: 10px 10px 42px 10px;
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.5),
+      0 8px 24px rgba(0,0,0,0.35),
+      inset 0 0 0 1px rgba(0,0,0,0.06);
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+  }
+  .polaroid-a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      transparent, transparent 1px,
+      rgba(0,0,0,0.015) 1px, rgba(0,0,0,0.015) 2px
+    );
+    pointer-events: none;
+  }
+  .polaroid-a:nth-child(odd)  { --rot: -2.5deg; }
+  .polaroid-a:nth-child(even) { --rot: 1.8deg; }
+  .polaroid-a:nth-child(3n)   { --rot: -1deg; }
+  .polaroid-a:nth-child(4n)   { --rot: 3deg; }
+  .polaroid-a:hover {
+    transform: rotate(0deg) scale(1.04) translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4);
+    z-index: 10;
+  }
+  .polaroid-a img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+    filter: sepia(0.18) contrast(1.05) brightness(0.95);
+    transition: filter 0.3s ease;
+  }
+  .polaroid-a:hover img { filter: sepia(0) contrast(1.05) brightness(1); }
+  .polaroid-a figcaption {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem; color: #2a2010;
+    text-align: center;
+    padding-top: 6px;
+    line-height: 1.3;
+  }
+
+  /* tape effect on some */
+  .polaroid-a:nth-child(3n+1)::after {
+    content: '';
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 18px;
+    background: rgba(255,240,180,0.55);
+    border: 1px solid rgba(200,180,100,0.3);
+    border-radius: 1px;
+  }
+
+
+  /* ─── OPTION B: FILM CONTACT SHEET ──────────────────────────────── */
+  .film-wrap {
+    background: #080808;
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* sprocket holes top/bottom */
+  .film-sprocket {
+    background: #080808;
+    height: 28px;
+    display: flex; align-items: center;
+    padding: 0 4px;
+    gap: 0;
+    border-bottom: 1px solid #1a1a1a;
+    overflow: hidden;
+  }
+  .film-sprocket.bottom { border-top: 1px solid #1a1a1a; border-bottom: none; }
+  .sprocket-hole {
+    width: 18px; height: 14px; flex-shrink: 0;
+    background: #000;
+    border: 1px solid #2a2a2a;
+    border-radius: 2px;
+    margin-right: 10px;
+  }
+
+  .film-strip-label {
+    position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+    font-size: 0.55rem; letter-spacing: 0.25em; color: rgba(255,200,0,0.4);
+    white-space: nowrap;
+  }
+
+  .contact-inner {
+    padding: 1.5rem 1rem;
+    background: #0a0a0a;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 3px;
+  }
+
+  .contact-frame {
+    position: relative; cursor: pointer;
+    background: #111;
+    border: 1px solid #222;
+    overflow: hidden;
+  }
+  .contact-frame::before {
+    content: attr(data-frame);
+    position: absolute; top: 4px; left: 6px;
+    font-size: 0.55rem; color: rgba(255,200,0,0.5);
+    letter-spacing: 0.1em; z-index: 5; font-family: 'Share Tech Mono', monospace;
+  }
+  .contact-frame img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+    filter: grayscale(0.6) contrast(1.1) brightness(0.75) sepia(0.15);
+    transition: filter 0.3s ease;
+  }
+  .contact-frame:hover img { filter: grayscale(0) contrast(1.1) brightness(1); }
+  .contact-caption {
+    padding: 4px 6px;
+    font-size: 0.6rem; color: rgba(255,200,0,0.6);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: #080808;
+    border-top: 1px solid #1a1a1a;
+  }
+  .contact-frame:hover .contact-caption { color: rgba(255,200,0,0.9); }
+
+
+  /* ─── OPTION C: NEON DARK POLAROIDS ─────────────────────────────── */
+  .neon-board {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(0,229,255,0.04) 0%, transparent 60%),
+      linear-gradient(180deg, #080c14 0%, #060810 100%);
+    border: 1px solid rgba(0,229,255,0.1);
+    padding: 2.5rem;
+    position: relative;
+  }
+  .neon-board::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      transparent, transparent 39px,
+      rgba(0,229,255,0.03) 39px, rgba(0,229,255,0.03) 40px
+    );
+    pointer-events: none;
+  }
+
+  .polaroid-grid-c {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 2rem 1.6rem;
+    position: relative; z-index: 1;
+  }
+
+  .polaroid-c {
+    background: #0e1118;
+    border: 1px solid rgba(0,229,255,0.15);
+    padding: 8px 8px 44px 8px;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.6),
+      0 0 0 1px rgba(0,229,255,0.05);
+    transform: rotate(var(--rot-c, 0deg));
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    cursor: pointer;
+    position: relative;
+  }
+  .polaroid-c:nth-child(odd)  { --rot-c: -1.8deg; }
+  .polaroid-c:nth-child(even) { --rot-c: 1.5deg; }
+  .polaroid-c:nth-child(3n)   { --rot-c: -0.7deg; }
+  .polaroid-c:nth-child(4n)   { --rot-c: 2.3deg; }
+  .polaroid-c:hover {
+    transform: rotate(0deg) scale(1.05) translateY(-8px);
+    border-color: rgba(0,229,255,0.5);
+    box-shadow:
+      0 20px 50px rgba(0,0,0,0.7),
+      0 0 20px rgba(0,229,255,0.12),
+      0 0 0 1px rgba(0,229,255,0.3);
+    z-index: 10;
+  }
+  .polaroid-c img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+    filter: brightness(0.8) saturate(0.6) contrast(1.08);
+    transition: filter 0.35s ease;
+  }
+  .polaroid-c:hover img { filter: brightness(1) saturate(1.1) contrast(1.05); }
+  .polaroid-c figcaption {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem; color: rgba(0,229,255,0.6);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-align: center; padding-top: 8px;
+    transition: color 0.3s;
+  }
+  .polaroid-c:hover figcaption { color: #00e5ff; }
+  /* pin */
+  .polaroid-c::before {
+    content: '';
+    position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 10px;
+    background: radial-gradient(circle at 35% 35%, #666, #222);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.7), 0 0 4px rgba(0,229,255,0.2);
+  }
+
+
+  /* ─── OPTION D: SCATTERED TABLE ─────────────────────────────────── */
+  .table-board {
+    background:
+      linear-gradient(135deg, #0a0c0f 0%, #0c0f14 100%);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 2.5rem;
+    min-height: 600px;
+    position: relative;
+  }
+
+  .scattered-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem 1.2rem;
+  }
+
+  .polaroid-d {
+    background: #f2ede4;
+    padding: 9px 9px 46px 9px;
+    transform: rotate(var(--rot-d, 0deg)) translateY(var(--ty-d, 0px));
+    box-shadow: 3px 6px 18px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4);
+    transition: transform 0.3s cubic-bezier(0.2,0,0,1.3), box-shadow 0.3s ease;
+    cursor: pointer; position: relative;
+  }
+  .polaroid-d:nth-child(1)  { --rot-d:-3.5deg; --ty-d:4px; }
+  .polaroid-d:nth-child(2)  { --rot-d:2deg;    --ty-d:-2px; }
+  .polaroid-d:nth-child(3)  { --rot-d:-1.2deg; --ty-d:6px; }
+  .polaroid-d:nth-child(4)  { --rot-d:3.8deg;  --ty-d:-4px; }
+  .polaroid-d:nth-child(5)  { --rot-d:-2.7deg; --ty-d:2px; }
+  .polaroid-d:nth-child(6)  { --rot-d:1.5deg;  --ty-d:-6px; }
+  .polaroid-d:nth-child(7)  { --rot-d:-4deg;   --ty-d:3px; }
+  .polaroid-d:nth-child(8)  { --rot-d:2.2deg;  --ty-d:-1px; }
+  .polaroid-d:nth-child(9)  { --rot-d:-1.8deg; --ty-d:5px; }
+  .polaroid-d:nth-child(10) { --rot-d:3.2deg;  --ty-d:-3px; }
+  .polaroid-d:nth-child(11) { --rot-d:-2deg;   --ty-d:4px; }
+  .polaroid-d:nth-child(12) { --rot-d:1deg;    --ty-d:-5px; }
+  .polaroid-d:nth-child(n+13) { --rot-d:calc((var(--i,0) - 2) * 1.5deg); --ty-d:0px; }
+  .polaroid-d:hover {
+    transform: rotate(0deg) scale(1.06) translateY(-10px);
+    box-shadow: 6px 20px 50px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 20;
+  }
+  /* aged paper grain */
+  .polaroid-d::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; border-radius: 1px;
+  }
+  .polaroid-d img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+    filter: sepia(0.25) contrast(1.08) brightness(0.88) saturate(0.85);
+    transition: filter 0.3s ease;
+  }
+  .polaroid-d:hover img { filter: sepia(0) contrast(1.05) brightness(1) saturate(1); }
+  .polaroid-d figcaption {
+    font-family: 'Caveat', cursive;
+    font-size: 1.05rem; font-weight: 600;
+    color: #3a2a18; text-align: center;
+    padding-top: 5px; line-height: 1.2;
+  }
+  /* corner fold */
+  .polaroid-d::before {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 0 14px 14px;
+    border-color: transparent transparent rgba(0,0,0,0.12) transparent;
+  }
+
+  /* ─── nav labels ───── */
+  .option-title {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25); margin-bottom: 3rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .option-title::before {
+    content: attr(data-letter);
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3);
+    color: #00e5ff; font-size: 0.7rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="selector">
+  <span>OPTION →</span>
+  <button class="opt-btn active" onclick="show('a')">A · Corkboard</button>
+  <button class="opt-btn" onclick="show('b')">B · Film Sheet</button>
+  <button class="opt-btn" onclick="show('c')">C · Neon Pins</button>
+  <button class="opt-btn" onclick="show('d')">D · Scattered</button>
+</div>
+
+<!-- PHOTOS list (shared) -->
+<script>
+const PHOTOS = [
+  ['bio-2.jpg',              'Team · 2024'],
+  ['bio-team-oct24.jpg',     'Team · Oct 2024'],
+  ['Nerdearla 2024.jpg',     'Nerdearla 2024'],
+  ['bio-event-jul24b.jpg',   'Event · Jul 2024'],
+  ['bio-event-jul24a.jpg',   'Event · Jul 2024'],
+  ['bio-panel-apr24.jpg',    'Panel · Apr 2024'],
+  ['bio-eou0.jpg',           'Team · Feb 2024'],
+  ['bio-euo2.jpg',           'Team · Feb 2024'],
+  ['bio-ebc1.jpg',           'EBC · Feb 2024'],
+  ['bio-ebc4.jpg',           'EBC · Feb 2024'],
+  ['bio-ebc8.jpg',           'EBC · Feb 2024'],
+  ['Nerdearla 2023.jpg',     'Nerdearla 2023'],
+  ['bio-ssa-elt.jpg',        'SSA ELT · 2023'],
+  ['bio-ms-github-jun23.jpg','Microsoft · Jun 2023'],
+  ['bio-1.jpg',              '2023'],
+  ['bio-idea1.jpg',          'Idea · 2023'],
+  ['TECO Summit.jpeg',       'TECO Summit · 2023'],
+  ['Migoya.jpg',             'With Migoya'],
+  ['Fernandez.jpg',          'With Fernandez'],
+  ['Nerdearla 2022.jpg',     'Nerdearla 2022'],
+  ['bio-team-lunch-dec22.jpg','Team · Dec 2022'],
+  ['bio-nerdearty.jpg',      'Nerdearty · 2022'],
+  ['bio-apertura2.jpg',      'Apertura · 2022'],
+  ['bio-3.jpg',              'Microsoft · 2022'],
+]
+</script>
+
+<!-- ═══ OPTION A ═══════════════════════════════════ -->
+<div class="option visible" id="opt-a">
+  <div class="section-label">Public Speaking &amp; Events</div>
+  <h2>Charlas &amp; Eventos</h2>
+  <p class="subtitle">Selected appearances at conferences, summits, and media events.</p>
+  <div class="option-title" data-letter="A">Corkboard Polaroids — vintage cream frames, Caveat handwriting, random tilt + tape strips</div>
+  <div class="cork-board">
+    <div class="polaroid-grid-a" id="grid-a"></div>
+  </div>
+</div>
+
+<!-- ═══ OPTION B ═══════════════════════════════════ -->
+<div class="option" id="opt-b">
+  <div class="section-label">Public Speaking &amp; Events</div>
+  <h2>Charlas &amp; Eventos</h2>
+  <p class="subtitle">Selected appearances at conferences, summits, and media events.</p>
+  <div class="option-title" data-letter="B">Film Contact Sheet — black, sprocket holes, amber frame numbers, grayscale photos</div>
+  <div class="film-wrap">
+    <div class="film-sprocket" id="sp-top">
+      <span class="film-strip-label">KODAK · TX400 · 135-36 · ©MARTINSCIARRILLO</span>
+    </div>
+    <div class="contact-inner">
+      <div class="contact-grid" id="grid-b"></div>
+    </div>
+    <div class="film-sprocket bottom" id="sp-bot"></div>
+  </div>
+</div>
+
+<!-- ═══ OPTION C ═══════════════════════════════════ -->
+<div class="option" id="opt-c">
+  <div class="section-label">Public Speaking &amp; Events</div>
+  <h2>Charlas &amp; Eventos</h2>
+  <p class="subtitle">Selected appearances at conferences, summits, and media events.</p>
+  <div class="option-title" data-letter="C">Neon Pins — dark polaroid frame, teal glow on hover, metallic pin, grid lines background</div>
+  <div class="neon-board">
+    <div class="polaroid-grid-c" id="grid-c"></div>
+  </div>
+</div>
+
+<!-- ═══ OPTION D ═══════════════════════════════════ -->
+<div class="option" id="opt-d">
+  <div class="section-label">Public Speaking &amp; Events</div>
+  <h2>Charlas &amp; Eventos</h2>
+  <p class="subtitle">Selected appearances at conferences, summits, and media events.</p>
+  <div class="option-title" data-letter="D">Scattered Table — cream polaroids, per-item specific tilts, Caveat font, corner fold, aged paper texture</div>
+  <div class="table-board">
+    <div class="scattered-grid" id="grid-d"></div>
+  </div>
+</div>
+
+<script>
+// ── Build grids ──────────────────────────────────────────
+const gridA = document.getElementById('grid-a')
+const gridB = document.getElementById('grid-b')
+const gridC = document.getElementById('grid-c')
+const gridD = document.getElementById('grid-d')
+const spTop = document.getElementById('sp-top')
+const spBot = document.getElementById('sp-bot')
+
+// sprocket holes
+for (let i = 0; i < 80; i++) {
+  spTop.insertAdjacentHTML('beforeend', '<div class="sprocket-hole"></div>')
+  spBot.insertAdjacentHTML('beforeend', '<div class="sprocket-hole"></div>')
+}
+
+PHOTOS.forEach(([src, cap], i) => {
+  // A
+  gridA.insertAdjacentHTML('beforeend', `
+    <figure class="polaroid-a">
+      <img src="${src}" alt="${cap}" loading="lazy" onerror="this.style.background='#ccc8be';this.style.aspectRatio='4/3';this.removeAttribute('src')">
+      <figcaption>${cap}</figcaption>
+    </figure>`)
+
+  // B
+  gridB.insertAdjacentHTML('beforeend', `
+    <figure class="contact-frame" data-frame="${String(i+1).padStart(2,'0')}A">
+      <img src="${src}" alt="${cap}" loading="lazy" onerror="this.style.background='#111';this.style.aspectRatio='4/3';this.removeAttribute('src')">
+      <div class="contact-caption">${cap}</div>
+    </figure>`)
+
+  // C
+  gridC.insertAdjacentHTML('beforeend', `
+    <figure class="polaroid-c">
+      <img src="${src}" alt="${cap}" loading="lazy" onerror="this.style.background='#0e1118';this.style.aspectRatio='4/3';this.removeAttribute('src')">
+      <figcaption>${cap}</figcaption>
+    </figure>`)
+
+  // D
+  gridD.insertAdjacentHTML('beforeend', `
+    <figure class="polaroid-d">
+      <img src="${src}" alt="${cap}" loading="lazy" onerror="this.style.background='#d4cfc6';this.style.aspectRatio='4/3';this.removeAttribute('src')">
+      <figcaption>${cap}</figcaption>
+    </figure>`)
+})
+
+// ── Tab switch ───────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.option').forEach(el => el.classList.remove('visible'))
+  document.querySelectorAll('.opt-btn').forEach(el => el.classList.remove('active'))
+  document.getElementById('opt-' + id).classList.add('visible')
+  document.querySelector(`[onclick="show('${id}')"]`).classList.add('active')
+}
+</script>
+</body>
+</html>
