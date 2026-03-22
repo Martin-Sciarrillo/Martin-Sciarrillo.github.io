@@ -1099,6 +1099,8 @@ ul { list-style: none; }
    ============================================================ */
 @media (max-width: 768px) {
   .nav__toggle { display: flex; }
+  .nav__logo { margin-right: auto; }
+  .nav__toggle { margin-right: 0.4rem; }
 
   .nav__menu {
     display: none;
