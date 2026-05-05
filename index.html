@@ -45,6 +45,7 @@
         <li><a href="#news" data-i18n="nav_news">In the News</a></li>
         <li><a href="#media" data-i18n="nav_media">On Camera</a></li>
         <li><a href="#podcast">Podcast</a></li>
+        <li><a href="#social" data-i18n="nav_social">Social</a></li>
         <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
       </ul>
       <div class="lang-toggle" id="lang-toggle" role="group" aria-label="Language / Idioma">
@@ -877,6 +878,15 @@
       </div>
     </div>
 
+    <!-- SOCIAL -->
+    <section class="section" id="social" aria-labelledby="social-heading">
+      <div class="container">
+        <h2 class="section__title" id="social-heading"><span data-i18n="social_heading">Social</span></h2>
+        <p class="section__subtitle" data-i18n="social_subtitle">Mentions &amp; reposts · Instagram &amp; X</p>
+        <div class="ig-grid" id="ig-grid"></div>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
       <div class="container">
@@ -974,6 +984,115 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js');
     }
+  </script>
+  <script>
+    // ── Social Section ───────────────────────────────────────────────────────
+    const socialPosts = [
+      {platform:"x",author:"AppdateLegis",date:"2026-05-01",url:"https://x.com/AppdateLegis/status/2034103431833567281",caption:""},
+      {platform:"x",author:"AppdateLegis",date:"2026-05-01",url:"https://x.com/AppdateLegis/status/2034024543572914570",caption:""},
+      {platform:"x",author:"movantconnect",date:"2026-02-01",url:"https://x.com/movantconnect/status/2018020064604094629",caption:""},
+      {platform:"x",author:"Ciiti",date:"2025-10-01",url:"https://x.com/Ciiti/status/1973871456074535423",caption:""},
+      {platform:"x",author:"udepalermo",date:"2025-05-28",url:"https://x.com/udepalermo/status/1927725957386748101",caption:""},
+      {platform:"x",author:"pcasna",date:"2025-05-27",url:"https://x.com/pcasna/status/1927350824545538075",caption:""},
+      {platform:"x",author:"UPingenieria",date:"2025-05-05",url:"https://x.com/UPingenieria/status/1919385998196191391",caption:""},
+      {platform:"x",author:"IASPnetwork",date:"2025-03-27",url:"https://x.com/IASPnetwork/status/1905307579556765961",caption:""},
+      {platform:"x",author:"nerdearla",date:"2025-02-18",url:"https://x.com/nerdearla/status/1891873097671741547",caption:""},
+      {platform:"x",author:"ArielSujarchuk",date:"2024-11-18",url:"https://x.com/ArielSujarchuk/status/1858477081874632750",caption:""},
+      {platform:"x",author:"nerdearla",date:"2024-10-03",url:"https://x.com/nerdearla/status/1839772045170839725",caption:""},
+      {platform:"x",author:"TechForumAR",date:"2024-09-20",url:"https://x.com/TechForumAR/status/1837192094592418196",caption:""},
+      {platform:"x",author:"nerdearla",date:"2024-09-20",url:"https://x.com/nerdearla/status/1837153818103906406",caption:""},
+      {platform:"x",author:"Globant",date:"2024-06-27",url:"https://x.com/Globant/status/1806354568537682318",caption:""},
+      {platform:"x",author:"desdefits",date:"2024-04-30",url:"https://x.com/desdefits/status/1785288515267293427",caption:""},
+      {platform:"x",author:"LayerAIorg",date:"2024-04-23",url:"https://x.com/LayerAIorg/status/1782702445375770711",caption:""},
+      {platform:"x",author:"pochocosta",date:"2024-04-18",url:"https://x.com/pochocosta/status/1780924600852812141",caption:""},
+      {platform:"x",author:"cs_itba",date:"2024-04-12",url:"https://x.com/cs_itba/status/1778855924192469251",caption:""},
+      {platform:"x",author:"UPingenieria",date:"2023-10-25",url:"https://x.com/UPingenieria/status/1717209633532661892",caption:""},
+      {platform:"x",author:"IAPG_Info",date:"2023-10-09",url:"https://x.com/IAPG_Info/status/1711408001439977850",caption:""},
+      {platform:"x",author:"idea_arg",date:"2023-08-25",url:"https://x.com/idea_arg/status/1694829578307391915",caption:""},
+      {platform:"x",author:"idea_arg",date:"2023-08-25",url:"https://x.com/idea_arg/status/1694814781360791598",caption:""},
+      {platform:"x",author:"lexfridman",date:"2023-07-27",url:"https://x.com/lexfridman/status/1684672925897523200",caption:""},
+      {platform:"x",author:"idea_arg",date:"2023-07-26",url:"https://x.com/idea_arg/status/1684223091973541888",caption:""},
+      {platform:"x",author:"idea_arg",date:"2023-07-24",url:"https://x.com/idea_arg/status/1683544161515913256",caption:""},
+      {platform:"x",author:"deboraslot",date:"2023-06-30",url:"https://x.com/deboraslot/status/1674743247074148352",caption:""},
+      {platform:"x",author:"QuarkIDok",date:"2023-06-15",url:"https://x.com/QuarkIDok/status/1669336182294032385",caption:""},
+      {platform:"x",author:"Acatincho",date:"2023-06-09",url:"https://x.com/Acatincho/status/1667249629036003328",caption:""},
+      {platform:"x",author:"idea_arg",date:"2023-06-08",url:"https://x.com/idea_arg/status/1666826202215063552",caption:""},
+      {platform:"x",author:"Acatincho",date:"2023-05-22",url:"https://x.com/Acatincho/status/1660808089887449089",caption:""},
+      {platform:"x",author:"weareseeders_",date:"2023-05-17",url:"https://x.com/weareseeders_/status/1658816086006026240",caption:""},
+      {platform:"x",author:"weareseeders_",date:"2023-03-30",url:"https://x.com/weareseeders_/status/1641154526555062282",caption:""},
+      {platform:"x",author:"pabloc_ds",date:"2023-02-24",url:"https://x.com/pabloc_ds/status/1629151834857259009",caption:""},
+      {platform:"x",author:"LANACION",date:"2022-12-29",url:"https://x.com/LANACION/status/1608559731013992448",caption:""},
+      {platform:"x",author:"iproup",date:"2022-09-13",url:"https://x.com/iproup/status/1569766258396069891",caption:""},
+      {platform:"x",author:"superbeto",date:"2022-08-10",url:"https://x.com/superbeto/status/1557495464320180225",caption:""},
+      {platform:"x",author:"ORTArgAlumni",date:"2022-08-11",url:"https://x.com/ORTArgAlumni/status/1557723470481719296",caption:""},
+      {platform:"x",author:"forbesargentina",date:"2022-03-31",url:"https://x.com/forbesargentina/status/1509695927480586286",caption:""},
+      {platform:"x",author:"LANACION",date:"2021-10-13",url:"https://x.com/LANACION/status/1448117919150379016",caption:""},
+      {platform:"x",author:"elinformatorio",date:"2021-04-08",url:"https://x.com/elinformatorio/status/1380257489573322758",caption:""},
+      {platform:"x",author:"CanalAR",date:"2021-04-08",url:"https://x.com/CanalAR/status/1380197162953359362",caption:""},
+      {author:"tecweekar",date:"2025-10-29",url:"https://www.instagram.com/p/DQZrf7iiWU-/",caption:"Tecweek Joven — tecnología, educación e innovación. 10 de noviembre, Costa Salguero."},
+      {author:"worksummit",date:"2025-10-28",url:"https://www.instagram.com/reel/DQXG9qWD7wQ/",caption:"Recap WorkSummit Mar del Plata — más de 500 personas en el evento que lo transforma todo."},
+      {author:"fredi_vivas",date:"2025-10-27",url:"https://www.instagram.com/p/DQVEZAlAS90/",caption:"Las 'frontier firms' no esperan la innovación — la crean. La adopción de IA es un cambio cultural, no solo tecnológico."},
+      {author:"mardelmakers",date:"2025-10-15",url:"https://www.instagram.com/reel/DP2bekaCRLa/",caption:"WorkSummit 2025 — más de 1000 personas en este encuentro de nivel internacional."},
+      {author:"worksummit",date:"2025-10-13",url:"https://www.instagram.com/p/DPwYcGQjQna/",caption:"WorkSummit Mar del Plata — AI Trends: Inteligencia Artificial para Todos."},
+      {author:"worksummit",date:"2025-09-10",url:"https://www.instagram.com/p/DOcNz4BjZZk/",caption:"WorkSummit Mar del Plata · #techweek2025 — workshops, charlas con líderes y networking."},
+      {author:"aiweekend",date:"2025-06-18",url:"https://www.instagram.com/p/DLDcb8ou9Ms/",caption:"AIWKND BA — conferencia de IA el 4 de julio en C Art Media."},
+      {author:"heybebot",date:"2025-06-02",url:"https://www.instagram.com/reel/DKari2JxXc6/",caption:"¿La tecnología va más rápido que la cultura? Debate en el podcast Conversation First de BeBot."},
+      {author:"aiweekend",date:"2025-05-27",url:"https://www.instagram.com/p/DKKN9r4s795/",caption:"AI Weekend Buenos Aires — Martín Sciarrillo, voz clave con perspectiva humana sobre el futuro de la IA."},
+      {author:"marketerslatam",date:"2025-04-17",url:"https://www.instagram.com/reel/DXPRpEDjbA6/",caption:"Gracias a Tincho Sciarrillo por inspirar Marketers26. La IA es una tecnología de propósito general, como la electricidad."},
+      {author:"invisiblealosojos.podcast",date:"2025-04-14",url:"https://www.instagram.com/reel/DXHMROujisE/",caption:"\"No esperemos a que la IA tenga un 100% de éxito para empezar a adoptarla\""},
+      {author:"marketerslatam",date:"2025-04-12",url:"https://www.instagram.com/reel/DXDScAxhJ1p/",caption:"Martín Sciarrillo en #Marketers26 — cómo mejorar tu productividad con agentes de IA."},
+      {author:"invisiblealosojos.podcast",date:"2025-04-09",url:"https://www.instagram.com/reel/DW7Q-Pujn9V/",caption:"¿Cuáles son los desafíos que van a tener las organizaciones para capitalizar la IA?"},
+      {author:"invisiblealosojos.podcast",date:"2025-03-26",url:"https://www.instagram.com/reel/DWXLO5ngQTY/",caption:"La verdadera barrera para adoptar la IA no es tecnológica sino cultural."},
+      {author:"movantconnection",date:"2025-02-01",url:"https://www.instagram.com/reel/DUOXI8-DWdy/",caption:"La IA avanza más rápido que las organizaciones. La adopción en logística se frena por procesos y mentalidades."},
+      {author:"finnova.fueguina",date:"2024-12-16",url:"https://www.instagram.com/p/DDqEq4KMViL/",caption:"#FinnovaTech2024 — democratización de herramientas de IA como Copilot."},
+      {author:"finnova.fueguina",date:"2024-12-14",url:"https://www.instagram.com/reel/DDjx_iqRJEr/",caption:"Un vistazo al futuro desde el fin del mundo — FINNOVA Tech 2024 en Ushuaia."},
+      {author:"a1000arg",date:"2024-12-12",url:"https://www.instagram.com/reel/DDf5A1stcGi/",caption:"Cómo la IA rediseña los servicios al ciudadano — procesos más ágiles, personalizados y automatizados."},
+      {author:"finnova.fueguina",date:"2024-12-04",url:"https://www.instagram.com/reel/DDKEiGpSmtU/",caption:"Martín Sciarrillo en FINNOVA Tech: el poder de la inteligencia artificial."},
+      {author:"eldiariodeescobar",date:"2024-11-19",url:"https://www.instagram.com/p/DCj6Owqx3WN/",caption:"Encuentro para Generar Progreso en Malba Puertos — Fredi Vivas y Martín Sciarrillo."},
+      {author:"asujarchuk",date:"2024-11-18",url:"https://www.instagram.com/reel/DCgu66hx4TE/",caption:"Primer Encuentro para Generar Progreso — Municipio de Escobar y Clarín Zonales en Malba Puertos."},
+      {author:"weareseeds_",date:"2024-10-24",url:"https://www.instagram.com/reel/DBhdrl8KH1t/",caption:"Tips para maximizar el uso de la Inteligencia Artificial."},
+      {author:"stephiecherni",date:"2024-10-13",url:"https://www.instagram.com/reel/DBFLwMYBLuR/",caption:"El balance entre tecnología y la esencia de ser humanos — con Martín Sciarrillo."},
+      {author:"stephiecherni",date:"2024-10-03",url:"https://www.instagram.com/reel/DArZJ2wBK62/",caption:"Podcast Y Ahora Qué? — Martín Sciarrillo sobre el talento de Argentina en el mundo tech."},
+      {author:"baproductiva",date:"2024-04-23",url:"https://www.instagram.com/p/C6G7dVZrHbk/",caption:"Conectando Talento TECH — Martín Sciarrillo como orador del Día 2."},
+      {author:"frankopellegrini",date:"2024-04-20",url:"https://www.instagram.com/reel/C6AB5zLPjnv/",caption:"Nuevo libro 'Modo Diseño' con prólogo de Martín Sciarrillo."},
+      {author:"weareseeds_",date:"2024-02-02",url:"https://www.instagram.com/reel/C225fUIPNO5/",caption:"\"La empresa no solamente elige al empleado, sino que el empleado tiene que elegir a la empresa\""},
+      {author:"fuckupnightsba",date:"2023-11-05",url:"https://www.instagram.com/p/CzSF28CuZ23/",caption:"Martín Sciarrillo, Director de Data e IA en Microsoft — #FuckupNights con @globant."},
+      {author:"nerdear_la",date:"2023-09-28",url:"https://www.instagram.com/reel/Cxv-ty0PxCs/",caption:"En vivo desde el Konex con Yamila Zakhem y Martín Sciarrillo de @microsoftlatam. #Nerdearla"},
+      {author:"personaltech.ar",date:"2023-09-12",url:"https://www.instagram.com/reel/CxG05lLuBL2/",caption:"Charla sobre IA en el #TelecomSummit 2023."},
+      {author:"utec.sanmiguel",date:"2023-09-11",url:"https://www.instagram.com/p/CxEQBLtRuqD/",caption:"After Tec: los trabajos del futuro — con Martín Sciarrillo."},
+      {author:"personaltech.ar",date:"2023-09-05",url:"https://www.instagram.com/reel/Cw0KitRhjT-/",caption:"Panel de IA en #TelecomSummIT con Martín Sciarrillo."},
+      {author:"chicasentec",date:"2023-08-03",url:"https://www.instagram.com/p/CvfyeFiPO3y/",caption:"#EncuentroCET sobre IA y empleo — panel sobre oportunidades laborales tech y brecha de género."},
+      {author:"ideaarg",date:"2023-07-26",url:"https://www.instagram.com/p/CvKmpUxuUk1/",caption:"Twitter Spaces con Martín Sciarrillo, CTO de Microsoft Argentina — IA, GPT-4 y Bing."},
+      {author:"ideaarg",date:"2023-07-24",url:"https://www.instagram.com/reel/CvFsBUAgXii/",caption:"El papel de la IA — cómo pasó de la ciencia ficción a la vida cotidiana."},
+      {author:"ideaarg",date:"2023-07-04",url:"https://www.instagram.com/p/CuR_T1nrcH6/",caption:"¿Te imaginás el abanico de posibilidades que abre la tecnología?"},
+      {author:"ideaarg",date:"2023-06-05",url:"https://www.instagram.com/p/CtHlU_UpIRk/",caption:"#ExperienciaIDEAManagement — Martín Sciarrillo en el track de IA."},
+      {author:"weareseeds_",date:"2023-05-22",url:"https://www.instagram.com/p/CsjfdZhpaz5/",caption:"The MeetUp en HIT Cowork — reimaginando el futuro del trabajo."},
+      {author:"frankopellegrini",date:"2023-04-04",url:"https://www.instagram.com/p/CqeFT5crOwe/",caption:"'El Diseño del Mundo' — Martín Sciarrillo entre los 17 referentes que aportaron citas."},
+      {author:"weareseeds_",date:"2023-03-29",url:"https://www.instagram.com/reel/CqYn8f-Jf0W/",caption:"Seeds Table Edición Tech — transformación digital, IA y big data."},
+      {author:"lanacioncom",date:"2022-12-29",url:"https://www.instagram.com/reel/Cmw8J25omQC/",caption:"\"La agricultura de precisión es un gran comienzo para innovar\""},
+      {author:"iproup",date:"2022-09-15",url:"https://www.instagram.com/p/CiigZPPtV_n/",caption:"Martín Sciarrillo explica la gran oportunidad de Argentina en innovación."},
+      {author:"forbesargentina",date:"2022-09-29",url:"https://www.instagram.com/p/CjGs0LTO5Uw/",caption:"#ForbesAgroSummit — tecnología y medición para eficientizar la producción agropecuaria."},
+      {author:"ortargalumni",date:"2022-08-11",url:"https://www.instagram.com/p/ChHwKkJukAg/",caption:"Panel sobre Empresas en el #Metaverso — retail, blockchain y Web3."},
+      {author:"ortargalumni",date:"2022-07-19",url:"https://www.instagram.com/p/CgMqN-rOSdB/",caption:"Conferencia: Empresas en el #Metaverso — la nueva frontera a conquistar."}
+    ]
+
+    ;(function() {
+      const grid = document.getElementById('ig-grid')
+      if (!grid) return
+      const sorted = [...socialPosts].sort((a,b) => new Date(b.date)-new Date(a.date))
+      const xSVG = `<svg class="x-logo" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
+      sorted.forEach(p => {
+        if (p.platform === 'x') {
+          const id = 'xc-'+Math.random().toString(36).slice(2)
+          const d = new Date(p.date+'T00:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric'})
+          grid.insertAdjacentHTML('beforeend',`<a class="x-card" id="${id}" href="${p.url}" target="_blank" rel="noopener"><div class="x-thumb-placeholder" id="${id}-t"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div><div class="x-body"><div class="x-card-header">${xSVG}<span class="x-author">@${p.author}</span><span class="x-date">${d}</span></div>${p.caption?`<p class="x-text">${p.caption}</p>`:''}</div></a>`)
+          fetch(`https://api.microlink.io/?url=${encodeURIComponent(p.url)}`).then(r=>r.json()).then(data=>{const img=data?.data?.image?.url||data?.data?.screenshot?.url;if(img){const el=document.getElementById(id+'-t');if(el)el.outerHTML=`<img class="x-thumb" src="${img}" alt="" loading="lazy">`}}).catch(()=>{})
+        } else {
+          grid.insertAdjacentHTML('beforeend',`<div class="ig-embed-wrap"><blockquote class="instagram-media" data-instgrm-permalink="${p.url}" data-instgrm-version="14" style="width:100%;margin:0;"></blockquote></div>`)
+        }
+      })
+      const s=document.createElement('script');s.async=true;s.src='//www.instagram.com/embed.js';document.body.appendChild(s)
+    })()
   </script>
 </body>
 </html>

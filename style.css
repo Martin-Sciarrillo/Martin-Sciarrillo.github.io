@@ -1954,3 +1954,101 @@ html.is-booting footer { opacity: 0; }
   pointer-events: none;
   z-index: 1980;
 }
+
+/* ============================================================
+   SOCIAL SECTION — Instagram & X grid
+   ============================================================ */
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+@media (max-width: 1100px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px)  { .ig-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .ig-grid { grid-template-columns: 1fr; } }
+
+.ig-embed-wrap {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #111827;
+}
+.ig-embed-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, #111827);
+  pointer-events: none;
+}
+.ig-embed-wrap blockquote.instagram-media {
+  margin: 0 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.ig-embed-wrap iframe {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.x-card {
+  height: 240px;
+  background: #0f1623;
+  border: 1px solid #1e2d45;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+.x-card:hover { border-color: #1d9bf0; }
+.x-thumb {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+  background: #0a1020;
+  flex-shrink: 0;
+}
+.x-thumb-placeholder {
+  width: 100%;
+  height: 150px;
+  background: #0a1020;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.x-thumb-placeholder svg { opacity: 0.12; width: 32px; height: 32px; fill: #1d9bf0; }
+.x-body {
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+  min-height: 0;
+}
+.x-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.x-logo { width: 14px; height: 14px; fill: #e0e6f0; flex-shrink: 0; }
+.x-author { font-size: 0.7rem; color: #1d9bf0; font-weight: 600; }
+.x-date { font-size: 0.65rem; color: #4a5270; margin-left: auto; }
+.x-text {
+  font-size: 0.72rem;
+  color: #8899bb;
+  line-height: 1.45;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
