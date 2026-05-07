@@ -1085,7 +1085,7 @@
           const id = 'xc-'+Math.random().toString(36).slice(2)
           const d = new Date(p.date+'T00:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric'})
           grid.insertAdjacentHTML('beforeend',`<a class="x-card" id="${id}" href="${p.url}" target="_blank" rel="noopener"><div class="x-thumb-placeholder" id="${id}-t"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div><div class="x-body"><div class="x-card-header">${xSVG}<span class="x-author">@${p.author}</span><span class="x-date">${d}</span></div>${p.caption?`<p class="x-text">${p.caption}</p>`:''}</div></a>`)
-          if(p.thumb){const el=document.getElementById(id+'-t');if(el)el.outerHTML=`<img class="x-thumb" src="${p.thumb}" alt="" loading="lazy">`}
+          if(p.thumb){const el=document.getElementById(id+'-t');if(el)el.outerHTML=`<img class="x-thumb" src="${p.thumb}" alt="" loading="lazy" referrerpolicy="no-referrer">`}
         } else {
           grid.insertAdjacentHTML('beforeend',`<div class="ig-embed-wrap"><blockquote class="instagram-media" data-instgrm-permalink="${p.url}" data-instgrm-version="14" style="width:100%;margin:0;"></blockquote></div>`)
         }
