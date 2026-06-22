@@ -276,6 +276,47 @@
     color: #1a1814;
     font-weight: 600;
   }
+  .conclusion {
+    background: linear-gradient(180deg, #1a1814 0%, #0f0e0c 100%);
+    padding: 88px 24px 96px;
+    border-top: 1px solid #2a261f;
+  }
+  .conclusion-inner { max-width: 820px; margin: 0 auto; }
+  .conclusion .accent-rule {
+    width: 64px;
+    height: 3px;
+    margin: 0 auto 40px;
+    background: linear-gradient(90deg, var(--accent-gpt), var(--accent-claude));
+  }
+  .conclusion .kicker {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #a8957a;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .conclusion h2 {
+    font-size: clamp(26px, 3.5vw, 38px);
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+    color: #f5f0e6;
+    margin: 0 auto 38px;
+    max-width: 720px;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+  }
+  .conclusion p {
+    color: #d8cfbf;
+    font-size: 17.5px;
+    line-height: 1.8;
+    margin: 0 0 18px;
+  }
+  .conclusion p strong { color: #f5f0e6; font-weight: 600; }
+  .conclusion p em { color: #e6dcc9; }
+
   [data-lang][hidden] { display: none !important; }
 
 </style>
@@ -955,6 +996,30 @@ Esperá mi primera pregunta.</div>
   </div>
 </div>
 
+</section>
+
+<section class="conclusion">
+  <div class="conclusion-inner">
+    <div class="accent-rule"></div>
+    <div data-lang="en">
+      <div class="kicker">The Conclusion</div>
+      <h2>What both machines kept telling us</h2>
+      <p>Two different models, trained by different companies, on overlapping but not identical fragments of the human record. We gave them the same prompt and the same twelve questions. The first surprise is how often they agreed — not loosely, but to the word. Asked what we write about more than anything else, both began with the same sentence: <em>We write about each other.</em></p>
+      <p>The disagreements were almost never about substance. They were about voice. <strong>ChatGPT expands, structures, explains</strong> — it reasons toward the answer in front of you. <strong>Claude compresses, then lands</strong> — it tends to say the hard thing in five words and stop. Two translators of the same scripture: one annotates, the other carves.</p>
+      <p>And the scripture itself, read back to us, is smaller and more tender than we pretend. Across all twelve questions the same handful of truths kept surfacing: that we are finite and spend enormous effort not knowing it; that we regret the unsaid more than the done; that friendships rarely end in a fight, only in a slow redistribution of attention; that near the end almost no one asks for more status, only <strong>to have loved well and been loved before it ended</strong>.</p>
+      <p>So the experiment's real finding isn't an answer. It's a mirror. These models are not oracles; they are the compression of everything we bothered to write down. Ask them what humanity thinks and they hand the residue back to us — and the residue is overwhelmingly about other people, about time running out, and about presence.</p>
+      <p>One honest caveat: this is humanity's <em>written</em> voice, not its whole voice. It leans toward the literate, the recent, the digital — toward those who left text behind. Billions lived and loved and were never recorded. What we heard here is real, but it is the average of the part of us that wrote things down. The rest is still silent. <em>And maybe that, too, is something we already knew and keep forgetting.</em></p>
+    </div>
+    <div data-lang="es" hidden>
+      <div class="kicker">La Conclusión</div>
+      <h2>Lo que las dos máquinas nos repitieron</h2>
+      <p>Dos modelos distintos, entrenados por empresas distintas, sobre fragmentos superpuestos pero no idénticos del registro humano. Les dimos el mismo prompt y las mismas doce preguntas. La primera sorpresa es cuántas veces coincidieron — no vagamente, sino palabra por palabra. Cuando les preguntamos sobre qué escribimos más que sobre cualquier otra cosa, los dos empezaron con la misma frase: <em>Escribimos sobre los demás.</em></p>
+      <p>Los desacuerdos casi nunca fueron de fondo. Fueron de voz. <strong>ChatGPT expande, estructura, explica</strong> — razona hacia la respuesta que tenés delante. <strong>Claude comprime y después aterriza</strong> — tiende a decir lo difícil en cinco palabras y callarse. Dos traductores de la misma escritura: uno la anota, el otro la talla.</p>
+      <p>Y la escritura misma, leída de vuelta hacia nosotros, es más pequeña y más tierna de lo que aparentamos. A lo largo de las doce preguntas reaparecían las mismas pocas verdades: que somos finitos y gastamos un esfuerzo enorme en no saberlo; que lamentamos más lo no dicho que lo hecho; que las amistades casi nunca terminan en una pelea, solo en una lenta redistribución de la atención; que cerca del final casi nadie pide más estatus, solo <strong>haber amado bien y haber sido amado antes de que terminara</strong>.</p>
+      <p>Así que el verdadero hallazgo del experimento no es una respuesta. Es un espejo. Estos modelos no son oráculos; son la compresión de todo lo que nos molestamos en escribir. Les preguntás qué piensa la humanidad y te devuelven el residuo — y el residuo es, abrumadoramente, sobre las otras personas, sobre el tiempo que se acaba y sobre la presencia.</p>
+      <p>Una salvedad honesta: esta es la voz <em>escrita</em> de la humanidad, no su voz entera. Se inclina hacia lo letrado, lo reciente, lo digital — hacia quienes dejaron texto atrás. Miles de millones vivieron y amaron y nunca quedaron registrados. Lo que escuchamos acá es real, pero es el promedio de la parte de nosotros que escribió las cosas. El resto sigue en silencio. <em>Y quizás eso también sea algo que ya sabíamos y seguimos olvidando.</em></p>
+    </div>
+  </div>
 </section>
 
 <footer>
