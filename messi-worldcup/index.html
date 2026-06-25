@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El perfil sin igual de Messi · un experimento de data-viz</title>
+<meta name="description" content="Tomé 60 años de Mundiales y los puse en un plano de volumen × eficiencia para medir, con datos, qué tan único es el perfil mundialista de Messi. R&D futbolero: metodología, infografía, video y código abierto.">
+<meta name="author" content="Martín Sciarrillo">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="El perfil sin igual de Messi · un experimento de data-viz">
+<meta property="og:description" content="60 años de Mundiales en un plano de volumen × eficiencia. ¿Qué tan único es el perfil de Messi? Lo medí con datos.">
+<meta property="og:image" content="https://martin-sciarrillo.github.io/messi-worldcup/poster.png">
+<meta property="og:url" content="https://martin-sciarrillo.github.io/messi-worldcup/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="El perfil sin igual de Messi · un experimento de data-viz">
+<meta name="twitter:description" content="60 años de Mundiales en un plano de volumen × eficiencia. R&D futbolero con código abierto.">
+<meta name="twitter:image" content="https://martin-sciarrillo.github.io/messi-worldcup/poster.png">
+
+<style>
+  :root{
+    --bg:#0a0e16; --bg2:#0d1320; --panel:#111826; --panel2:#0f1622;
+    --teal:#36d7b7; --teal-soft:#7fd9cd; --gold:#c9a23a;
+    --ink:#e7ecf3; --muted:#8a93a6; --line:#1c2433;
+    --mono:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;
+    --sans:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.7; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1200px 600px at 70% -10%, rgba(54,215,183,.10), transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.16) 2px, rgba(0,0,0,.16) 3px);
+  }
+  a{color:var(--teal); text-decoration:none; transition:color .2s, opacity .2s;}
+  a:hover{color:#bff7ee;}
+  img,video{max-width:100%; height:auto; display:block;}
+  .wrap{max-width:880px; margin-inline:auto; padding-inline:22px;}
+
+  /* HERO */
+  header.hero{padding:74px 0 30px; text-align:center; border-bottom:1px solid var(--line);}
+  .kicker{
+    font-family:var(--mono); font-size:12px; letter-spacing:3px; text-transform:uppercase;
+    color:var(--teal); margin-bottom:18px;
+  }
+  .kicker::before{content:"> "; color:var(--muted);}
+  h1{
+    font-size:clamp(32px,6vw,54px); line-height:1.06; font-weight:800;
+    letter-spacing:-.5px; margin:0 auto 16px; max-width:760px;
+  }
+  h1 em{font-style:normal; color:var(--teal);}
+  .sub{max-width:600px; margin:0 auto; color:var(--muted); font-size:17px;}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:26px;}
+  .chip{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.6px; color:var(--teal-soft);
+    border:1px solid var(--line); background:var(--panel); border-radius:999px; padding:6px 13px;
+  }
+
+  /* FINDING callout */
+  .finding{
+    margin:40px auto 8px; background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:10px;
+    padding:24px 26px;
+  }
+  .finding .tag{font-family:var(--mono); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
+  .finding b{color:#fff;}
+  .finding .big{font-size:21px; line-height:1.4; color:var(--ink); font-weight:600;}
+
+  /* sections */
+  section{padding:42px 0 8px;}
+  h2{
+    font-size:13px; font-family:var(--mono); letter-spacing:3px; text-transform:uppercase;
+    color:var(--teal); margin-bottom:8px;
+  }
+  h2 + .lead{font-size:25px; font-weight:700; letter-spacing:-.3px; color:#fff; margin-bottom:18px; line-height:1.25;}
+  p{margin:0 0 16px; color:#cdd5e1;}
+  p.note{color:var(--muted); font-size:15px;}
+
+  figure{margin:14px 0 8px;}
+  figure img{border:1px solid var(--line); border-radius:12px; background:#000;}
+  figcaption{font-family:var(--mono); font-size:12px; color:var(--muted); text-align:center; margin-top:10px;}
+  figcaption a{color:var(--teal-soft);}
+
+  video{border:1px solid var(--line); border-radius:12px; background:#000; width:100%;}
+
+  /* methodology table */
+  .tbl{width:100%; border-collapse:collapse; margin:6px 0 16px; font-size:15px;}
+  .tbl th,.tbl td{text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  .tbl th{font-family:var(--mono); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--muted);}
+  .tbl td b{color:var(--teal);}
+  .tbl code{font-family:var(--mono); font-size:13px; color:var(--teal-soft); background:var(--panel); padding:1px 6px; border-radius:5px;}
+
+  ul.rules{list-style:none; margin:0 0 16px; padding:0;}
+  ul.rules li{position:relative; padding:6px 0 6px 26px; color:#cdd5e1;}
+  ul.rules li::before{content:"▸"; position:absolute; left:4px; color:var(--teal);}
+
+  /* findings cards */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:8px 0 14px;}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:12px; padding:20px 18px;}
+  .card .n{font-family:var(--mono); font-size:13px; color:var(--gold); letter-spacing:1px;}
+  .card h3{font-size:18px; color:#fff; margin:6px 0 6px;}
+  .card p{font-size:14.5px; color:var(--muted); margin:0;}
+  .card b{color:var(--teal);}
+  @media(max-width:680px){.cards{grid-template-columns:1fr;}}
+
+  .caveat{
+    margin:18px 0; background:rgba(201,162,58,.07); border:1px solid rgba(201,162,58,.35);
+    border-radius:10px; padding:16px 18px; font-size:15px; color:#e8dcbf;
+  }
+  .caveat b{color:var(--gold);}
+
+  /* CTA repo */
+  .cta{
+    display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+    background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--line); border-radius:12px; padding:22px 24px; margin:14px 0;
+  }
+  .cta .txt{flex:1 1 260px;}
+  .cta .txt b{color:#fff;}
+  .btn{
+    font-family:var(--mono); font-size:14px; letter-spacing:.4px;
+    background:var(--teal); color:#06231d; font-weight:700;
+    padding:12px 20px; border-radius:8px; white-space:nowrap;
+  }
+  .btn:hover{background:#bff7ee; color:#06231d;}
+  .btn.ghost{background:transparent; color:var(--teal); border:1px solid var(--teal);}
+  .btn.ghost:hover{background:rgba(54,215,183,.12); color:#bff7ee;}
+
+  footer{margin-top:34px; padding:34px 0 60px; border-top:1px solid var(--line); text-align:center;}
+  .sig{
+    font-family:var(--mono); font-size:19px; letter-spacing:.5px; color:#fff; margin-bottom:8px;
+  }
+  .sig a{color:var(--teal);}
+  footer .credits{font-size:13px; color:var(--muted); line-height:1.9;}
+  footer .credits a{color:var(--teal-soft);}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">R&amp;D · experimento de data-viz</div>
+    <h1>El perfil <em>sin igual</em> de Messi</h1>
+    <p class="sub">Tomé 60 años de Mundiales y los puse en un plano de <b>volumen × eficiencia</b> para responder, con datos, una sola pregunta de cancha.</p>
+    <div class="chips">
+      <span class="chip">⚽ Mundiales 1966–2026*</span>
+      <span class="chip">📊 fuente: FBref</span>
+      <span class="chip">🔬 método &gt; grito</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="finding">
+    <div class="tag">el hallazgo</div>
+    <p class="big">Con los datos <b>parciales del Mundial 2026</b>, Messi quedó como <b>máximo goleador histórico de Mundiales</b> (18 goles, superando los 16 de Klose) y ocupa <b>él solo</b> una región del plano que bauticé <em>“Tierra de Nadie”</em>: mucho volumen <b>y</b> mucha eficiencia, donde nadie más llega.</p>
+  </div>
+
+  <figure>
+    <a href="poster-hires.png" title="Ver en alta resolución (300 dpi)"><img src="poster.png" alt="Plano volumen × eficiencia: Messi como estrella en Tierra de Nadie"></a>
+    <figcaption>Clic en la imagen para la versión <a href="poster-hires.png">300&nbsp;dpi</a> · X = minutos · Y = G+A por 90′ · color = asistencias.</figcaption>
+  </figure>
+
+  <section>
+    <h2>01 · La hipótesis</h2>
+    <p class="lead">Convertir la grieta del GOAT en algo medible.</p>
+    <p>La discusión sobre el mejor suele ser ruidosa y poco falsable. Así que la transformé en una pregunta con respuesta de datos:</p>
+    <p style="border-left:3px solid var(--line); padding-left:16px; color:#e7ecf3; font-style:italic;">Si tomamos solo Mundiales (el escenario máximo) y solo delanteros, ¿existe <b>alguien</b> que sea simultáneamente <b>durable</b>, <b>productivo</b> y <b>creativo</b> al nivel de Messi?</p>
+    <p class="note">Si la respuesta es “sí, varios”, su perfil no tiene nada de especial. Si es “no, ninguno”, hay una anomalía que merece un gráfico.</p>
+  </section>
+
+  <section>
+    <h2>02 · La metodología</h2>
+    <p class="lead">Un plano, tres dimensiones de información.</p>
+    <table class="tbl">
+      <tr><th>Eje</th><th>Significado</th><th>Cómo se computa</th></tr>
+      <tr><td><b>X — Volumen</b></td><td>Minutos de carrera mundialista</td><td>suma de <code>minutes</code> de todas las ediciones</td></tr>
+      <tr><td><b>Y — Eficiencia</b></td><td>Goles + Asistencias por 90′</td><td><code>(G + A) / minutos × 90</code></td></tr>
+      <tr><td><b>Color</b></td><td>Creación</td><td>asistencias totales (escala teal)</td></tr>
+    </table>
+    <p>Las reglas para que la comparación sea justa:</p>
+    <ul class="rules">
+      <li>Solo <b>delanteros</b> — manzanas con manzanas.</li>
+      <li>Mínimo <b>90′</b> jugados (un partido completo) para entrar al plano.</li>
+      <li>Messi se dibuja como <b>estrella</b> y se resalta la zona de alto volumen + alta eficiencia.</li>
+      <li><b>Leyendas pre-Opta</b> (Kocsis 1954, Fontaine 1958, Pelé 1958–70) entran en oro y con asterisco: en su era <b>no se registraban asistencias</b>, así que su ratio es solo-goles, aparte de la nube principal.</li>
+    </ul>
+    <p class="note">Datos de <a href="https://fbref.com/">FBref</a> (1966–2022). Los deltas del Mundial 2026 en curso se sumaron a mano desde prensa (FBref aún no los publica) y están marcados como parciales. Retratos vía Wikipedia/Wikimedia.</p>
+  </section>
+
+  <section>
+    <h2>03 · El experimento, en movimiento</h2>
+    <p class="lead">El plano armándose, jugador por jugador.</p>
+    <video controls preload="metadata" poster="poster-frame.png">
+      <source src="profile.mp4" type="video/mp4">
+      Tu navegador no soporta video HTML5. <a href="profile.mp4">Descargá el MP4</a>.
+    </video>
+  </section>
+
+  <section>
+    <h2>04 · Los hallazgos</h2>
+    <p class="lead">Messi es el único que clava los tres podios a la vez.</p>
+    <div class="cards">
+      <div class="card"><div class="n">#1</div><h3>Durabilidad</h3><p><b>2484′</b> — el único jugador con +2000′ en Mundiales.</p></div>
+      <div class="card"><div class="n">#1</div><h3>Producción</h3><p><b>24</b> contribuciones de gol (G+A) totales.</p></div>
+      <div class="card"><div class="n">#1</div><h3>Creación</h3><p><b>18 goles + 6 asistencias</b>: lidera definición y pase.</p></div>
+    </div>
+    <p>Otros llegan a una esquina, nunca a las tres: <b>Klose</b> y <b>Cristiano</b> tienen recorrido pero ratio bajo; <b>Mbappé</b>, <b>Kocsis</b> y <b>Fontaine</b> tienen ratio de élite pero les falta volumen; <b>Pelé</b> reina en títulos (3) pero el dataset moderno no lo mide por ratio. Resultado: una anomalía estadística sentada sola en <em>Tierra de Nadie</em>.</p>
+    <div class="caveat">
+      ⚠️ <b>Honestidad ante todo:</b> el titular de “máximo goleador histórico” usa datos <b>parciales</b> del Mundial 2026. Cuando FBref publique las cifras oficiales, los números se actualizan. El experimento vale por el <b>método</b>, no por el grito.
+    </div>
+  </section>
+
+  <section>
+    <h2>05 · Abierto y reproducible</h2>
+    <p class="lead">Todo el experimento es código abierto.</p>
+    <div class="cta">
+      <div class="txt"><b>messi-worldcup</b> en GitHub: scripts, dataset, metodología, póster 300&nbsp;dpi y video. Cloná, corré, rompé y mejorá.</div>
+      <a class="btn" href="https://github.com/Martin-Sciarrillo/messi-worldcup">Ver el repo ↗</a>
+      <a class="btn ghost" href="poster-hires.png">Póster 300dpi</a>
+    </div>
+    <p class="note">Créditos: datos de <a href="https://fbref.com/">FBref / Sports Reference</a>; retratos de <a href="https://commons.wikimedia.org/">Wikipedia / Wikimedia Commons</a>. Atribución completa en el <a href="https://github.com/Martin-Sciarrillo/messi-worldcup/blob/master/REFERENCES.md">REFERENCES.md</a> del repo.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="sig">— hecho con curiosidad y mate por <a href="https://aka.ms/Tincho">aka.ms/Tincho</a></div>
+    <div class="credits">
+      Martín Sciarrillo · <a href="https://github.com/Martin-Sciarrillo/messi-worldcup">github.com/Martin-Sciarrillo/messi-worldcup</a><br>
+      Un experimento de R&amp;D futbolero. Datos parciales del Mundial 2026 marcados como provisionales.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
