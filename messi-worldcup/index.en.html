@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Messi, fuera de la curva · un experimento de data-viz</title>
-<meta name="description" content="Tomé 60 años de Mundiales y los puse en un plano de volumen × eficiencia para medir, con datos, qué tan único es el perfil mundialista de Messi. R&D futbolero: metodología, infografía, video y código abierto.">
+<title>Messi, off the curve · a data-viz experiment</title>
+<meta name="description" content="I took 60 years of World Cups and plotted them on a volume × efficiency map to measure, with data, just how unique Messi's World Cup profile really is. A playful football R&D experiment: methodology, infographic, video and open source.">
 <meta name="author" content="Martín Sciarrillo">
 
 <!-- Open Graph / social -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="Messi, fuera de la curva · un experimento de data-viz">
-<meta property="og:description" content="60 años de Mundiales en un plano de volumen × eficiencia. ¿Qué tan único es el perfil de Messi? Lo medí con datos.">
+<meta property="og:title" content="Messi, off the curve · a data-viz experiment">
+<meta property="og:description" content="60 years of World Cups on a volume × efficiency map. How unique is Messi's profile? I measured it with data.">
 <meta property="og:image" content="https://martin-sciarrillo.github.io/messi-worldcup/poster.png">
-<meta property="og:url" content="https://martin-sciarrillo.github.io/messi-worldcup/">
+<meta property="og:url" content="https://martin-sciarrillo.github.io/messi-worldcup/index.en.html">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_AR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Messi, fuera de la curva · un experimento de data-viz">
-<meta name="twitter:description" content="60 años de Mundiales en un plano de volumen × eficiencia. R&D futbolero con código abierto.">
+<meta name="twitter:title" content="Messi, off the curve · a data-viz experiment">
+<meta name="twitter:description" content="60 years of World Cups on a volume × efficiency map. Playful football R&D, fully open source.">
 <meta name="twitter:image" content="https://martin-sciarrillo.github.io/messi-worldcup/poster.png">
 
 <link rel="alternate" hreflang="es" href="https://martin-sciarrillo.github.io/messi-worldcup/index.html">
@@ -44,6 +46,12 @@
   img,video{max-width:100%; height:auto; display:block;}
   .wrap{max-width:880px; margin-inline:auto; padding-inline:22px;}
 
+  /* language switcher */
+  .langsel{display:flex; gap:10px; justify-content:center; margin-bottom:20px; font-family:var(--mono); font-size:12px; letter-spacing:1px;}
+  .langsel a{color:var(--muted); border:1px solid var(--line); padding:3px 11px; border-radius:999px;}
+  .langsel a.active{color:var(--teal); border-color:var(--teal);}
+  .langsel a:hover{color:var(--teal-soft);}
+
   /* HERO */
   header.hero{padding:74px 0 30px; text-align:center; border-bottom:1px solid var(--line);}
   .kicker{
@@ -62,12 +70,6 @@
     font-family:var(--mono); font-size:11.5px; letter-spacing:.6px; color:var(--teal-soft);
     border:1px solid var(--line); background:var(--panel); border-radius:999px; padding:6px 13px;
   }
-
-  /* language switcher */
-  .langsel{display:flex; gap:10px; justify-content:center; margin-bottom:20px; font-family:var(--mono); font-size:12px; letter-spacing:1px;}
-  .langsel a{color:var(--muted); border:1px solid var(--line); padding:3px 11px; border-radius:999px;}
-  .langsel a.active{color:var(--teal); border-color:var(--teal);}
-  .langsel a:hover{color:var(--teal-soft);}
 
   /* FINDING callout */
   .finding{
@@ -153,16 +155,16 @@
 <header class="hero">
   <div class="wrap">
     <div class="langsel">
-      <a class="active" href="index.html" hreflang="es">ES</a>
-      <a href="index.en.html" hreflang="en">EN</a>
+      <a href="index.html" hreflang="es">ES</a>
+      <a class="active" href="index.en.html" hreflang="en">EN</a>
     </div>
-    <div class="kicker">R&amp;D · experimento de data-viz</div>
-    <h1>Messi, <em>fuera de la curva</em></h1>
-    <p class="sub">Tomé 60 años de Mundiales y los puse en un plano de <b>volumen × eficiencia</b> para responder, con datos, una sola pregunta de cancha.</p>
+    <div class="kicker">R&amp;D · data-viz experiment</div>
+    <h1>Messi, <em>off the curve</em></h1>
+    <p class="sub">I took 60 years of World Cups and plotted them on a <b>volume × efficiency</b> map to answer, with data, a single question from the terraces.</p>
     <div class="chips">
-      <span class="chip">⚽ Mundiales 1966–2026*</span>
-      <span class="chip">📊 fuente: FBref</span>
-      <span class="chip">🔬 método &gt; grito</span>
+      <span class="chip">⚽ World Cups 1966–2026*</span>
+      <span class="chip">📊 source: FBref</span>
+      <span class="chip">🔬 method &gt; shouting</span>
     </div>
   </div>
 </header>
@@ -170,78 +172,78 @@
 <div class="wrap">
 
   <div class="finding">
-    <div class="tag">el hallazgo</div>
-    <p class="big">Con los datos <b>parciales del Mundial 2026</b>, Messi quedó como <b>máximo goleador histórico de Mundiales</b> (18 goles, superando los 16 de Klose) y ocupa <b>él solo</b> una región del plano que bauticé <em>“Tierra de Nadie”</em>: mucho volumen <b>y</b> mucha eficiencia, donde nadie más llega.</p>
+    <div class="tag">the finding</div>
+    <p class="big">With the <b>partial data from the 2026 World Cup</b>, Messi became the <b>all-time top scorer in World Cup history</b> (18 goals, passing Klose's 16) and sits <b>alone</b> in a region of the map I named <em>“No Man's Land”</em>: high volume <b>and</b> high efficiency, where nobody else reaches.</p>
   </div>
 
   <figure>
     <video controls preload="metadata" poster="poster-frame.png">
       <source src="profile.mp4" type="video/mp4">
-      Tu navegador no soporta video HTML5. <a href="profile.mp4">Descargá el MP4</a>.
+      Your browser doesn't support HTML5 video. <a href="profile.mp4">Download the MP4</a>.
     </video>
-    <figcaption>Quieta es la infografía; ▶ dale play y el plano se arma jugador por jugador · <a href="poster-hires.png">póster 300&nbsp;dpi</a> · X = minutos · Y = G+A por 90′ · color = asistencias.</figcaption>
+    <figcaption>Paused, it's the infographic; ▶ hit play and the map builds player by player · <a href="poster-hires.png">300&nbsp;dpi poster</a> · X = minutes · Y = G+A per 90′ · color = assists · <i>chart labels in Spanish</i>.</figcaption>
   </figure>
 
   <section>
-    <h2>01 · La hipótesis</h2>
-    <p class="lead">Convertir la grieta del GOAT en algo medible.</p>
-    <p>La discusión sobre el mejor suele ser ruidosa y poco falsable. Así que la transformé en una pregunta con respuesta de datos:</p>
-    <p style="border-left:3px solid var(--line); padding-left:16px; color:#e7ecf3; font-style:italic;">Si tomamos solo Mundiales (el escenario máximo) y solo delanteros, ¿existe <b>alguien</b> que sea simultáneamente <b>durable</b>, <b>productivo</b> y <b>creativo</b> al nivel de Messi?</p>
-    <p class="note">Si la respuesta es “sí, varios”, su perfil no tiene nada de especial. Si es “no, ninguno”, hay una anomalía que merece un gráfico.</p>
+    <h2>01 · The hypothesis</h2>
+    <p class="lead">Turning the GOAT debate into something measurable.</p>
+    <p>The “who's the best” argument is usually loud and hard to falsify. So I turned it into a question with a data answer:</p>
+    <p style="border-left:3px solid var(--line); padding-left:16px; color:#e7ecf3; font-style:italic;">If we look only at World Cups (the biggest stage) and only at forwards, is there <b>anyone</b> who is simultaneously <b>durable</b>, <b>productive</b> and <b>creative</b> at Messi's level?</p>
+    <p class="note">If the answer is “yes, several”, his profile is nothing special. If it's “no, none”, there's an anomaly worth a chart.</p>
   </section>
 
   <section>
-    <h2>02 · La metodología</h2>
-    <p class="lead">Un plano, tres dimensiones de información.</p>
+    <h2>02 · The methodology</h2>
+    <p class="lead">One map, three dimensions of information.</p>
     <table class="tbl">
-      <tr><th>Eje</th><th>Significado</th><th>Cómo se computa</th></tr>
-      <tr><td><b>X — Volumen</b></td><td>Minutos de carrera mundialista</td><td>suma de <code>minutes</code> de todas las ediciones</td></tr>
-      <tr><td><b>Y — Eficiencia</b></td><td>Goles + Asistencias por 90′</td><td><code>(G + A) / minutos × 90</code></td></tr>
-      <tr><td><b>Color</b></td><td>Creación</td><td>asistencias totales (escala teal)</td></tr>
+      <tr><th>Axis</th><th>Meaning</th><th>How it's computed</th></tr>
+      <tr><td><b>X — Volume</b></td><td>World Cup career minutes</td><td>sum of <code>minutes</code> across all editions</td></tr>
+      <tr><td><b>Y — Efficiency</b></td><td>Goals + Assists per 90′</td><td><code>(G + A) / minutes × 90</code></td></tr>
+      <tr><td><b>Color</b></td><td>Creation</td><td>total assists (teal scale)</td></tr>
     </table>
-    <p>Las reglas para que la comparación sea justa:</p>
+    <p>The rules that keep the comparison fair:</p>
     <ul class="rules">
-      <li>Solo <b>delanteros</b> — manzanas con manzanas.</li>
-      <li>Mínimo <b>90′</b> jugados (un partido completo) para entrar al plano.</li>
-      <li>Messi se dibuja como <b>estrella</b> y se resalta la zona de alto volumen + alta eficiencia.</li>
-      <li><b>Leyendas pre-Opta</b> (Kocsis 1954, Fontaine 1958, Pelé 1958–70) entran en oro y con asterisco: en su era <b>no se registraban asistencias</b>, así que su ratio es solo-goles, aparte de la nube principal.</li>
+      <li>Forwards <b>only</b> — apples to apples.</li>
+      <li>At least <b>90′</b> played (one full match) to enter the map.</li>
+      <li>Messi is drawn as a <b>star</b> and the high-volume + high-efficiency zone is highlighted.</li>
+      <li><b>Pre-Opta legends</b> (Kocsis 1954, Fontaine 1958, Pelé 1958–70) enter in gold with an asterisk: in their era <b>assists weren't recorded</b>, so their ratio is goals-only, kept apart from the main cloud.</li>
     </ul>
-    <p class="note">Datos de <a href="https://fbref.com/">FBref</a> (1966–2022). Los deltas del Mundial 2026 en curso se sumaron a mano desde prensa (FBref aún no los publica) y están marcados como parciales. Retratos vía Wikipedia/Wikimedia.</p>
+    <p class="note">Data from <a href="https://fbref.com/">FBref</a> (1966–2022). The in-progress 2026 World Cup deltas were added by hand from press reports (FBref hasn't published them yet) and are flagged as partial. Portraits via Wikipedia/Wikimedia.</p>
   </section>
 
   <section>
-    <h2>03 · Los hallazgos</h2>
-    <p class="lead">Messi es el único que clava los tres podios a la vez.</p>
+    <h2>03 · The findings</h2>
+    <p class="lead">Messi is the only one who lands all three podiums at once.</p>
     <div class="cards">
-      <div class="card"><div class="n">#1</div><h3>Durabilidad</h3><p><b>2484′</b> — el único jugador con +2000′ en Mundiales.</p></div>
-      <div class="card"><div class="n">#1</div><h3>Producción</h3><p><b>24</b> contribuciones de gol (G+A) totales.</p></div>
-      <div class="card"><div class="n">#1</div><h3>Creación</h3><p><b>18 goles + 6 asistencias</b>: lidera definición y pase.</p></div>
+      <div class="card"><div class="n">#1</div><h3>Durability</h3><p><b>2484′</b> — the only player with +2000′ in World Cups.</p></div>
+      <div class="card"><div class="n">#1</div><h3>Output</h3><p><b>24</b> goal contributions (G+A) in total.</p></div>
+      <div class="card"><div class="n">#1</div><h3>Creation</h3><p><b>18 goals + 6 assists</b>: leads both finishing and passing.</p></div>
     </div>
-    <p>Otros llegan a una esquina, nunca a las tres: <b>Klose</b> y <b>Cristiano</b> tienen recorrido pero ratio bajo; <b>Mbappé</b>, <b>Kocsis</b> y <b>Fontaine</b> tienen ratio de élite pero les falta volumen; <b>Pelé</b> reina en títulos (3) pero el dataset moderno no lo mide por ratio. Resultado: una anomalía estadística sentada sola en <em>Tierra de Nadie</em>.</p>
+    <p>Others reach one corner, never all three: <b>Klose</b> and <b>Cristiano</b> have the mileage but a low ratio; <b>Mbappé</b>, <b>Kocsis</b> and <b>Fontaine</b> have an elite ratio but lack volume; <b>Pelé</b> reigns in titles (3) but the modern dataset doesn't rate him by ratio. The result: a statistical anomaly sitting alone in <em>No Man's Land</em>.</p>
     <div class="caveat">
-      ⚠️ <b>Honestidad ante todo:</b> el titular de “máximo goleador histórico” usa datos <b>parciales</b> del Mundial 2026. Cuando FBref publique las cifras oficiales, los números se actualizan. El experimento vale por el <b>método</b>, no por el grito.
+      ⚠️ <b>Honesty first:</b> the “all-time top scorer” headline uses <b>partial</b> 2026 World Cup data. Once FBref publishes the official figures, the numbers update. The experiment is about the <b>method</b>, not the hype.
     </div>
   </section>
 
   <section>
-    <h2>04 · Abierto y reproducible</h2>
-    <p class="lead">Todo el experimento es código abierto.</p>
+    <h2>04 · Open &amp; reproducible</h2>
+    <p class="lead">The whole experiment is open source.</p>
     <div class="cta">
-      <div class="txt"><b>messi-worldcup</b> en GitHub: scripts, dataset, metodología, póster 300&nbsp;dpi y video. Cloná, corré, rompé y mejorá.</div>
-      <a class="btn" href="https://github.com/Martin-Sciarrillo/messi-worldcup">Ver el repo ↗</a>
-      <a class="btn ghost" href="poster-hires.png">Póster 300dpi</a>
+      <div class="txt"><b>messi-worldcup</b> on GitHub: scripts, dataset, methodology, 300&nbsp;dpi poster and video. Clone it, run it, break it, improve it.</div>
+      <a class="btn" href="https://github.com/Martin-Sciarrillo/messi-worldcup">View the repo ↗</a>
+      <a class="btn ghost" href="poster-hires.png">300dpi poster</a>
     </div>
-    <p class="note">Créditos: datos de <a href="https://fbref.com/">FBref / Sports Reference</a>; retratos de <a href="https://commons.wikimedia.org/">Wikipedia / Wikimedia Commons</a>. Atribución completa en el <a href="https://github.com/Martin-Sciarrillo/messi-worldcup/blob/master/REFERENCES.md">REFERENCES.md</a> del repo.</p>
+    <p class="note">Credits: data from <a href="https://fbref.com/">FBref / Sports Reference</a>; portraits from <a href="https://commons.wikimedia.org/">Wikipedia / Wikimedia Commons</a>. Full attribution in the repo's <a href="https://github.com/Martin-Sciarrillo/messi-worldcup/blob/master/REFERENCES.md">REFERENCES.md</a>.</p>
   </section>
 
 </div>
 
 <footer>
   <div class="wrap">
-    <div class="sig">— hecho con curiosidad y bastante café por <a href="https://aka.ms/Tincho">aka.ms/Tincho</a></div>
+    <div class="sig">— made with curiosity and plenty of coffee by <a href="https://aka.ms/Tincho">aka.ms/Tincho</a></div>
     <div class="credits">
       Martín Sciarrillo · <a href="https://github.com/Martin-Sciarrillo/messi-worldcup">github.com/Martin-Sciarrillo/messi-worldcup</a><br>
-      Un experimento de R&amp;D futbolero. Datos parciales del Mundial 2026 marcados como provisionales.
+      A playful football R&amp;D experiment. Partial 2026 World Cup data flagged as provisional.
     </div>
   </div>
 </footer>
