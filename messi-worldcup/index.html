@@ -116,6 +116,12 @@
   .card b{color:var(--teal);}
   @media(max-width:680px){.cards{grid-template-columns:1fr;}}
 
+  /* data stats strip */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:6px 0 18px;}
+  .stat{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:10px; padding:16px 14px; text-align:center;}
+  .stat .num{font-family:var(--mono); font-size:27px; font-weight:800; color:var(--teal); letter-spacing:-.5px; line-height:1;}
+  .stat .lbl{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.35;}
+
   .caveat{
     margin:18px 0; background:rgba(201,162,58,.07); border:1px solid rgba(201,162,58,.35);
     border-radius:10px; padding:16px 18px; font-size:15px; color:#e8dcbf;
@@ -210,7 +216,29 @@
   </section>
 
   <section>
-    <h2>03 · Los hallazgos</h2>
+    <h2>03 · Los datos</h2>
+    <p class="lead">Mucho ruido de cancha, un dataset que se puede auditar.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">15</div><div class="lbl">Mundiales<br>1966–2022</div></div>
+      <div class="stat"><div class="num">6.966</div><div class="lbl">registros<br>jugador–torneo</div></div>
+      <div class="stat"><div class="num">5.282</div><div class="lbl">jugadores<br>únicos</div></div>
+      <div class="stat"><div class="num">84</div><div class="lbl">selecciones</div></div>
+      <div class="stat"><div class="num">1.193</div><div class="lbl">delanteros<br>en el plano</div></div>
+    </div>
+    <p>El embudo es la clave del experimento: de <b>5.282 jugadores</b> en 15 ediciones, el filtro de “solo delanteros con 90′+” deja <b>1.193</b> nombres en el plano. Messi es <b>uno de esos 1.193</b>… y aun así termina solo en su esquina.</p>
+    <table class="tbl">
+      <tr><th>Dataset / fuente</th><th>Qué aporta</th><th>Cómo entró</th></tr>
+      <tr><td><b>FBref</b> · Sports Reference</td><td>tablas por jugador y edición, 1966–2022</td><td>scrapeado con <code>fetch_fbref.py</code></td></tr>
+      <tr><td><b>worldcup_all.csv</b></td><td>dataset limpio: <code>minutes, goals, assists, pos, squad, wc_year</code></td><td>derivado con <code>build_data.py</code> (en el repo)</td></tr>
+      <tr><td><b>Mundial 2026</b></td><td>deltas en curso (min/goles) de Messi, Cristiano y Mbappé</td><td>a mano desde prensa · marcado parcial</td></tr>
+      <tr><td><b>Leyendas pre-Opta</b></td><td>Kocsis ’54, Fontaine ’58, Pelé ’58–70 (solo goles)</td><td>a mano · ratio goles/90, sin asistencias</td></tr>
+      <tr><td><b>Retratos &amp; banderas</b></td><td>fotos de jugadores y banderines</td><td>Wikimedia Commons · banderas de dominio público</td></tr>
+    </table>
+    <p class="note">Letra chica: las <b>asistencias no existían como estadística oficial</b> antes de la era Opta, así que para las leyendas pre-1966 el eje Y es <b>goles/90</b> (no G+A/90) y van aparte, en oro. Todo el <code>.csv</code> y los scripts de scraping están en el repo para auditar o rehacer.</p>
+  </section>
+
+  <section>
+    <h2>04 · Los hallazgos</h2>
     <p class="lead">Messi es el único que clava los tres podios a la vez.</p>
     <div class="cards">
       <div class="card"><div class="n">#1</div><h3>Durabilidad</h3><p><b>2484′</b> — el único jugador con +2000′ en Mundiales.</p></div>
@@ -224,7 +252,7 @@
   </section>
 
   <section>
-    <h2>04 · Abierto y reproducible</h2>
+    <h2>05 · Abierto y reproducible</h2>
     <p class="lead">Todo el experimento es código abierto.</p>
     <div class="cta">
       <div class="txt"><b>messi-worldcup</b> en GitHub: scripts, dataset, metodología, póster 300&nbsp;dpi y video. Cloná, corré, rompé y mejorá.</div>

@@ -118,6 +118,12 @@
   .card b{color:var(--teal);}
   @media(max-width:680px){.cards{grid-template-columns:1fr;}}
 
+  /* data stats strip */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:6px 0 18px;}
+  .stat{background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:10px; padding:16px 14px; text-align:center;}
+  .stat .num{font-family:var(--mono); font-size:27px; font-weight:800; color:var(--teal); letter-spacing:-.5px; line-height:1;}
+  .stat .lbl{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.35;}
+
   .caveat{
     margin:18px 0; background:rgba(201,162,58,.07); border:1px solid rgba(201,162,58,.35);
     border-radius:10px; padding:16px 18px; font-size:15px; color:#e8dcbf;
@@ -212,7 +218,29 @@
   </section>
 
   <section>
-    <h2>03 · The findings</h2>
+    <h2>03 · The data</h2>
+    <p class="lead">Lots of terrace noise, one auditable dataset.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">15</div><div class="lbl">World Cups<br>1966–2022</div></div>
+      <div class="stat"><div class="num">6,966</div><div class="lbl">player–tournament<br>records</div></div>
+      <div class="stat"><div class="num">5,282</div><div class="lbl">unique<br>players</div></div>
+      <div class="stat"><div class="num">84</div><div class="lbl">national teams</div></div>
+      <div class="stat"><div class="num">1,193</div><div class="lbl">forwards<br>on the map</div></div>
+    </div>
+    <p>The funnel is the whole point: out of <b>5,282 players</b> across 15 editions, the “forwards with 90′+” filter leaves <b>1,193</b> names on the map. Messi is <b>one of those 1,193</b>… and still ends up alone in his corner.</p>
+    <table class="tbl">
+      <tr><th>Dataset / source</th><th>What it adds</th><th>How it got in</th></tr>
+      <tr><td><b>FBref</b> · Sports Reference</td><td>per-player, per-edition tables, 1966–2022</td><td>scraped with <code>fetch_fbref.py</code></td></tr>
+      <tr><td><b>worldcup_all.csv</b></td><td>clean dataset: <code>minutes, goals, assists, pos, squad, wc_year</code></td><td>derived with <code>build_data.py</code> (in the repo)</td></tr>
+      <tr><td><b>2026 World Cup</b></td><td>in-progress deltas (min/goals) for Messi, Cristiano and Mbappé</td><td>by hand from press · flagged partial</td></tr>
+      <tr><td><b>Pre-Opta legends</b></td><td>Kocsis ’54, Fontaine ’58, Pelé ’58–70 (goals only)</td><td>by hand · goals/90 ratio, no assists</td></tr>
+      <tr><td><b>Portraits &amp; flags</b></td><td>player photos and flags</td><td>Wikimedia Commons · public-domain flags</td></tr>
+    </table>
+    <p class="note">Fine print: <b>assists didn't exist as an official stat</b> before the Opta era, so for pre-1966 legends the Y axis is <b>goals/90</b> (not G+A/90) and they sit apart, in gold. The full <code>.csv</code> and scraping scripts live in the repo to audit or rebuild.</p>
+  </section>
+
+  <section>
+    <h2>04 · The findings</h2>
     <p class="lead">Messi is the only one who lands all three podiums at once.</p>
     <div class="cards">
       <div class="card"><div class="n">#1</div><h3>Durability</h3><p><b>2484′</b> — the only player with +2000′ in World Cups.</p></div>
@@ -226,7 +254,7 @@
   </section>
 
   <section>
-    <h2>04 · Open &amp; reproducible</h2>
+    <h2>05 · Open &amp; reproducible</h2>
     <p class="lead">The whole experiment is open source.</p>
     <div class="cta">
       <div class="txt"><b>messi-worldcup</b> on GitHub: scripts, dataset, methodology, 300&nbsp;dpi poster and video. Clone it, run it, break it, improve it.</div>
